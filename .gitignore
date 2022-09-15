@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
+/.idea/
 .idea/modules.xmlK
 .idea/jarRepositories.xml
 .idea/compiler.xml
@@ -11,6 +12,12 @@ target/
 *.iws
 *.iml
 *.ipr
+
+
+### Maven ###
+/mvnw
+/mvnw.cmd
+/.mvn/
 
 ### Eclipse ###
 .apt_generated
@@ -36,7 +43,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
-/mvnw
-/mvnw.cmd
-/.mvn/
-/.idea/
+
