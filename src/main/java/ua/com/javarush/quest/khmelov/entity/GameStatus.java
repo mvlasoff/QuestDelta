@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class GameStatus extends AbstractEntity {
+public class GameStatus extends Entity {
     Long id;
     Long questId;
     Long userId;

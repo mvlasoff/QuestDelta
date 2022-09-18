@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class Answer extends AbstractEntity{
+public class Answer extends Entity {
     Long id;
     Long questionId;
     String text;

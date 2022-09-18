@@ -4,6 +4,7 @@ import ua.com.javarush.quest.khmelov.entity.User;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 
 public class UserRepository extends AbstractRepository<User> implements Repository<User> {
@@ -18,7 +19,7 @@ public class UserRepository extends AbstractRepository<User> implements Reposito
     }
 
     @Override
-    public Collection<User> find(User pattern) {
+    public Stream<User> find(User pattern) {
         return map.values().stream()
                 .filter(entity -> isOk(pattern, entity, User::getId)
                         && isOk(pattern, entity, User::getImage)
@@ -28,8 +29,7 @@ public class UserRepository extends AbstractRepository<User> implements Reposito
                         && isOk(pattern, entity, User::getQuests)
                         && isOk(pattern, entity, User::getGameStatuses)
                 )
-                .sorted(Comparator.comparing(User::getLogin))
-                .toList();
+                .sorted(Comparator.comparing(User::getLogin));
     }
 
 }

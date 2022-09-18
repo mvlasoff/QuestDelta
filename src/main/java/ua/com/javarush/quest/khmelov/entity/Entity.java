@@ -1,6 +1,9 @@
 package ua.com.javarush.quest.khmelov.entity;
 
-public abstract class AbstractEntity {
+/**
+ * Parent any entity. Use as parent in wildcard
+ */
+public abstract class Entity {
 
     public abstract Long getId();
 

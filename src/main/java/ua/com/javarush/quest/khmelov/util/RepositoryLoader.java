@@ -12,6 +12,7 @@ import ua.com.javarush.quest.khmelov.repository.UserRepository;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @UtilityClass
 public class RepositoryLoader {
@@ -31,7 +32,8 @@ public class RepositoryLoader {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            jsonMapper.writeValue(new File("tree.json"), userRepository.getAll());
+            List<User> users = userRepository.getAll().toList();
+            jsonMapper.writeValue(new File("tree.json"), users);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -39,21 +41,16 @@ public class RepositoryLoader {
 
     private void defaultInit() {
         //пользователи
-        User ivan = User.with().login("Ivan").password("456")
-                .image("avatar-1").role(Role.ADMIN).build();
-        User andrew = User.with().login("Andrew").password("789")
-                .image("avatar-2").role(Role.GUEST).build();
-        User elena = User.with().login("Elena").password("123")
-                .image("avatar-3").role(Role.USER).build();
+        User ivan = User.with().id(1L).login("Ivan").password("456").role(Role.ADMIN).build();
+        User andrew = User.with().id(2L).login("Andrew").password("789").role(Role.GUEST).build();
+        User elena = User.with().id(3L).login("Elena").password("123").role(Role.USER).build();
         userRepository.create(ivan);
         userRepository.create(andrew);
         userRepository.create(elena);
 
         //квесты
-        Quest quest1 = Quest.with().authorId(ivan.getId())
-                .name("Квест из задания").build();
-        Quest quest2 = Quest.with().authorId(ivan.getId())
-                .name("Проверим ваши знания арифметики").build();
+        Quest quest1 = Quest.with().authorId(ivan.getId()).name("Квест из задания").build();
+        Quest quest2 = Quest.with().authorId(ivan.getId()).name("Проверим ваши знания арифметики").build();
         ArrayList<Quest> quests = new ArrayList<>();
         quests.add(quest1);
         quests.add(quest2);
@@ -62,7 +59,7 @@ public class RepositoryLoader {
         ivan.setQuests(quests);
 
         //вопросы
-        Question question1=Question.with().questId(quest2.getId())
+        Question question1 = Question.with().questId(quest2.getId())
                 .text("Сколько будет дважды два").build();
         ArrayList<Question> questions = new ArrayList<>();
         questions.add(question1);
@@ -79,7 +76,7 @@ public class RepositoryLoader {
         answerRepository.create(Answer.with().text("Четыре")
                 .questionId(question1.getId()).correct(true).build());
         question1.setAnswers(answerRepository.find(Answer.with()
-                .questionId(question1.getId()).build())
+                .questionId(question1.getId()).build()).toList()
         );
 
     }

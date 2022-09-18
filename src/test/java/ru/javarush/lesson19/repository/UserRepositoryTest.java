@@ -29,6 +29,7 @@ class UserRepositoryTest {
         //several users with different nullable fields (need skipped)
         return Stream.of(
                 Arguments.of(User.with().login("Elena").password("123").build(), 1),
+                Arguments.of(User.with().login("Elena").password("badpass").build(), 0),
                 Arguments.of(User.with().login("Elena").build(), 1),
 
                 Arguments.of(User.with().login("Andrew").build(), 1),
@@ -47,8 +48,8 @@ class UserRepositoryTest {
     @MethodSource("getSamplePatternForSearch")
     @DisplayName("Check find by not null fields")
     public void find(User user, int count) {
-        Collection<User> users = repository.find(user);
-        assertEquals(count, users.size());
+        long actualCount = repository.find(user).count();
+        assertEquals(count, actualCount);
     }
 
 }

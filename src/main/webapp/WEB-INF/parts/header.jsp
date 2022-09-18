@@ -37,5 +37,12 @@
                     </c:otherwise>
                 </c:choose>
         </ul>
+        <c:if test="${requestScope.error}">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <span class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+                ${requestScope.error}
+            </span>
+        </div>
+        </c:if>
     </header>
 </div>

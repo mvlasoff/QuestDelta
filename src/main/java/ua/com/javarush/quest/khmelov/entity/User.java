@@ -1,15 +1,16 @@
 package ua.com.javarush.quest.khmelov.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.Collection;
 
+
 @Data
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(builderMethodName = "with")
-public final class User extends AbstractEntity{
+public final class User extends Entity {
 
     Long id;
 
@@ -17,7 +18,7 @@ public final class User extends AbstractEntity{
 
     String password;
 
-    String image;
+    final String image = "image-" + id;
 
     Role role;
 

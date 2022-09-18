@@ -4,6 +4,7 @@ import ua.com.javarush.quest.khmelov.entity.Question;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class QuestionRepository extends AbstractRepository<Question> implements Repository<Question> {
 
@@ -18,7 +19,7 @@ public class QuestionRepository extends AbstractRepository<Question> implements 
 
 
     @Override
-    public Collection<Question> find(Question pattern) {
+    public Stream<Question> find(Question pattern) {
         return map.values().stream()
                 .filter(entity -> isOk(pattern, entity, Question::getId)
                         && isOk(pattern, entity, Question::getQuestId)
@@ -28,8 +29,7 @@ public class QuestionRepository extends AbstractRepository<Question> implements 
                         && isOk(pattern, entity, Question::getCorrectQuestionId)
                         && isOk(pattern, entity, Question::getIncorrectQuestionId)
                 )
-                .sorted(Comparator.comparingLong(Question::getId))
-                .toList();
+                .sorted(Comparator.comparingLong(Question::getId));
     }
 
 }

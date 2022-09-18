@@ -6,23 +6,24 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ua.com.javarush.quest.khmelov.dto.FormData;
+import jakarta.servlet.http.HttpSession;
 import ua.com.javarush.quest.khmelov.dto.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
+import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.service.AvatarService;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Optional;
 
 @MultipartConfig(fileSizeThreshold = 1 << 20)
-@WebServlet(Go.SIGNUP)
-public class SignupServlet extends HttpServlet {
+@WebServlet(Go.PROFILE)
+public class ProfileServlet extends HttpServlet {
 
     private final UserService userService = UserService.INSTANCE;
-    private final AvatarService avatarService = AvatarService.INSTANCE;
 
     @Override
     public void init() {
@@ -31,17 +32,16 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long id = Jsp.getId(req);
-        Optional<UserDto> opUser = userService.get(id);
-        opUser.ifPresent(value -> req.setAttribute("user", value));
-        Jsp.forward(req, resp, Go.SIGNUP);
+        long id = Jsp.getId(req.getSession());
+        Optional<UserDto> user = userService.get(id);
+        user.ifPresent(value -> req.setAttribute("user", value));
+        Jsp.forward(req, resp, Go.PROFILE);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        userService.create(FormData.of(req));
-        avatarService.updateAvatar(req);
-        Jsp.redirect(req, resp, Go.USERS);
+        long id = Jsp.getId(req.getSession());
+        Jsp.redirect(req, resp, Go.USER + "?id=" + id);
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.Collection;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class Question extends AbstractEntity{
+public class Question extends Entity {
     Long id;
     Long questId;
     String image;

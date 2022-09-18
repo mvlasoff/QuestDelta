@@ -17,8 +17,6 @@ import java.util.Scanner;
 @WebServlet("/images/*")
 public class ImageServlet extends HttpServlet {
 
-    @Serial
-    private static final long serialVersionUID = 6551390997304892153L;
     private final AvatarService avatarService = AvatarService.INSTANCE;
 
     @Override
@@ -33,7 +31,6 @@ public class ImageServlet extends HttpServlet {
                 Files.copy(file.get(), outputStream);
             }
         }
-        Scanner scanner = new Scanner(System.in);
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static ua.com.javarush.quest.khmelov.util.UriString.*;
+import static ua.com.javarush.quest.khmelov.util.Go.*;
 
 
 @WebFilter({ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, USER})
@@ -34,15 +34,15 @@ public class RoleSelector implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String command = Jsp.getCommand(request);
         Object user = request.getSession().getAttribute("user");
         Role role = (Objects.isNull(user))
                 ? Role.GUEST
                 : ((UserDto) user).getRole();
+        String command = Jsp.getCommand(request);
         if (uriMap.get(role).contains(command)){
             filterChain.doFilter(servletRequest,servletResponse);
         } else {
-            Jsp.redirect(response,ROOT);
+            Jsp.redirect(request,response,ROOT);
         }
     }
 

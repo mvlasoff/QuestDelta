@@ -1,26 +1,26 @@
 package ua.com.javarush.quest.khmelov.repository;
 
-import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
+import ua.com.javarush.quest.khmelov.entity.Entity;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
-public abstract class AbstractRepository<T extends AbstractEntity> implements Repository<T> {
+public abstract class AbstractRepository<T extends Entity> implements Repository<T> {
 
     public static final AtomicLong id = new AtomicLong(System.currentTimeMillis());
     protected final Map<Long, T> map = new HashMap<>();
 
     @Override
-    public Collection<T> getAll() {
-        return map.values();
+    public Stream<T> getAll() {
+        return map.values().stream();
     }
 
     @Override
-    public abstract Collection<T> find(T pattern);
+    public abstract Stream<T> find(T pattern);
 
 
     protected <V> boolean isOk(T pattern, T current, Function<T, V> fieldGetter) {
@@ -43,8 +43,9 @@ public abstract class AbstractRepository<T extends AbstractEntity> implements Re
     }
 
     @Override
-    public void update(T entity) {
+    public boolean update(T entity) {
         map.put(entity.getId(), entity);
+        return false;
     }
 
     @Override

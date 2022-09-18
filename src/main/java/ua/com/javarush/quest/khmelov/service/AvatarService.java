@@ -1,7 +1,11 @@
 package ua.com.javarush.quest.khmelov.service;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +19,8 @@ public enum AvatarService {
     public static final String NO_IMAGE_PNG = "no-image.png";
     public static final String ROOT = "/";
     public static final String IMAGES_FOLDER = "images";
+    public static final String PART_NAME = "image";
+    public static final String FILENAME_PREFIX = "image-";
     private final Path imagesFolder = Path.of(Objects.requireNonNull(
                     AvatarService.class.getResource(ROOT)
             ).getPath())
@@ -27,13 +33,7 @@ public enum AvatarService {
         Files.createDirectories(imagesFolder);
     }
 
-    @SneakyThrows
-    public void uploadAvatar(String name, InputStream data) {
-        try (data) {
-            if (data.available() > 0)
-                Files.copy(data, imagesFolder.resolve(name), StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
+
 
     @SneakyThrows
     public Optional<Path> getAvatarPath(String filename) {
@@ -42,7 +42,23 @@ public enum AvatarService {
                 : Optional.of(imagesFolder.resolve(NO_IMAGE_PNG));
     }
 
-    public static void main(String[] args) {
+    public void updateAvatar(HttpServletRequest req) throws IOException, ServletException {
+        Part data = req.getPart(PART_NAME);
+        if (data.getInputStream().available() > 0) {
+            String id = req.getParameter("id");
+            String filename = FILENAME_PREFIX + id;
+            uploadAvatar(filename, data.getInputStream());
+        }
+    }
+
+    @SneakyThrows
+    private void uploadAvatar(String name, InputStream data) {
+        try (data) {
+            if (data.available() > 0)
+                Files.copy(data, imagesFolder.resolve(name), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+/*    public static void main(String[] args) {
         Path images = Path.of(Objects.requireNonNull(
                 AvatarService.class.getResource(ROOT)).getPath())
                 .getParent()
@@ -52,6 +68,6 @@ public enum AvatarService {
         String filename = NO_IMAGE_PNG;
         System.out.println(INSTANCE.getAvatarPath(filename));
         System.out.println(Files.exists(INSTANCE.imagesFolder.resolve(filename)));
-    }
+    }*/
 
 }
