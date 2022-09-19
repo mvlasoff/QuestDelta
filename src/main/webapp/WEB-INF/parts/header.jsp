@@ -19,30 +19,23 @@
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="${pageContext.request.contextPath}/" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Квесты</a></li>
+            <li><a href="quests" class="nav-link px-2 link-dark">Квесты</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Создать</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Играть</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Статистика</a></li>
         </ul>
 
         <ul class="nav col-md-3 text-end">
-                <c:choose>
-                    <c:when test="${not empty sessionScope.user}">
-                        <li><a href="profile" class="nav-link px-2 link-dark">Profile</a></li>
-                        <li><a href="logout" class="nav-link px-2 link-dark">Logout</a></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><a href="login" class="nav-link px-2 link-dark">Login</a></li>
-                        <li><a href="signup" class="nav-link px-2 link-dark">Sign-up</a></li>
-                    </c:otherwise>
-                </c:choose>
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <li><a href="profile" class="nav-link px-2 link-dark">Profile</a></li>
+                    <li><a href="logout" class="nav-link px-2 link-dark">Logout</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="login" class="nav-link px-2 link-dark">Login</a></li>
+                    <li><a href="signup" class="nav-link px-2 link-dark">Sign-up</a></li>
+                </c:otherwise>
+            </c:choose>
         </ul>
-        <c:if test="${requestScope.error}">
-        <div class="container d-flex flex-wrap justify-content-center">
-            <span class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-                ${requestScope.error}
-            </span>
-        </div>
-        </c:if>
     </header>
 </div>

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
 import ua.com.javarush.quest.khmelov.dto.UserDto;
+import ua.com.javarush.quest.khmelov.exception.AppException;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -28,13 +29,14 @@ public class Jsp {
     }
 
     public String getCommand(HttpServletRequest request) {
-        String uri = request.getRequestURI().replaceAll(".++/", "");
-        Matcher matcher = Pattern.compile("[a-z]*").matcher(uri);
+        String uri = request.getRequestURI();
+        Matcher matcher = Pattern.compile(".*(/[a-z]*)").matcher(uri);
         if (matcher.find()) {
-            return "/" + matcher.group();
+            return matcher.group(1);
         } else {
-            throw new UnsupportedOperationException("incorrect uri" + uri);
+            throw new AppException("incorrect uri: " + uri);
         }
+
     }
 
     public long getId(HttpServletRequest req) {
@@ -49,5 +51,4 @@ public class Jsp {
                 ? ((UserDto) user).getId()
                 : 0L;
     }
-
 }

@@ -26,8 +26,6 @@ public class QuestionRepository extends AbstractRepository<Question> implements 
                         && isOk(pattern, entity, Question::getAnswers)
                         && isOk(pattern, entity, Question::getText)
                         && isOk(pattern, entity, Question::getImage)
-                        && isOk(pattern, entity, Question::getCorrectQuestionId)
-                        && isOk(pattern, entity, Question::getIncorrectQuestionId)
                 )
                 .sorted(Comparator.comparingLong(Question::getId));
     }

@@ -15,7 +15,7 @@ public interface Repository<T extends Entity> {
 
     void create(T entity);
 
-    boolean update(T entity);
+    void update(T entity);
 
     void delete(T entity);
 }

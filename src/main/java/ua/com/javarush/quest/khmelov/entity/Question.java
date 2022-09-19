@@ -15,6 +15,4 @@ public class Question extends Entity {
     String image;
     String text;
     Collection<Answer> answers;
-    Long correctQuestionId;
-    Long incorrectQuestionId;
 }

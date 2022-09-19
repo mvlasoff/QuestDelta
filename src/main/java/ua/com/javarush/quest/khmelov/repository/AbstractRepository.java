@@ -43,9 +43,8 @@ public abstract class AbstractRepository<T extends Entity> implements Repository
     }
 
     @Override
-    public boolean update(T entity) {
+    public void update(T entity) {
         map.put(entity.getId(), entity);
-        return false;
     }
 
     @Override

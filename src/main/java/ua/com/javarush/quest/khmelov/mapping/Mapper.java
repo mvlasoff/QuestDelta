@@ -2,8 +2,10 @@ package ua.com.javarush.quest.khmelov.mapping;
 
 import lombok.experimental.UtilityClass;
 import ua.com.javarush.quest.khmelov.dto.FormData;
+import ua.com.javarush.quest.khmelov.dto.QuestDto;
 import ua.com.javarush.quest.khmelov.dto.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Entity;
+import ua.com.javarush.quest.khmelov.entity.Quest;
 import ua.com.javarush.quest.khmelov.entity.User;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,6 +37,7 @@ public interface Mapper<E extends Entity, R> {
 
     //all mappers
     Mapper<User, UserDto> user = new UserMapper();
+    Mapper<Quest, QuestDto> quest = new QuestMapper();
 
     /**
      * Data form Servlet convert to existing instance Entity

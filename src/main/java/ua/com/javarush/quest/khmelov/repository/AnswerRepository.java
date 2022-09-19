@@ -24,7 +24,6 @@ public class AnswerRepository extends AbstractRepository<Answer> implements Repo
                 .filter(entity -> isOk(pattern, entity, Answer::getId)
                         && isOk(pattern, entity, Answer::getQuestionId)
                         && isOk(pattern, entity, Answer::getText)
-                        && isOk(pattern, entity, Answer::getCorrect)
                 )
                 .sorted(Comparator.comparingLong(Answer::getId));
     }

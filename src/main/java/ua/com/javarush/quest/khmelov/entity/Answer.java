@@ -11,5 +11,5 @@ public class Answer extends Entity {
     Long id;
     Long questionId;
     String text;
-    Boolean correct;
+    Long nextQuestionId;
 }

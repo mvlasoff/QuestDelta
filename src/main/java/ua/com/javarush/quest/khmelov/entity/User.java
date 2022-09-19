@@ -18,7 +18,9 @@ public final class User extends Entity {
 
     String password;
 
-    final String image = "image-" + id;
+    public String getImage() {
+        return "image-" + id;
+    }
 
     Role role;
 

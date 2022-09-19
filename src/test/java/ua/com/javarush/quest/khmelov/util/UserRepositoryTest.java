@@ -1,4 +1,4 @@
-package ru.javarush.lesson19.repository;
+package ua.com.javarush.quest.khmelov.util;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

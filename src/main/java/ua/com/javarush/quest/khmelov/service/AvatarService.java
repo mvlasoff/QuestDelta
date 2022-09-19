@@ -16,11 +16,11 @@ import java.util.Optional;
 public enum AvatarService {
     INSTANCE;
 
-    public static final String NO_IMAGE_PNG = "no-image.png";
     public static final String ROOT = "/";
     public static final String IMAGES_FOLDER = "images";
     public static final String PART_NAME = "image";
     public static final String FILENAME_PREFIX = "image-";
+    public static final String NO_IMAGE_PNG = "no-image.png";
     private final Path imagesFolder = Path.of(Objects.requireNonNull(
                     AvatarService.class.getResource(ROOT)
             ).getPath())
@@ -58,16 +58,5 @@ public enum AvatarService {
                 Files.copy(data, imagesFolder.resolve(name), StandardCopyOption.REPLACE_EXISTING);
         }
     }
-/*    public static void main(String[] args) {
-        Path images = Path.of(Objects.requireNonNull(
-                AvatarService.class.getResource(ROOT)).getPath())
-                .getParent()
-                .resolve(IMAGES_FOLDER);
-        System.out.println(images.resolve(NO_IMAGE_PNG));
-
-        String filename = NO_IMAGE_PNG;
-        System.out.println(INSTANCE.getAvatarPath(filename));
-        System.out.println(Files.exists(INSTANCE.imagesFolder.resolve(filename)));
-    }*/
 
 }
