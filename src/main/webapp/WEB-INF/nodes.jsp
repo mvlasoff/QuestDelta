@@ -35,8 +35,8 @@
             <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
 
             <ul class="icon-list ps-0">
-                <c:forEach var="node" items="${requestScope.nodes}">
-                    <li class="d-flex align-items-start mb-1"><a href="/docs/5.2/getting-started/introduction/">${node}</a></li>
+                <c:forEach var="questions" items="${requestScope.questions}">
+                    <li class="d-flex align-items-start mb-1"><a href="/docs/5.2/getting-started/introduction/">${question}</a></li>
                 </c:forEach>
             </ul>
 

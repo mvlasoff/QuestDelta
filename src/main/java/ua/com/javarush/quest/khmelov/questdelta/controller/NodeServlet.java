@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ua.com.javarush.quest.khmelov.questdelta.entity.Node;
+import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
@@ -22,7 +22,7 @@ public class NodeServlet extends HttpServlet {
         Optional<String> stringId = Optional.ofNullable(req.getParameter("id"));
         if(stringId.isPresent()) {
             long id = Long.parseLong(stringId.get());
-            Optional<Node> node = questService.get(id);
+            Optional<Question> node = questService.get(id);
             if(node.isPresent()) {
                 req.setAttribute("node", node.get());
             }

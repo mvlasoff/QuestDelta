@@ -1,6 +1,6 @@
 package ua.com.javarush.quest.khmelov.questdelta.repository;
 
-import ua.com.javarush.quest.khmelov.questdelta.entity.Node;
+import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
 import ua.com.javarush.quest.khmelov.questdelta.entity.SpaceQuest;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Quest;
 
@@ -13,11 +13,11 @@ public class QuestRepository {
     public QuestRepository() {
     }
 
-    public Collection<Node> getAll() {
+    public Collection<Question> getAll() {
         return quest.getAll();
     }
 
-    public Optional<Node> get(long id) {
+    public Optional<Question> get(long id) {
         return quest.get(id);
     }
 }

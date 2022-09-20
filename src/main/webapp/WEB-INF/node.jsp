@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="container">
-        <form class="form-horizontal" action="node?id=${requestScope.node.id}" method="post">
+        <form class="form-horizontal" action="question?id=${requestScope.question.id}" method="post">
             <fieldset>
 
                 <!-- Form Name -->
@@ -24,7 +24,7 @@
                     <label class="col-md-4 control-label" for="id">Id</label>
                     <div class="col-md-4">
                         <input id="id" name="id" type="text" placeholder="" class="form-control input-md"
-                        value="${requestScope.node.id}">
+                        value="${requestScope.question.id}">
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="question">Question</label>
                     <div class="col-md-4">
-                        <textarea class="form-control" id="question" name="question">${requestScope.node.question}</textarea>
+                        <textarea class="form-control" id="question" name="question">${requestScope.question.question}</textarea>
                     </div>
                 </div>
 

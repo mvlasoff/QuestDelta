@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface Quest {
 
-    Collection<Node> getAll();
+    Collection<Question> getAll();
 
-    Optional<Node> get(long id);
+    Optional<Question> get(long id);
 }
