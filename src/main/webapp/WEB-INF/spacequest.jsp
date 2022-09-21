@@ -19,7 +19,16 @@
     <header class="d-flex justify-content-center py-3">
         <ul class="nav nav-pills">
             <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Quest</a></li>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Quests
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Space Quest</a></li>
+                    <li><a class="dropdown-item" href="#">Another Quest</a></li>
+                </ul>
+            </div>
             <li class="nav-item"><a href="#" class="nav-link">Statistics</a></li>
         </ul>
     </header>
@@ -28,15 +37,20 @@
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
         <div class="col-10 col-sm-8 col-lg-6">
-            <img src="${pageContext.request.contextPath}/images/img.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+            <img src="${pageContext.request.contextPath}/images/img.png" class="d-block mx-lg-auto img-fluid"
+                 alt="Bootstrap Themes" width="700" height="500" loading="lazy">
         </div>
         <div class="col-lg-6">
-            <h1 class="display-5 fw-bold lh-1 mb-3">Responsive left-aligned hero with image</h1>
-            <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+
+            <h1 class="display-5 fw-bold lh-1 mb-3">Space Quest.</h1>
+            <c:if test="${requestScope.firstQuestion != null}">
+                <p class="lead">${requestScope.firstQuestion.question}</p>
+            </c:if>
 
             <ul class="icon-list ps-0">
-                <c:forEach var="question" items="${requestScope.questions}">
-                    <li class="d-flex align-items-start mb-1"><a href="/docs/5.2/getting-started/introduction/">${question}</a></li>
+                <c:forEach var="answer" items="${requestScope.answers}">
+                    <li class="d-flex align-items-start mb-1"><a
+                            href="/docs/5.2/getting-started/introduction/">${answer.answer}</a></li>
                 </c:forEach>
             </ul>
 

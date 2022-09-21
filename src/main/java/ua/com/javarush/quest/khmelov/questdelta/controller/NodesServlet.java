@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
+import ua.com.javarush.quest.khmelov.questdelta.entity.SpaceQuest;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
@@ -15,7 +16,7 @@ import java.util.Collection;
 @WebServlet("/questions")
 public class NodesServlet extends HttpServlet {
 
-    QuestService questService = QuestService.getNodeService();
+    QuestService questService = QuestService.getQuestService(new SpaceQuest());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

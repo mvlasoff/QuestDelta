@@ -5,34 +5,28 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ua.com.javarush.quest.khmelov.questdelta.entity.Answer;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
 import ua.com.javarush.quest.khmelov.questdelta.entity.SpaceQuest;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Collection;
 
-@WebServlet("/node")
-public class NodeServlet extends HttpServlet {
+@WebServlet("/space-quest")
+public class SpaceQuestServlet extends HttpServlet {
 
     QuestService questService = QuestService.getQuestService(new SpaceQuest());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<String> stringId = Optional.ofNullable(req.getParameter("id"));
-        if(stringId.isPresent()) {
-            long id = Long.parseLong(stringId.get());
-            Optional<Question> node = questService.get(id);
-            if(node.isPresent()) {
-                req.setAttribute("node", node.get());
-            }
-        }
-        Jsp.reqRespForward(req, resp, "node");
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        //Collection<Question> questions = questService.getAll();
+        Question startQuestion = questService.getStartQuestion();
+        Collection<Answer> answers = questService.getAnswers(startQuestion);
+        //req.setAttribute("questions", questions);
+        req.setAttribute("answers", answers);
+        req.setAttribute("firstQuestion", startQuestion);
+        Jsp.reqRespForward(req, resp, "spacequest");
     }
 }

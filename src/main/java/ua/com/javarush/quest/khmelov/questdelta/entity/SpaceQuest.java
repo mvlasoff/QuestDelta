@@ -7,7 +7,7 @@ public class SpaceQuest implements Quest {
     private final HashMap<Long, Question> questions;
 
     public SpaceQuest() {
-        Question question01 = new Question("You lost memory. Are you going toward UFO?", false);
+        Question question01 = new Question("You lost memory. Do you go toward UFO?", false);
         Question question02 = new Question("Are you going to captain?", false);
         Question question03 = new Question("Captain is asking: -Who are you?", false);
         Question question04 = new Question("You refused. You lost.", true);
@@ -27,8 +27,8 @@ public class SpaceQuest implements Quest {
         questions.put(7L, question07);
 
 
-        Answer answer01 = new Answer("I go toward UFO.", question02);
-        Answer answer02 = new Answer("I don't go toward UFO.", question04);
+        Answer answer01 = new Answer("Go toward UFO.", question02);
+        Answer answer02 = new Answer("Don't go toward UFO.", question04);
         Answer answer03 = new Answer("I'm going to captain.", question03);
         Answer answer04 = new Answer("I'm not going to captain.", question05);
         Answer answer05 = new Answer("Tell truth. I'm a padawan Vasilij Pupkin.", question07);
@@ -42,6 +42,10 @@ public class SpaceQuest implements Quest {
 
     public Question getStartQuestion() {
         return startQuestion;
+    }
+
+    public Collection<Answer> getAnswers(Question question) {
+        return question.getAnswersSet();
     }
 
     public Collection<Question> getAll() {

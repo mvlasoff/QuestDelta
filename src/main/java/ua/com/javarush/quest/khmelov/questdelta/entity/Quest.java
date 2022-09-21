@@ -8,4 +8,8 @@ public interface Quest {
     Collection<Question> getAll();
 
     Optional<Question> get(long id);
+
+    Question getStartQuestion();
+
+    Collection<Answer> getAnswers(Question question);
 }
