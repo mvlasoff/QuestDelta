@@ -15,4 +15,5 @@ public class Question extends Entity {
     String image;
     String text;
     Collection<Answer> answers;
+    GameState state;
 }

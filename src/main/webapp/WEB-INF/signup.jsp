@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="parts/header.jsp" %>
 <div class="container">
-    <form class="form-horizontal" action="user?id=${user.id}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" action="signup" method="post" enctype="multipart/form-data">
         <fieldset>
 
             <!-- Form Name -->

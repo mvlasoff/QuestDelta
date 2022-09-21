@@ -16,13 +16,13 @@ import java.util.Objects;
 import static ua.com.javarush.quest.khmelov.util.Go.*;
 
 
-@WebFilter({ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, USER})
+@WebFilter({ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER})
 public class RoleSelector implements Filter {
 
     private final Map<Role, List<String>> uriMap = Map.of(
             Role.GUEST, List.of(ROOT, USERS, LOGIN, SIGNUP),
-            Role.USER, List.of(ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT),
-            Role.ADMIN, List.of(ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, USER)
+            Role.USER, List.of(ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER),
+            Role.ADMIN, List.of(ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER)
     );
 
     @Override

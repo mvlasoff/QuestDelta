@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.controller;
+package ua.com.javarush.quest.khmelov.controller.user;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -6,18 +6,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
-import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.service.AvatarService;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.io.IOException;
-import java.io.Serial;
-import java.util.Optional;
+
+import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 
 @MultipartConfig(fileSizeThreshold = 1 << 20)
 @WebServlet(Go.PROFILE)
@@ -33,15 +29,19 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Jsp.getId(req.getSession());
-        Optional<UserDto> user = userService.get(id);
-        user.ifPresent(value -> req.setAttribute("user", value));
+        userService
+                .get(id)
+                .ifPresent(value -> req.setAttribute(USER, value));
         Jsp.forward(req, resp, Go.PROFILE);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        long id = Jsp.getId(req.getSession());
-        Jsp.redirect(req, resp, Go.USER + "?id=" + id);
+        if (EditUserServlet.checkProfileEditor(req)) {
+            Jsp.redirect(req, resp, Go.EDIT_USER + "?id=" + Jsp.getId(req));
+        } else {
+            Jsp.showError(req, resp, Go.PROFILE, "Недостаточно прав для редактирования");
+        }
     }
 
 }

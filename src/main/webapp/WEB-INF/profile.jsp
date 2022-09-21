@@ -3,43 +3,27 @@
 <%@include file="parts/header.jsp" %>
 <div class="container">
     <jsp:useBean id="user" scope="session" type="ua.com.javarush.quest.khmelov.dto.UserDto"/>
-    <form class="form-horizontal" action="profile" method="post" enctype="multipart/form-data">
-        <fieldset>
-            <!-- Form Name -->
-            <legend>User Form</legend>
 
-            <!-- Avatar input-->
-            <div class="form-group">
-                <img src="images/${user.image}" width="100" alt="${user.image}">
-            </div>
-
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="userLogin">Login</label>
-                <div id="userLogin" class="col-md-4">
-                    ${user.login}
+    <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="${pageContext.request.contextPath}/img/bootstrap-logo.svg" alt=""
+             width="72" height="57">
+        <p class="lead mb-4">
+        <div class="form-group">
+            <img src="images/${user.image}" width="100" alt="${user.image}">
+        </div>
+        </p>
+        <h1 class="display-3 fw-bold">User login: ${user.login}</h1>
+        <h3 class="display-5 fw-bold">User role: ${user.role}</h3>
+        <div class="col-lg-6 mx-auto">
+            <form class="form-horizontal" action="profile" method="post" enctype="multipart/form-data">
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <input type="hidden" name="id" value="${user.id}"></input>
+                    <button type="submit" name="user" class="btn btn-primary btn-lg px-4 gap-3">Редактировать</button>
+                    <button type="submit" name="logout" class="btn btn-outline-secondary btn-lg px-4">Выход</button>
                 </div>
-            </div>
-
-            <!-- Select Basic -->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="userRole">Role</label>
-                <div id="userRole" class="col-md-4">
-                    ${user.role}
-                </div>
-            </div>
-
-            <!-- Button -->
-            <div class=" form-group">
-                <label class="col-md-4 control-label" for="submit"></label>
-                <div class="col-md-4">
-                    <button id="submit" name="Edit"
-                            class="btn btn-success">Edit
-                    </button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+            </form>
+        </div>
+    </div>
 </div>
 <%@include file="parts/footer.jsp" %>
 

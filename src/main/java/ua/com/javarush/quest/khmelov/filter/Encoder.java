@@ -5,8 +5,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.annotation.WebInitParam;
 import lombok.SneakyThrows;
+import ua.com.javarush.quest.khmelov.util.Go;
 
-@WebFilter(value = "/*", initParams = @WebInitParam(name = "code", value = "UTF-8"))
+@WebFilter(value = Go.ALL, initParams = @WebInitParam(name = "code", value = "UTF-8"))
 public class Encoder implements Filter {
 
     private String code;

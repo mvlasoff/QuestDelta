@@ -3,7 +3,7 @@
 <%@include file="parts/header.jsp" %>
 <div class="container">
     <jsp:useBean id="user" scope="request" type="ua.com.javarush.quest.khmelov.dto.UserDto"/>
-    <form class="form-horizontal" action="user?id=${user.id}" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" action="edit-user?id=${user.id}" method="post" enctype="multipart/form-data">
         <fieldset>
             <!-- Form Name -->
             <legend>User Form</legend>

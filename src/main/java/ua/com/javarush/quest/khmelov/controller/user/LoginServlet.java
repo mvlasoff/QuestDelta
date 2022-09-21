@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.controller;
+package ua.com.javarush.quest.khmelov.controller.user;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +13,8 @@ import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import static ua.com.javarush.quest.khmelov.util.Jsp.Key.*;
 
 
 @WebServlet(Go.LOGIN)
@@ -29,11 +31,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<UserDto> optionalUser = userService.find(FormData.of(req));
         if (optionalUser.isPresent()) {
-            req.getSession().setAttribute("user", optionalUser.get());
+            req.getSession().setAttribute(USER, optionalUser.get());
             Jsp.redirect(req, resp, Go.PROFILE);
         } else {
-            req.setAttribute("error", "User not found");
-            Jsp.forward(req, resp, Go.LOGIN);
+            Jsp.showError(req, resp, Go.LOGIN, "Нет такого пользователя");
         }
     }
 }

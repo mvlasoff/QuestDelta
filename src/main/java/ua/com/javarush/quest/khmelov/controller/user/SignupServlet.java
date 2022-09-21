@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.controller;
+package ua.com.javarush.quest.khmelov.controller.user;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -17,6 +17,8 @@ import ua.com.javarush.quest.khmelov.util.Jsp;
 import java.io.IOException;
 import java.util.Optional;
 
+import static ua.com.javarush.quest.khmelov.util.Jsp.Key.ROLES;
+
 @MultipartConfig(fileSizeThreshold = 1 << 20)
 @WebServlet(Go.SIGNUP)
 public class SignupServlet extends HttpServlet {
@@ -26,7 +28,7 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     public void init() {
-        getServletContext().setAttribute("roles", Role.values());
+        getServletContext().setAttribute(ROLES, Role.values());
     }
 
     @Override
