@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public class GameRepository extends AbstractRepository<Game> implements Repository<Game> {
 
-    public static final GameRepository userRepository = new GameRepository();
+    private static final GameRepository userRepository = new GameRepository();
 
     public static GameRepository get() {
         return userRepository;

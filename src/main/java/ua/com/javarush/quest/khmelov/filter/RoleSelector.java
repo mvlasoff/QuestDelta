@@ -8,6 +8,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Game;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.util.Jsp;
+import ua.com.javarush.quest.khmelov.util.Parser;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +22,7 @@ import static ua.com.javarush.quest.khmelov.util.Go.*;
 public class RoleSelector implements Filter {
 
     private final Map<Role, List<String>> uriMap = Map.of(
-            Role.GUEST, List.of(ROOT, USERS, LOGIN, SIGNUP),
+            Role.GUEST, List.of(ROOT, USERS, LOGIN, SIGNUP, GAME),
             Role.USER, List.of(ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER, GAME),
             Role.ADMIN, List.of(ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER, GAME)
     );
@@ -39,7 +40,7 @@ public class RoleSelector implements Filter {
         Role role = (Objects.isNull(user))
                 ? Role.GUEST
                 : ((UserDto) user).getRole();
-        String command = Jsp.getCommand(request);
+        String command = Parser.getCommand(request);
         if (uriMap.get(role).contains(command)){
             filterChain.doFilter(servletRequest,servletResponse);
         } else {

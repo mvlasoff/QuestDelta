@@ -10,6 +10,7 @@ import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
+import ua.com.javarush.quest.khmelov.util.Parser;
 
 import java.io.IOException;
 
@@ -28,19 +29,19 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long id = Jsp.getId(req.getSession());
+        long id = Parser.getId(req.getSession());
         userService
                 .get(id)
                 .ifPresent(value -> req.setAttribute(USER, value));
-        Jsp.forward(req, resp, Go.PROFILE);
+        Jsp.show(req, resp, Go.PROFILE);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         if (EditUserServlet.checkProfileEditor(req)) {
-            Jsp.redirect(req, resp, Go.EDIT_USER + "?id=" + Jsp.getId(req));
+            Jsp.redirect(req, resp, Go.EDIT_USER + "?id=" + Parser.getId(req));
         } else {
-            Jsp.showError(req, resp, Go.PROFILE, "Недостаточно прав для редактирования");
+            Jsp.show(req, resp, Go.PROFILE, "Недостаточно прав для редактирования");
         }
     }
 

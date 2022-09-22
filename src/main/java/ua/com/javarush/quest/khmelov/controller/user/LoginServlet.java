@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Jsp.forward(req, resp, Go.LOGIN);
+        Jsp.show(req, resp, Go.LOGIN);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             req.getSession().setAttribute(USER, optionalUser.get());
             Jsp.redirect(req, resp, Go.PROFILE);
         } else {
-            Jsp.showError(req, resp, Go.LOGIN, "Нет такого пользователя");
+            Jsp.show(req, resp, Go.LOGIN, "Нет такого пользователя");
         }
     }
 }

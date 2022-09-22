@@ -13,6 +13,7 @@ import ua.com.javarush.quest.khmelov.service.ImageService;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
+import ua.com.javarush.quest.khmelov.util.Parser;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -33,10 +34,10 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long id = Jsp.getId(req);
+        long id = Parser.getId(req);
         Optional<UserDto> opUser = userService.get(id);
         opUser.ifPresent(value -> req.setAttribute("user", value));
-        Jsp.forward(req, resp, Go.SIGNUP);
+        Jsp.show(req, resp, Go.SIGNUP);
     }
 
     @Override

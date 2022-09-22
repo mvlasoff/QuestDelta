@@ -24,7 +24,7 @@ class JspTest {
     })
     void getCommand(String uri, String cmd) {
         Mockito.when(req.getRequestURI()).thenReturn(uri);
-        String actual = Jsp.getCommand(req);
+        String actual = Parser.getCommand(req);
         Assertions.assertEquals(cmd, actual);
     }
 

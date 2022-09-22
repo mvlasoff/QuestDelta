@@ -11,6 +11,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.service.GameService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
+import ua.com.javarush.quest.khmelov.util.Parser;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class GameServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Optional<UserDto> user = Jsp.getUser(request.getSession());
+        Optional<UserDto> user = Parser.getUser(request.getSession());
         FormData formData = FormData.of(request);
         if (user.isPresent()) {
             Optional<GameDto> game = gameService.getGame(formData, user.get().getId());
@@ -31,27 +32,27 @@ public class GameServlet extends HttpServlet {
                 sendNextStep(request, response, gameDto);
                 return;
             }
-            Jsp.showError(request, response, Go.QUESTS, "Нет такой игры");
+            Jsp.show(request, response, Go.QUESTS, "Нет такой игры");
         }
-        Jsp.showError(request, response, Go.QUESTS, "Сначала нужно войти в аккаунт");
+        Jsp.show(request, response, Go.QUESTS, "Сначала нужно войти в аккаунт");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long gameId = Jsp.getId(request);
-        Long answerId = Jsp.getId(request, Jsp.Key.ANSWER);
+        Long gameId = Parser.getId(request);
+        Long answerId = Parser.getId(request, Jsp.Key.ANSWER);
         Optional<GameDto> game = gameService.checkAnswer(gameId,answerId);
         if (game.isPresent()) {
             GameDto gameDto = game.get();
             sendNextStep(request, response, gameDto);
             return;
         }
-        Jsp.showError(request, response, Go.QUESTS, "Нет такой игры");
+        Jsp.show(request, response, Go.QUESTS, "Нет такой игры");
     }
 
     private static void sendNextStep(HttpServletRequest request, HttpServletResponse response, GameDto gameDto) throws ServletException, IOException {
         request.setAttribute(Jsp.Key.GAME, gameDto);
         request.setAttribute(Jsp.Key.QUESTION, gameDto.getQuestion());
-        Jsp.forward(request, response, Go.GAME);
+        Jsp.show(request, response, Go.GAME);
     }
 }

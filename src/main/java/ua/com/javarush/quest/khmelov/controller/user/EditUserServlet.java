@@ -13,6 +13,7 @@ import ua.com.javarush.quest.khmelov.service.ImageService;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
+import ua.com.javarush.quest.khmelov.util.Parser;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -35,13 +36,13 @@ public class EditUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (checkEditorInSession(req)) {
-            long id = Jsp.getId(req);
+            long id = Parser.getId(req);
             Optional<UserDto> user = userService.get(id);
             user.ifPresent(value -> req.setAttribute(USER, value));
-            Jsp.forward(req, resp, Go.EDIT_USER);
+            Jsp.show(req, resp, Go.EDIT_USER);
         } else {
             req.setAttribute(Jsp.Key.USERS, userService.getAll());
-            Jsp.showError(req, resp, Go.USERS, "Недостаточно прав для редактирования");
+            Jsp.show(req, resp, Go.USERS, "Недостаточно прав для редактирования");
         }
     }
 
@@ -58,20 +59,20 @@ public class EditUserServlet extends HttpServlet {
             }
             Jsp.redirect(req, resp, DEST);
         } else {
-            Jsp.showError(req, resp, DEST, "Недостаточно прав для редактирования");
+            Jsp.show(req, resp, DEST, "Недостаточно прав для редактирования");
         }
     }
 
     private boolean checkEditorInSession(HttpServletRequest req) {
-        long id = Jsp.getId(req);
-        Optional<UserDto> editor = Jsp.getUser(req.getSession());
+        long id = Parser.getId(req);
+        Optional<UserDto> editor = Parser.getUser(req.getSession());
         return editor.isPresent() &&
                 (editor.get().getId() == id || editor.get().getRole() == Role.ADMIN);
     }
 
     static boolean checkProfileEditor(HttpServletRequest req) {
-        long id = Jsp.getId(req);
-        Optional<UserDto> editor = Jsp.getUser(req.getSession());
+        long id = Parser.getId(req);
+        Optional<UserDto> editor = Parser.getUser(req.getSession());
         return editor.isPresent() && (editor.get().getId() == id);
     }
 }

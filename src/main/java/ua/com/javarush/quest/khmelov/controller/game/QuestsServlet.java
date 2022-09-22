@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import static ua.com.javarush.quest.khmelov.util.Jsp.Key.QUESTS;
 
+
 @WebServlet({Go.HOME, Go.QUESTS})
 public class QuestsServlet extends HttpServlet {
 
@@ -21,6 +22,6 @@ public class QuestsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute(QUESTS, questService.getAll());
-        Jsp.forward(req, resp, Go.QUESTS);
+        Jsp.show(req, resp, Go.QUESTS);
     }
 }

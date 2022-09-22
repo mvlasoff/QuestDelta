@@ -4,18 +4,14 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
-import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
-import ua.com.javarush.quest.khmelov.exception.AppException;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @UtilityClass
 public class Jsp {
+
+    public static final String WEB_INF_JSP = "WEB-INF%s.jsp";
 
     @UtilityClass
     public static class Key {
@@ -35,61 +31,23 @@ public class Jsp {
         public static final String ANSWER = "answer";
     }
 
-
-    public void forward(HttpServletRequest request, HttpServletResponse response, String uriString)
+    public void show(HttpServletRequest req, HttpServletResponse resp, String uri)
             throws ServletException, IOException {
-        String path = "WEB-INF%s.jsp".formatted(uriString);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
-        requestDispatcher.forward(request, response);
+        String path = WEB_INF_JSP.formatted(uri);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(path);
+        requestDispatcher.forward(req, resp);
     }
 
-    public void showError(HttpServletRequest request, HttpServletResponse response, String uriString, String errorMessage)
+    public void show(HttpServletRequest req, HttpServletResponse resp, String uri, String errorMessage)
             throws ServletException, IOException {
-        String path = "WEB-INF%s.jsp".formatted(uriString);
-        request.setAttribute(Key.ERROR_MESSAGE, errorMessage);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
-        requestDispatcher.forward(request, response);
+        req.setAttribute(Key.ERROR_MESSAGE, errorMessage);
+        show(req,resp,uri);
     }
 
-    public void redirect(HttpServletRequest request, HttpServletResponse response, String uri)
+    public void redirect(HttpServletRequest req, HttpServletResponse resp, String uri)
             throws IOException {
-        response.sendRedirect(request.getContextPath() + uri);
-    }
-
-    public String getCommand(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-        Matcher matcher = Pattern.compile(".*(/[a-z-]*)").matcher(uri);
-        if (matcher.find()) {
-            return matcher.group(1);
-        } else {
-            throw new AppException("incorrect uri: " + uri);
-        }
-
-    }
-
-    public Long getId(HttpServletRequest req) {
-        return getId(req, Key.ID);
-    }
-
-    public Long getId(HttpServletRequest req, String key) {
-        String id = req.getParameter(key);
-        return id != null && !id.isBlank()
-                ? Long.parseLong(id)
-                : 0L;
+        resp.sendRedirect(req.getContextPath() + uri);
     }
 
 
-    public Long getId(HttpSession session) {
-        Object user = session.getAttribute(Key.USER);
-        return user != null
-                ? ((UserDto) user).getId()
-                : 0L;
-    }
-
-    public Optional<UserDto> getUser(HttpSession session) {
-        Object user = session.getAttribute(Key.USER);
-        return user != null
-                ? Optional.of((UserDto) user)
-                : Optional.empty();
-    }
 }

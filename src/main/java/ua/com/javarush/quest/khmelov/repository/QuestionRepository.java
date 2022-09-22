@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 public class QuestionRepository extends AbstractRepository<Question> implements Repository<Question> {
 
-    public static final QuestionRepository userRepository = new QuestionRepository();
+    private static final QuestionRepository userRepository = new QuestionRepository();
 
     public static QuestionRepository get() {
         return userRepository;
