@@ -43,14 +43,12 @@
         <div class="col-lg-6">
 
             <h1 class="display-5 fw-bold lh-1 mb-3">Space Quest.</h1>
-            <c:if test="${requestScope.firstQuestion != null}">
-                <p class="lead">${requestScope.firstQuestion.question}</p>
-            </c:if>
+            <p class="lead">${requestScope.question.question}</p>
 
             <ul class="icon-list ps-0">
                 <c:forEach var="answer" items="${requestScope.answers}">
-                    <li class="d-flex align-items-start mb-1"><a
-                            href="/docs/5.2/getting-started/introduction/">${answer.answer}</a></li>
+                    <li class="d-flex align-items-start mb-1">
+                        <a href="/space-quest?id=${answer.id}">${answer.answer}</a></li>
                 </c:forEach>
             </ul>
 

@@ -3,12 +3,18 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 import java.util.Objects;
 
 public class Answer {
+    private final long id;
     private final String answer;
     private final Question question;
 
     public Answer(String answer, Question question) {
         this.answer = answer;
         this.question = question;
+        this.id = question.getId();
+    }
+
+    public long getId() {
+        return id;
     }
 
     public Question getQuestion() {

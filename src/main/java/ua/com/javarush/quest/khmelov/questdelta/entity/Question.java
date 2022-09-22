@@ -3,14 +3,15 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 import java.util.*;
 
 public class Question {
-    //private final long id;
+    private final long id;
     private final String question;
     private final boolean isFinal;
 
     private final Set<Answer> answersSet;
 
 
-    public Question(String question, boolean isFinal) {
+    public Question(long id, String question, boolean isFinal) {
+        this.id = id;
         this.question = question;
         this.isFinal = isFinal;
         answersSet = new HashSet<>();
@@ -18,6 +19,10 @@ public class Question {
 
     public String getQuestion() {
         return question;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public boolean isFinal() {

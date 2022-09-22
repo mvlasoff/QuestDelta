@@ -7,31 +7,31 @@ public class SpaceQuest implements Quest {
     private final HashMap<Long, Question> questions;
 
     public SpaceQuest() {
-        Question question01 = new Question("You lost memory. Do you go toward UFO?", false);
-        Question question02 = new Question("Are you going to captain?", false);
-        Question question03 = new Question("Captain is asking: -Who are you?", false);
-        Question question04 = new Question("You refused. You lost.", true);
-        Question question05 = new Question("You didn't go to captain. You lost.", true);
-        Question question06 = new Question("I don't like pirates. You lost.", true);
-        Question question07 = new Question("Finally we found you. You going back to Jedi's school.", true);
+        Question question01 = new Question(11L, "You lost memory. Do you go toward UFO?", false);
+        Question question02 = new Question(12L,"Are you going to captain?", false);
+        Question question03 = new Question(13L,"Captain is asking: -Who are you?", false);
+        Question question04 = new Question(14L, "You refused. You lost.", true);
+        Question question05 = new Question(15L,"You didn't go to captain. You lost.", true);
+        Question question06 = new Question(16L,"I don't like pirates. You lost.", true);
+        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school.", true);
 
         questions = new HashMap<>();
         startQuestion = question01;
 
-        questions.put(1L, question01);
-        questions.put(2L, question02);
-        questions.put(3L, question03);
-        questions.put(4L, question04);
-        questions.put(5L, question05);
-        questions.put(6L, question06);
-        questions.put(7L, question07);
+        questions.put(question01.getId(), question01);
+        questions.put(question02.getId(), question02);
+        questions.put(question03.getId(), question03);
+        questions.put(question04.getId(), question04);
+        questions.put(question05.getId(), question05);
+        questions.put(question06.getId(), question06);
+        questions.put(question07.getId(), question07);
 
 
         Answer answer01 = new Answer("Go toward UFO.", question02);
         Answer answer02 = new Answer("Don't go toward UFO.", question04);
         Answer answer03 = new Answer("I'm going to captain.", question03);
         Answer answer04 = new Answer("I'm not going to captain.", question05);
-        Answer answer05 = new Answer("Tell truth. I'm a padawan Vasilij Pupkin.", question07);
+        Answer answer05 = new Answer("Tell the truth. I'm a padawan Chuck Waggon.", question07);
         Answer answer06 = new Answer("Lie. I'm Jabba.", question06);
         Answer answer07 = new Answer("Show your driver license and tell you are now captain of the ship.", question01);
 

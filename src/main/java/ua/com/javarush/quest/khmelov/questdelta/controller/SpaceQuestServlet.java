@@ -13,6 +13,7 @@ import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 @WebServlet("/space-quest")
 public class SpaceQuestServlet extends HttpServlet {
@@ -22,11 +23,40 @@ public class SpaceQuestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //Collection<Question> questions = questService.getAll();
+
+        if(getId(req) < 0) {
+            getFirstQuestion(req, resp);
+        } else {
+            getNextQuestion(req, resp);
+        }
+    }
+
+    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        Optional<Question> optionalQuestion = questService.get(Long.parseLong(id));
+        if (optionalQuestion.isPresent()) {
+            Question nextQuestion = optionalQuestion.get();
+            Collection<Answer> answers = questService.getAnswers(nextQuestion);
+            req.setAttribute("answers", answers);
+            req.setAttribute("question", nextQuestion);
+            Jsp.reqRespForward(req, resp, "spacequest");
+        }
+    }
+
+    private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Question startQuestion = questService.getStartQuestion();
         Collection<Answer> answers = questService.getAnswers(startQuestion);
-        //req.setAttribute("questions", questions);
         req.setAttribute("answers", answers);
-        req.setAttribute("firstQuestion", startQuestion);
+        req.setAttribute("question", startQuestion);
         Jsp.reqRespForward(req, resp, "spacequest");
+    }
+
+    private long getId(HttpServletRequest req) {
+        String id = req.getParameter("id");
+        if(id == null || id.isBlank()) {
+            return -1;
+        }
+        boolean isNumeric = id.chars().allMatch(Character::isDigit);
+        return isNumeric ? Integer.parseInt(id) : 0;
     }
 }
