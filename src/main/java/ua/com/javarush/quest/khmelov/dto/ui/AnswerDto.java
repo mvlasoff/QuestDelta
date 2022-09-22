@@ -1,17 +1,15 @@
-package ua.com.javarush.quest.khmelov.dto;
+package ua.com.javarush.quest.khmelov.dto.ui;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ua.com.javarush.quest.khmelov.entity.Entity;
-import ua.com.javarush.quest.khmelov.entity.Question;
-
-import java.util.Collection;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class QuestDto {
+public class AnswerDto {
     Long id;
-    Long authorId;
-    String name;
+    String text;
+    Long nextQuestionId;
 }

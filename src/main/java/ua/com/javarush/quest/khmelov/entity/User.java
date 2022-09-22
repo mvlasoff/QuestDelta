@@ -2,6 +2,7 @@ package ua.com.javarush.quest.khmelov.entity;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -24,8 +25,8 @@ public final class User extends Entity {
 
     Role role;
 
-    Collection<GameStatus> gameStatuses; //as user
+    final Collection<Game> games = new ArrayList<>(); //as user
 
-    Collection<Quest> quests; //as author (admin)
+    final Collection<Quest> quests = new ArrayList<>(); //as author (admin)
 
 }

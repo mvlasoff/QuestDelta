@@ -1,7 +1,7 @@
 package ua.com.javarush.quest.khmelov.mapping;
 
 import ua.com.javarush.quest.khmelov.dto.FormData;
-import ua.com.javarush.quest.khmelov.dto.QuestDto;
+import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
 import ua.com.javarush.quest.khmelov.entity.Quest;
 
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 class QuestMapper implements Mapper<Quest, QuestDto> {
 
     @Override
-    public Optional<QuestDto> write(Quest quest) {
+    public Optional<QuestDto> get(Quest quest) {
         return quest != null
                 ? Optional.of(QuestDto.with()
                 .id(quest.getId())
@@ -23,7 +23,7 @@ class QuestMapper implements Mapper<Quest, QuestDto> {
     }
 
     @Override
-    public Quest read(FormData formData) {
+    public Quest parse(FormData formData) {
         Quest quest = Quest.with().build();
         return fill(quest, formData);
     }

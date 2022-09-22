@@ -7,9 +7,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.dto.FormData;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
+import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
-import ua.com.javarush.quest.khmelov.service.AvatarService;
+import ua.com.javarush.quest.khmelov.service.ImageService;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
@@ -24,7 +24,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.ROLES;
 public class SignupServlet extends HttpServlet {
 
     private final UserService userService = UserService.INSTANCE;
-    private final AvatarService avatarService = AvatarService.INSTANCE;
+    private final ImageService imageService = ImageService.INSTANCE;
 
     @Override
     public void init() {
@@ -42,7 +42,7 @@ public class SignupServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         userService.create(FormData.of(req));
-        avatarService.updateAvatar(req);
+        imageService.uploadImage(req);
         Jsp.redirect(req, resp, Go.USERS);
     }
 

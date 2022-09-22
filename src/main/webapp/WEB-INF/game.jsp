@@ -1,0 +1,47 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@include file="parts/header.jsp" %>
+<div class="container">
+
+    <jsp:useBean id="user" scope="session" type="ua.com.javarush.quest.khmelov.dto.ui.UserDto"/>
+    <jsp:useBean id="question" scope="request" type="ua.com.javarush.quest.khmelov.dto.ui.QuestionDto"/>
+    <jsp:useBean id="game" scope="request" type="ua.com.javarush.quest.khmelov.dto.ui.GameDto"/>
+
+    <div class="px-3 py-3 my-3 text-left">
+
+        <div class="form-group text-center">
+            <img src="images/${question.image}" width="30%" alt="${question.image}">
+        </div>
+        <p class="lead mb-2">
+
+        <h1>${question.text}</h1>
+        <form action="game?id=${game.id}" method="post">
+            <ul>
+                <c:forEach var="answer" items="${question.answers}">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="answer" value="${answer.id}"
+                               id="answer${answer.id}">
+                        <label class="form-check-label" for="answer${answer.id}">
+                                ${answer.text}
+                        </label>
+                    </div>
+                </c:forEach>
+            </ul>
+            <div class=" form-group">
+                <label class="col-md-4 control-label" for="submit"></label>
+                <div class="col-md-4">
+                    <c:choose>
+                        <c:when test="${not empty question.answers}">
+                            <button id="submit" class="btn btn-success">Отправить</button>
+                        </c:when>
+                        <c:otherwise>
+                            <button id="submit" class="btn btn-warning">Новая игра</button>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<%@include file="parts/footer.jsp" %>
+

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="parts/header.jsp" %>
 <div class="container">
-    <jsp:useBean id="user" scope="request" type="ua.com.javarush.quest.khmelov.dto.UserDto"/>
+    <jsp:useBean id="user" scope="request" type="ua.com.javarush.quest.khmelov.dto.ui.UserDto"/>
     <form class="form-horizontal" action="edit-user?id=${user.id}" method="post" enctype="multipart/form-data">
         <fieldset>
             <!-- Form Name -->

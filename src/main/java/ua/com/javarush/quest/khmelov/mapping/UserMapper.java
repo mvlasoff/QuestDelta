@@ -1,7 +1,7 @@
 package ua.com.javarush.quest.khmelov.mapping;
 
 import ua.com.javarush.quest.khmelov.dto.FormData;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
+import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.User;
 
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 class UserMapper implements Mapper<User, UserDto> {
 
     @Override
-    public Optional<UserDto> write(User user) {
+    public Optional<UserDto> get(User user) {
         return user != null
                 ? Optional.of(UserDto.with()
                 .id(user.getId())
@@ -24,7 +24,7 @@ class UserMapper implements Mapper<User, UserDto> {
     }
 
     @Override
-    public User read(FormData formData) {
+    public User parse(FormData formData) {
         User user = User.with().build();
         return fill(user, formData);
     }

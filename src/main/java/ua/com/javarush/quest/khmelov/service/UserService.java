@@ -1,7 +1,7 @@
 package ua.com.javarush.quest.khmelov.service;
 
 import ua.com.javarush.quest.khmelov.dto.FormData;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
+import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
 import ua.com.javarush.quest.khmelov.repository.Repository;
@@ -19,7 +19,7 @@ public enum UserService {
 
     public Collection<UserDto> getAll() {
         return userRepository.getAll()
-                .map(Mapper.user::write)
+                .map(Mapper.user::get)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
@@ -27,16 +27,16 @@ public enum UserService {
 
     public Optional<UserDto> get(long id) {
         User user = userRepository.get(id);
-        return Mapper.user.write(user);
+        return Mapper.user.get(user);
     }
 
     public Optional<UserDto> find(FormData formData) {
-        User user = Mapper.user.read(formData);
+        User user = Mapper.user.parse(formData);
         Optional<User> optionalUser = userRepository
                 .find(user)
                 .findFirst();
         return optionalUser.isPresent()
-                ? Mapper.user.write(optionalUser.get())
+                ? Mapper.user.get(optionalUser.get())
                 : Optional.empty();
     }
 

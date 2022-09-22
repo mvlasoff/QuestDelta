@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.experimental.UtilityClass;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
+import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.exception.AppException;
 
 import java.io.IOException;
@@ -28,8 +28,11 @@ public class Jsp {
 
         public static final String QUEST = "quest";
         public static final String QUESTS = "quests";
+        public static final String QUESTION = "question";
 
         public static final String ERROR_MESSAGE = "errorMessage";
+        public static final String GAME = "game";
+        public static final String ANSWER = "answer";
     }
 
 
@@ -65,11 +68,16 @@ public class Jsp {
     }
 
     public Long getId(HttpServletRequest req) {
-        String id = req.getParameter(Key.ID);
+        return getId(req, Key.ID);
+    }
+
+    public Long getId(HttpServletRequest req, String key) {
+        String id = req.getParameter(key);
         return id != null && !id.isBlank()
                 ? Long.parseLong(id)
                 : 0L;
     }
+
 
     public Long getId(HttpSession session) {
         Object user = session.getAttribute(Key.USER);
@@ -77,7 +85,6 @@ public class Jsp {
                 ? ((UserDto) user).getId()
                 : 0L;
     }
-
 
     public Optional<UserDto> getUser(HttpSession session) {
         Object user = session.getAttribute(Key.USER);

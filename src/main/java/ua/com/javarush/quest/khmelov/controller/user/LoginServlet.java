@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.dto.FormData;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
+import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;

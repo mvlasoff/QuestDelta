@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.dto;
+package ua.com.javarush.quest.khmelov.dto.ui;
 
 import lombok.Builder;
 import lombok.Data;

@@ -6,18 +6,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import ua.com.javarush.quest.khmelov.service.AvatarService;
+import ua.com.javarush.quest.khmelov.service.ImageService;
 
-import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.Scanner;
 
 @WebServlet("/images/*")
 public class ImageServlet extends HttpServlet {
 
-    private final AvatarService avatarService = AvatarService.INSTANCE;
+    private final ImageService imageService = ImageService.INSTANCE;
 
     @Override
     @SneakyThrows
@@ -25,7 +23,7 @@ public class ImageServlet extends HttpServlet {
         String requestURI = req.getRequestURI();
         String target = req.getContextPath() + "/images/";
         String nameImage = requestURI.replace(target, "");
-        Optional<Path> file = avatarService.getAvatarPath(nameImage);
+        Optional<Path> file = imageService.getImagePath(nameImage);
         if (file.isPresent()) {
             try (ServletOutputStream outputStream = resp.getOutputStream()) {
                 Files.copy(file.get(), outputStream);

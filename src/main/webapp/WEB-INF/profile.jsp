@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="parts/header.jsp" %>
 <div class="container">
-    <jsp:useBean id="user" scope="session" type="ua.com.javarush.quest.khmelov.dto.UserDto"/>
+    <jsp:useBean id="user" scope="session" type="ua.com.javarush.quest.khmelov.dto.ui.UserDto"/>
 
     <div class="px-4 py-5 my-5 text-center">
         <img class="d-block mx-auto mb-4" src="${pageContext.request.contextPath}/img/bootstrap-logo.svg" alt=""

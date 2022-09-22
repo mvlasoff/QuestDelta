@@ -1,12 +1,9 @@
 package ua.com.javarush.quest.khmelov.mapping;
 
 import lombok.experimental.UtilityClass;
-import ua.com.javarush.quest.khmelov.dto.FormData;
-import ua.com.javarush.quest.khmelov.dto.QuestDto;
-import ua.com.javarush.quest.khmelov.dto.UserDto;
-import ua.com.javarush.quest.khmelov.entity.Entity;
-import ua.com.javarush.quest.khmelov.entity.Quest;
-import ua.com.javarush.quest.khmelov.entity.User;
+import ua.com.javarush.quest.khmelov.dto.*;
+import ua.com.javarush.quest.khmelov.dto.ui.*;
+import ua.com.javarush.quest.khmelov.entity.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,25 +20,31 @@ public interface Mapper<E extends Entity, R> {
 
     /**
      * form Service to Servlet layer
+     *
      * @param entity from DB
      * @return DTO
      */
-    Optional<R> write(E entity);
+    Optional<R> get(E entity);
 
     /**
      * Data form Servlet convert to new Entity
+     *
      * @param formData wrapper for HTTP-request
      * @return entity for DB
      */
-    E read(FormData formData);
+    E parse(FormData formData);
 
     //all mappers
     Mapper<User, UserDto> user = new UserMapper();
     Mapper<Quest, QuestDto> quest = new QuestMapper();
+    Mapper<Question, QuestionDto> question = new QuestionMapper();
+    Mapper<Answer, AnswerDto> answer = new AnswerMapper();
+    Mapper<Game, GameDto> game = new GameMapper();
 
     /**
      * Data form Servlet convert to existing instance Entity
      * demo fill with Reflection API (not easy)
+     *
      * @param formData wrapper for HTTP-request
      * @return existing entity
      */

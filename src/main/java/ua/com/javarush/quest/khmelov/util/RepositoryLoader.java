@@ -21,7 +21,6 @@ import java.util.List;
 public class RepositoryLoader {
 
     public static final ObjectMapper MAPPER = new ObjectMapper();
-    public String DATABASE_PATH = "db";
 
     private final UserRepository userRepository = UserRepository.get();
     private final QuestRepository questRepository = QuestRepository.get();
@@ -54,24 +53,9 @@ public class RepositoryLoader {
 
     private void defaultInit() {
         //пользователи
-        User ivan = User.with()
-                .id(1L)
-                .login("Ivan")
-                .password("456")
-                .role(Role.ADMIN)
-                .build();
-        User andrew = User.with()
-                .id(2L)
-                .login("Andrew")
-                .password("789")
-                .role(Role.GUEST)
-                .build();
-        User elena = User.with()
-                .id(3L)
-                .login("Elena")
-                .password("123")
-                .role(Role.USER)
-                .build();
+        User ivan = new User(1L,"Ivan","456",Role.ADMIN);
+        User andrew = new User(2L,"Andrew","789",Role.GUEST);
+        User elena = new User(3L,"Elena","123",Role.USER);
         userRepository.create(ivan);
         userRepository.create(andrew);
         userRepository.create(elena);
@@ -82,9 +66,17 @@ public class RepositoryLoader {
                 .authorId(ivan.getId())
                 .name("Квест из задания")
                 .build();
-        ArrayList<Quest> quests = new ArrayList<>();
-        quests.add(javarush);
         questRepository.create(javarush);
+        ivan.getQuests().add(javarush);
+
+        //заглушка вопроса (сразу конец квеста)
+        Question dummy = Question.with()
+                .questId(javarush.getId())
+                .text("Одношаговый квест-заглушка")
+                .state(GameState.WIN)
+                .build();
+        questionRepository.create(dummy);
+        javarush.setStartQuestionId(dummy.getId());
 
         //Математический квест
         Quest mathQuest = Quest.with()
@@ -93,21 +85,21 @@ public class RepositoryLoader {
                 .name("Проверим ваши знания арифметики")
                 .build();
 
-        quests.add(mathQuest);
         questRepository.create(mathQuest);
-        ivan.setQuests(quests);
+        ivan.getQuests().add(mathQuest);
 
         //вопросы
-        Question question1 = Question.with()
+        Question doYouKnowMath = Question.with()
+                .id(50L)
+                .questId(mathQuest.getId())
+                .text("Вы знаете арифметику?")
+                .state(GameState.PLAY)
+                .build();
+        mathQuest.setStartQuestionId(doYouKnowMath.getId());
+        Question howBeTwoMulTwo = Question.with()
                 .id(51L)
                 .questId(mathQuest.getId())
                 .text("Сколько будет дважды два")
-                .state(GameState.PLAY)
-                .build();
-        Question question0 = Question.with()
-                .id(51L)
-                .questId(mathQuest.getId())
-                .text("Вы знаете арифметику?")
                 .state(GameState.PLAY)
                 .build();
         Question lost = Question.with()
@@ -121,36 +113,60 @@ public class RepositoryLoader {
                 .text("Ура! Вы выиграли! :D")
                 .state(GameState.WIN)
                 .build();
-        ArrayList<Question> questions = new ArrayList<>();
-        questions.add(question0);
-        questions.add(question1);
-        questionRepository.create(question0);
-        questionRepository.create(question1);
-        mathQuest.setQuestions(questions);
+        //добавим в репозитарий
+        questionRepository.create(doYouKnowMath);
+        questionRepository.create(howBeTwoMulTwo);
+        questionRepository.create(win);
+        questionRepository.create(lost);
+
+        //а также в дерево зависимостей в сущностях
+        mathQuest.getQuestions().add(doYouKnowMath);
+        mathQuest.getQuestions().add(howBeTwoMulTwo);
+        mathQuest.getQuestions().add(win);
+        mathQuest.getQuestions().add(lost);
 
         //ответы
+        a21(doYouKnowMath, lost, howBeTwoMulTwo);
+        a22(howBeTwoMulTwo, lost, win);
+    }
+
+    private static void a21(Question q, Question lost, Question next) {
+        answerRepository.create(Answer.with()
+                .text("Конечно знаю")
+                .nextQuestionId(next.getId())
+                .questionId(q.getId())
+                .build());
+        answerRepository.create(Answer.with()
+                .text("А что это такое?")
+                .nextQuestionId(lost.getId())
+                .questionId(q.getId())
+                .build());
+        answerRepository.find(Answer.with().questionId(q.getId()).build())
+                .forEach(q.getAnswers()::add);
+    }
+
+    private static void a22(Question q, Question lost, Question win) {
         answerRepository.create(Answer.with()
                 .text("Один")
                 .nextQuestionId(lost.getId())
-                .questionId(question1.getId())
+                .questionId(q.getId())
                 .build());
         answerRepository.create(Answer.with()
                 .text("Два")
                 .nextQuestionId(lost.getId())
-                .questionId(question1.getId())
+                .questionId(q.getId())
                 .build());
         answerRepository.create(Answer.with()
                 .text("Три")
                 .nextQuestionId(lost.getId())
-                .questionId(question1.getId())
+                .questionId(q.getId())
                 .build());
         answerRepository.create(Answer.with()
                 .text("Четыре")
                 .nextQuestionId(win.getId())
-                .questionId(question1.getId())
+                .questionId(q.getId())
                 .build());
-        question1.setAnswers(answerRepository.find(Answer.with()
-                .questionId(question1.getId()).build()).toList()
-        );
+        answerRepository.find(Answer.with().questionId(q.getId()).build())
+                .forEach(q.getAnswers()::add);
     }
 }

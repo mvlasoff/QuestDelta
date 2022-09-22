@@ -2,7 +2,6 @@ package ua.com.javarush.quest.khmelov.repository;
 
 import ua.com.javarush.quest.khmelov.entity.Entity;
 
-import java.util.Collection;
 import java.util.stream.Stream;
 
 public interface Repository<T extends Entity> {
