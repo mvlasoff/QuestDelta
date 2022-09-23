@@ -4,21 +4,21 @@ import java.util.*;
 
 public class Question {
     private final long id;
-    private final String question;
+    private final String text;
     private final boolean isFinal;
 
     private final Set<Answer> answersSet;
 
 
-    public Question(long id, String question, boolean isFinal) {
+    public Question(long id, String text, boolean isFinal) {
         this.id = id;
-        this.question = question;
+        this.text = text;
         this.isFinal = isFinal;
         answersSet = new HashSet<>();
     }
 
-    public String getQuestion() {
-        return question;
+    public String getText() {
+        return text;
     }
 
     public long getId() {
@@ -42,18 +42,18 @@ public class Question {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question1 = (Question) o;
-        return Objects.equals(question, question1.question);
+        return Objects.equals(text, question1.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(question);
+        return Objects.hash(text);
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "question='" + question + '\'' +
+                "question='" + text + '\'' +
                 '}';
     }
 }

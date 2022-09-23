@@ -4,11 +4,11 @@ import java.util.Objects;
 
 public class Answer {
     private final long id;
-    private final String answer;
+    private final String text;
     private final Question question;
 
-    public Answer(String answer, Question question) {
-        this.answer = answer;
+    public Answer(String text, Question question) {
+        this.text = text;
         this.question = question;
         this.id = question.getId();
     }
@@ -21,8 +21,8 @@ public class Answer {
         return question;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getText() {
+        return text;
     }
 
     @Override
@@ -30,18 +30,18 @@ public class Answer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Answer answer1 = (Answer) o;
-        return Objects.equals(answer, answer1.answer);
+        return Objects.equals(text, answer1.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answer);
+        return Objects.hash(text);
     }
 
     @Override
     public String toString() {
         return "Answer{" +
-                "answer='" + answer + '\'' +
+                "answer='" + text + '\'' +
                 '}';
     }
 }

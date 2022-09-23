@@ -13,7 +13,7 @@ public class SpaceQuest implements Quest {
         Question question04 = new Question(14L, "You refused. You lost.", true);
         Question question05 = new Question(15L,"You didn't go to captain. You lost.", true);
         Question question06 = new Question(16L,"I don't like pirates. You lost.", true);
-        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school.", true);
+        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school. You won!", true);
 
         questions = new HashMap<>();
         startQuestion = question01;

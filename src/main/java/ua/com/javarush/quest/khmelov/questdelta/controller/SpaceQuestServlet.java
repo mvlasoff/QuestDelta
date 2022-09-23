@@ -22,8 +22,6 @@ public class SpaceQuestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //Collection<Question> questions = questService.getAll();
-
         if(getId(req) < 0) {
             getFirstQuestion(req, resp);
         } else {
@@ -37,17 +35,24 @@ public class SpaceQuestServlet extends HttpServlet {
         if (optionalQuestion.isPresent()) {
             Question nextQuestion = optionalQuestion.get();
             Collection<Answer> answers = questService.getAnswers(nextQuestion);
-            req.setAttribute("answers", answers);
-            req.setAttribute("question", nextQuestion);
-            Jsp.reqRespForward(req, resp, "spacequest");
+            setQuestionAnswersAndForward(req, resp, nextQuestion, answers);
         }
     }
 
     private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Question startQuestion = questService.getStartQuestion();
         Collection<Answer> answers = questService.getAnswers(startQuestion);
+        setQuestionAnswersAndForward(req, resp, startQuestion, answers);
+    }
+
+    private static void setQuestionAnswersAndForward(HttpServletRequest req, HttpServletResponse resp, Question nextQuestion, Collection<Answer> answers) throws ServletException, IOException {
         req.setAttribute("answers", answers);
-        req.setAttribute("question", startQuestion);
+        req.setAttribute("question", nextQuestion);
+
+        if(answers.isEmpty()) {
+            req.setAttribute("end", true);
+        }
+
         Jsp.reqRespForward(req, resp, "spacequest");
     }
 

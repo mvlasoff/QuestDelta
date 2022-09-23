@@ -18,14 +18,14 @@
 <div class="container">
     <header class="d-flex justify-content-center py-3">
         <ul class="nav nav-pills">
-            <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="${pageContext.request.contextPath}/" class="nav-link">Home</a></li>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                     Quests
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Space Quest</a></li>
+                    <li><a class="dropdown-item" href="space-quest">Space Quest</a></li>
                     <li><a class="dropdown-item" href="#">Another Quest</a></li>
                 </ul>
             </div>
@@ -43,18 +43,19 @@
         <div class="col-lg-6">
 
             <h1 class="display-5 fw-bold lh-1 mb-3">Space Quest.</h1>
-            <p class="lead">${requestScope.question.question}</p>
+            <p class="lead">${requestScope.question.text}</p>
 
             <ul class="icon-list ps-0">
                 <c:forEach var="answer" items="${requestScope.answers}">
                     <li class="d-flex align-items-start mb-1">
-                        <a href="/space-quest?id=${answer.id}">${answer.answer}</a></li>
+                        <a href="/space-quest?id=${answer.id}">${answer.text}</a></li>
                 </c:forEach>
             </ul>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+                <c:if test="${end}">
+                    <a class="btn btn-warning" href="${pageContext.request.contextPath}/space-quest" role="button">Restart</a>
+                </c:if>
             </div>
         </div>
     </div>
