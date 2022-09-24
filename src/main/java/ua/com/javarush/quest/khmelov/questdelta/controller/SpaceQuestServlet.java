@@ -5,9 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ua.com.javarush.quest.khmelov.questdelta.entity.Answer;
-import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
-import ua.com.javarush.quest.khmelov.questdelta.entity.SpaceQuest;
+import jakarta.servlet.http.HttpSession;
+import ua.com.javarush.quest.khmelov.questdelta.entity.*;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
@@ -17,24 +16,33 @@ import java.util.Optional;
 
 @WebServlet("/space-quest")
 public class SpaceQuestServlet extends HttpServlet {
-
-    QuestService questService = QuestService.getQuestService(new SpaceQuest());
+    private Quest spaceQuest = new SpaceQuest();
+    private QuestService questService = QuestService.getQuestService(spaceQuest);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession currentSession = req.getSession();
+        Integer gamesplayed = (Integer) currentSession.getAttribute("gamesplayed");
+
         if(getId(req) < 0) {
             getFirstQuestion(req, resp);
         } else {
-            getNextQuestion(req, resp);
+            getNextQuestion(req, resp, gamesplayed, currentSession);
         }
     }
 
-    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp, Integer gamesplayed, HttpSession currentSession) throws ServletException, IOException {
         String id = req.getParameter("id");
         Optional<Question> optionalQuestion = questService.get(Long.parseLong(id));
         if (optionalQuestion.isPresent()) {
             Question nextQuestion = optionalQuestion.get();
             Collection<Answer> answers = questService.getAnswers(nextQuestion);
+
+            if(answers.isEmpty()) {
+                gamesplayed++;
+                currentSession.setAttribute("gamesplayed", gamesplayed);
+            }
+
             setQuestionAnswersAndForward(req, resp, nextQuestion, answers);
         }
     }

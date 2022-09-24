@@ -5,6 +5,8 @@ import java.util.Optional;
 
 public interface Quest {
 
+    String getQuestName();
+
     Collection<Question> getAll();
 
     Optional<Question> get(long id);

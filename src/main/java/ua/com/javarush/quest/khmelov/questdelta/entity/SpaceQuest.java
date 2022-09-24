@@ -3,17 +3,18 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 import java.util.*;
 
 public class SpaceQuest implements Quest {
+    private final String questName = "Space Quest";
     private final Question startQuestion;
     private final HashMap<Long, Question> questions;
 
     public SpaceQuest() {
-        Question question01 = new Question(11L, "You lost memory. Do you go toward UFO?", false);
-        Question question02 = new Question(12L,"Are you going to captain?", false);
-        Question question03 = new Question(13L,"Captain is asking: -Who are you?", false);
-        Question question04 = new Question(14L, "You refused. You lost.", true);
-        Question question05 = new Question(15L,"You didn't go to captain. You lost.", true);
-        Question question06 = new Question(16L,"I don't like pirates. You lost.", true);
-        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school. You won!", true);
+        Question question01 = new Question(11L, "You lost memory. Do you go toward UFO?");
+        Question question02 = new Question(12L,"Are you going to captain?");
+        Question question03 = new Question(13L,"Captain is asking: -Who are you?");
+        Question question04 = new Question(14L, "You refused. You lost.");
+        Question question05 = new Question(15L,"You didn't go to captain. You lost.");
+        Question question06 = new Question(16L,"I don't like pirates. You lost.");
+        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school. You won!");
 
         questions = new HashMap<>();
         startQuestion = question01;
@@ -40,18 +41,27 @@ public class SpaceQuest implements Quest {
         question03.addAnswers(answer05, answer06, answer07);
     }
 
+    @Override
+    public String getQuestName() {
+        return questName;
+    }
+
+    @Override
     public Question getStartQuestion() {
         return startQuestion;
     }
 
+    @Override
     public Collection<Answer> getAnswers(Question question) {
         return question.getAnswersSet();
     }
 
+    @Override
     public Collection<Question> getAll() {
         return questions.values();
     }
 
+    @Override
     public Optional<Question> get(long id) {
         return Optional.ofNullable(questions.get(id));
     }

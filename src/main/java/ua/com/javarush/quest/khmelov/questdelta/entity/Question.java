@@ -5,28 +5,21 @@ import java.util.*;
 public class Question {
     private final long id;
     private final String text;
-    private final boolean isFinal;
-
     private final Set<Answer> answersSet;
 
 
-    public Question(long id, String text, boolean isFinal) {
+    public Question(long id, String text) {
         this.id = id;
         this.text = text;
-        this.isFinal = isFinal;
         answersSet = new HashSet<>();
-    }
-
-    public String getText() {
-        return text;
     }
 
     public long getId() {
         return id;
     }
 
-    public boolean isFinal() {
-        return isFinal;
+    public String getText() {
+        return text;
     }
 
     public Set<Answer> getAnswersSet() {
