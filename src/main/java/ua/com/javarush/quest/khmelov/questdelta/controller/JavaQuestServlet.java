@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
-@WebServlet("/space-quest")
-public class SpaceQuestServlet extends HttpServlet {
+@WebServlet("/java-quest")
+public class JavaQuestServlet extends HttpServlet {
     private QuestService questService = QuestService.getQuestService();
 
     @Override
@@ -32,10 +32,10 @@ public class SpaceQuestServlet extends HttpServlet {
 
     private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp, Integer gamesplayed, HttpSession currentSession) throws ServletException, IOException {
         String id = req.getParameter("id");
-        Optional<Question> optionalQuestion = questService.get(1L, Long.parseLong(id));
+        Optional<Question> optionalQuestion = questService.get(2L, Long.parseLong(id));
         if (optionalQuestion.isPresent()) {
             Question nextQuestion = optionalQuestion.get();
-            Collection<Answer> answers = questService.getAnswers(1L, nextQuestion);
+            Collection<Answer> answers = questService.getAnswers(2L, nextQuestion);
 
             if(answers.isEmpty()) {
                 gamesplayed++;
@@ -47,8 +47,8 @@ public class SpaceQuestServlet extends HttpServlet {
     }
 
     private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Question startQuestion = questService.getStartQuestion(1L);
-        Collection<Answer> answers = questService.getAnswers(1L, startQuestion);
+        Question startQuestion = questService.getStartQuestion(2L);
+        Collection<Answer> answers = questService.getAnswers(2L, startQuestion);
         setQuestionAnswersAndForward(req, resp, startQuestion, answers);
     }
 
@@ -60,7 +60,7 @@ public class SpaceQuestServlet extends HttpServlet {
             req.setAttribute("end", true);
         }
 
-        Jsp.reqRespForward(req, resp, "spacequest");
+        Jsp.reqRespForward(req, resp, "javaquest");
     }
 
     private long getId(HttpServletRequest req) {

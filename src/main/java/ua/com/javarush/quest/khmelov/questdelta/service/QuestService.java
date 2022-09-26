@@ -12,30 +12,30 @@ public class QuestService {
     private final QuestRepository questRepository;
     private static QuestService questService;
 
-    private QuestService(Quest quest) {
-        questRepository = new QuestRepository(quest);
+    private QuestService() {
+        questRepository = QuestRepository.get();
     }
 
-    public static QuestService getQuestService(Quest quest) {
+    public static QuestService getQuestService() {
         if (questService == null) {
-            questService = new QuestService(quest);
+            questService = new QuestService();
         }
         return questService;
     }
 
-    public Collection<Question> getAll() {
-        return questRepository.getAll();
+    public Collection<Question> getAll(long questId) {
+        return questRepository.getAll(questId);
     }
 
-    public Optional<Question> get(long id) {
-        return questRepository.get(id);
+    public Optional<Question> get(long questId, long questionId) {
+        return questRepository.get(questId, questionId);
     }
 
-    public Question getStartQuestion() {
-        return questRepository.getStartQuestion();
+    public Question getStartQuestion(long questId) {
+        return questRepository.getStartQuestion(questId);
     }
 
-    public Collection<Answer> getAnswers(Question question) {
-        return questRepository.getAnswers(question);
+    public Collection<Answer> getAnswers(long questId, Question question) {
+        return questRepository.getAnswers(questId, question);
     }
 }

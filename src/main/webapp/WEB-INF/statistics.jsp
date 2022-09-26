@@ -22,19 +22,30 @@
 </div>
 
 <div class="container col-xxl-8 px-4 py-5">
-    <div class="list-group w-auto">
-        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-            <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32"
-                 class="rounded-circle flex-shrink-0">
-            <div class="d-flex gap-2 w-100 justify-content-between">
-                <div>
-                    <h6 class="mb-0">Games played: ${sessionScope.gamesplayed}</h6>
-                    <p class="mb-0 opacity-75">...</p>
-                </div>
-                <small class="opacity-50 text-nowrap">now</small>
-            </div>
-        </a>
-    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Game.</th>
+            <th scope="col">Games Played.</th>
+            <th scope="col">Games Won.</th>
+            <th scope="col">Games Lost.</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">Space Quest.</th>
+            <td>${sessionScope.gamesplayed}</td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+        <tr>
+            <th scope="row">Java Quest.</th>
+            <td>${sessionScope.gamesplayed}</td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <%@ include file="parts/footer.txt" %>

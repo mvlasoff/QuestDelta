@@ -6,11 +6,13 @@ public class Question {
     private final long id;
     private final String text;
     private final Set<Answer> answersSet;
+    private final String picture;
 
 
-    public Question(long id, String text) {
+    public Question(long id, String text, String picture) {
         this.id = id;
         this.text = text;
+        this.picture = picture;
         answersSet = new HashSet<>();
     }
 
@@ -24,6 +26,10 @@ public class Question {
 
     public Set<Answer> getAnswersSet() {
         return answersSet;
+    }
+
+    public String getPicture() {
+        return picture;
     }
 
     public void addAnswers(Answer... answers) {
