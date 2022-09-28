@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+
 <html>
 <head>
     <title>Title</title>
@@ -20,7 +21,7 @@
         <li><a href="${pageContext.request.contextPath}/" class="nav-link px-2 link-secondary">Home</a></li>
         <li><a href="users" class="nav-link px-2 link-dark">Пользователи</a></li>
         <li><a href="quests" class="nav-link px-2 link-dark">Квесты</a></li>
-        <li><a href="create" class="nav-link px-2 link-dark">Создать</a></li>
+        <li><a href="create-quest" class="nav-link px-2 link-dark">Создать</a></li>
         <li><a href="game" class="nav-link px-2 link-dark">Играть</a></li>
         <li><a href="stat" class="nav-link px-2 link-dark">Статистика</a></li>
     </ul>
@@ -37,4 +38,5 @@
             </c:otherwise>
         </c:choose>
     </ul>
+
 </header>

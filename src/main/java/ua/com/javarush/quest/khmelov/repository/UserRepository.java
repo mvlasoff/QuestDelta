@@ -19,7 +19,7 @@ public class UserRepository extends AbstractRepository<User> implements Reposito
 
     @Override
     public Stream<User> find(User pattern) {
-        return map.values().stream()
+        return getAll()
                 .filter(entity -> isOk(pattern, entity, User::getId)
                         && isOk(pattern, entity, User::getLogin)
                         && isOk(pattern, entity, User::getPassword)

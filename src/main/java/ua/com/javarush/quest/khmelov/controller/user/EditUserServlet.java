@@ -39,10 +39,10 @@ public class EditUserServlet extends HttpServlet {
             long id = Parser.getId(req);
             Optional<UserDto> user = userService.get(id);
             user.ifPresent(value -> req.setAttribute(USER, value));
-            Jsp.show(req, resp, Go.EDIT_USER);
+            Jsp.forward(req, resp, Go.EDIT_USER);
         } else {
             req.setAttribute(Jsp.Key.USERS, userService.getAll());
-            Jsp.show(req, resp, Go.USERS, "Недостаточно прав для редактирования");
+            Jsp.forward(req, resp, Go.USERS, "Недостаточно прав для редактирования");
         }
     }
 
@@ -59,7 +59,7 @@ public class EditUserServlet extends HttpServlet {
             }
             Jsp.redirect(req, resp, DEST);
         } else {
-            Jsp.show(req, resp, DEST, "Недостаточно прав для редактирования");
+            Jsp.forward(req, resp, DEST, "Недостаточно прав для редактирования");
         }
     }
 

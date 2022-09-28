@@ -19,7 +19,7 @@ public class GameRepository extends AbstractRepository<Game> implements Reposito
 
     @Override
     public Stream<Game> find(Game pattern) {
-        return map.values().stream()
+        return getAll()
                 .filter(entity -> isOk(pattern, entity, Game::getId)
                         && isOk(pattern, entity, Game::getUserId)
                         && isOk(pattern, entity, Game::getQuestId)

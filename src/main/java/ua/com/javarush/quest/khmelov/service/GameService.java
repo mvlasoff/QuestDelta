@@ -7,6 +7,7 @@ import ua.com.javarush.quest.khmelov.entity.*;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
 import ua.com.javarush.quest.khmelov.repository.*;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 public enum GameService {
@@ -21,21 +22,27 @@ public enum GameService {
 
     public Optional<GameDto> getGame(FormData formData, Long userId) {
         Game gamePattern = Mapper.game.parse(formData);
+        gamePattern.setGameState(GameState.PLAY);
         gamePattern.setUserId(userId);
         Optional<Game> currentGame = gameRepository
                 .find(gamePattern)
-                .findFirst();
-        final Game game;
-        //create new game if not found
-        game = currentGame.orElseGet(() -> getNewGame(userId, gamePattern.getQuestId()));
-        return fill(game);
+                .max(Comparator.comparingLong(Game::getId));
+        if (currentGame.isPresent()) {
+            return fill(currentGame.get());
+        } else if (gamePattern.getQuestId() != null) {
+            return fill(getNewGame(userId, gamePattern.getQuestId()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<GameDto> checkAnswer(Long gameId, Long answerId) {
         Game game = gameRepository.get(gameId);
         if (game.getGameState() == GameState.PLAY) {
             Answer answer = answerRepository.get(answerId);
-            Long nextQuestionId = answer.getNextQuestionId();
+            Long nextQuestionId = answer != null
+                    ? answer.getNextQuestionId()
+                    : game.getCurrentQuestionId();
             game.setCurrentQuestionId(nextQuestionId);
             Question question = questionRepository.get(nextQuestionId);
             game.setGameState(question.getState());

@@ -2,7 +2,6 @@ package ua.com.javarush.quest.khmelov.repository;
 
 import ua.com.javarush.quest.khmelov.entity.Answer;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -20,7 +19,7 @@ public class AnswerRepository extends AbstractRepository<Answer> implements Repo
 
     @Override
     public Stream<Answer> find(Answer pattern) {
-        return map.values().stream()
+        return getAll()
                 .filter(entity -> isOk(pattern, entity, Answer::getId)
                         && isOk(pattern, entity, Answer::getQuestionId)
                         && isOk(pattern, entity, Answer::getText)

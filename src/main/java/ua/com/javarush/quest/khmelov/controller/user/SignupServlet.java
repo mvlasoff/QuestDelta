@@ -37,7 +37,7 @@ public class SignupServlet extends HttpServlet {
         long id = Parser.getId(req);
         Optional<UserDto> opUser = userService.get(id);
         opUser.ifPresent(value -> req.setAttribute("user", value));
-        Jsp.show(req, resp, Go.SIGNUP);
+        Jsp.forward(req, resp, Go.SIGNUP);
     }
 
     @Override

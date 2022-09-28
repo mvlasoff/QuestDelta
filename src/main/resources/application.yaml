@@ -1,0 +1,4 @@
+---
+dataBase:
+  folder: database
+  json: tree.json

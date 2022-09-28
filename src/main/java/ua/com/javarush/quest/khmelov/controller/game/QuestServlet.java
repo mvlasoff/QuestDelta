@@ -26,6 +26,6 @@ public class QuestServlet extends HttpServlet {
         long id = Parser.getId(req);
         Optional<QuestDto> questDto = questService.get(id);
         req.setAttribute(QUEST,questDto);
-        Jsp.show(req, resp, Go.QUEST);
+        Jsp.forward(req, resp, Go.QUEST);
     }
 }

@@ -5,16 +5,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import ua.com.javarush.quest.khmelov.config.Config;
-import ua.com.javarush.quest.khmelov.entity.*;
-import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
-import ua.com.javarush.quest.khmelov.repository.QuestRepository;
-import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
+import ua.com.javarush.quest.khmelov.entity.Role;
+import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.service.QuestService;
 
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
@@ -23,13 +21,10 @@ public class RepositoryLoader {
     public static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final UserRepository userRepository = UserRepository.get();
-    private final QuestRepository questRepository = QuestRepository.get();
-    private final QuestionRepository questionRepository = QuestionRepository.get();
-    private final AnswerRepository answerRepository = AnswerRepository.get();
 
     public void load() {
         //load from json
-        defaultInit();
+        defaultTxtInit();
         save();
     }
 
@@ -43,130 +38,104 @@ public class RepositoryLoader {
     public void save() {
         MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         List<User> users = userRepository.getAll().toList();
-        Path folder = Path.of(Config.DB_FOLDER.get());
-        String name = Config.DB_JSON.get();
+        Config config = Config.get();
+        Path folder = Path.of(config.dataBase.folder);
         Files.createDirectories(folder);
-        try (OutputStream outputStream = Files.newOutputStream(folder.resolve(name))) {
+        String json = config.dataBase.json;
+        try (OutputStream outputStream = Files.newOutputStream(folder.resolve(json))) {
             MAPPER.writeValue(outputStream, users);
         }
     }
 
-    private void defaultInit() {
+    private void defaultTxtInit() {
         //пользователи
-        User ivan = new User(1L,"Ivan","456",Role.ADMIN);
-        User andrew = new User(2L,"Andrew","789",Role.GUEST);
-        User elena = new User(3L,"Elena","123",Role.USER);
+        User ivan = new User(1L, "Ivan", "456", Role.ADMIN);
+        User andrew = new User(2L, "Andrew", "789", Role.GUEST);
+        User elena = new User(3L, "Elena", "123", Role.USER);
         userRepository.create(ivan);
         userRepository.create(andrew);
         userRepository.create(elena);
+        QuestService questService = QuestService.INSTANCE;
+        Long ivanId = ivan.getId();
 
-        //квест JR
-        Quest javarush = Quest.with()
-                .id(4L)
-                .authorId(ivan.getId())
-                .name("Квест из задания")
-                .build();
-        questRepository.create(javarush);
-        ivan.getQuests().add(javarush);
+        questService.create(
+                "Играем в неопознанный летающий объект (обязательный квест)",
+                """
+                        1:  Ты потерял память. Принять вызов НЛО?
+                        2<  Принять вызов
+                        91< Отклонить вызов
+                        
+                        2:  Ты принял вызов. Подняться на мостик к капитану?
+                        92< Отказаться подниматься на мостик
+                        3< Подняться на мостик
+                        
+                        3:  Ты поднялся на мостик. Ты кто?
+                        93< Солгать о себе
+                        99< Рассказать правду
+                        
+                        91- Ты отклонил вызов. Поражение.
+                        92- Ты не пошел на переговоры. Поражение.
+                        93- Твою ложь разоблачили. Поражение.
 
-        //заглушка вопроса (сразу конец квеста)
-        Question dummy = Question.with()
-                .questId(javarush.getId())
-                .text("Одношаговый квест-заглушка")
-                .state(GameState.WIN)
-                .build();
-        questionRepository.create(dummy);
-        javarush.setStartQuestionId(dummy.getId());
+                        99+ Вы выиграли
+                        """,
+                ivanId
+        );
 
-        //Математический квест
-        Quest mathQuest = Quest.with()
-                .id(5L)
-                .authorId(ivan.getId())
-                .name("Проверим ваши знания арифметики")
-                .build();
 
-        questRepository.create(mathQuest);
-        ivan.getQuests().add(mathQuest);
+        questService.create(
+                "Три богатыря",
+                """
+                        1: Ты перед волшебным камнем, на нем есть надписи. Что выберешь?
+                        2< налево пойдешь - в сказку попадешь
+                        3< направо пойдешь - свою смерть найдешь
+                        4< прямо пойдешь - в разработчики пойдешь
+                                     
+                        2: Ты видишь закрытый сундук, ну-с... И что будем делать?
+                        1< Кто ж его знает, что там, вернусь-ка я обратно...
+                        7< Я смелый и ничего не боюсь, я его открою...
+                                           
+                        3: Ты видишь какую-то пещеру, что будешь делать?
+                        1< Та ну нафиг. Боюсь. Вернусь-ка я за подмогой.
+                        8< Я смелый и ничего не боюсь, меч достаю и быстро захожу...
+                                           
+                        4: Ты видишь Кикимору Болотную, которая что-то увлеченно печатает на ноутбуке.
+                        1< Кикимора? Ноутбук? Какие-то опасные грибы я съел... Бегом отсюда...
+                        5< Скажу громко "Эй ты, а ну отошла от ноута, ща я тебе покажу класс..."
+                        6< Похоже без ноута никак разработчиком не стать. Бью Кикимору дубиной по башке, и теперь я настоящий программист.
+                                         
+                        5: Кикимора прыгнула в болото, ноут утонул вместе с ней, но зато справа я вижу какой-то тоннель
+                        3< Ок, пойду-ка я туда, делать-то нечего.
+                                                              
+                        6: Настоящий поступок, настоящего программиста. Теперь осталось только Java доучить, и все, дело в шляпе.
+                        1< Стоп, мне же еще нужна литература... Поищу-ка я ее, вон и тропинка видна какая-то с табличкой "в библиотеку"
+                        9< Да, точно. Все, я быстро-быстро иду все повторять, учить, и кодить-кодить-кодить. Игры - зло.
+                                           
+                        7- Ого. Вы нашли большую кучу золота. Но прибежали злые печенеги и вы бесславно погибли. Жадность до добра не доведет.
+                        8- Вы заходите в пещеру, а там Кащей, с Бабой Ягой, и Змеем Горынычем. Тут и сказочке конец. Вы погибли в неравном бою.
+                        9+ Да! Это победа! Но пора приниматься за работу, хватит уже ерундой заниматься.
+                        """,
+                ivanId
+        );
+        questService.create(
+                "Проверим ваши знания арифметики",
+                """
+                        1: Вы знаете арифметику?
+                        2< Да, конечно
+                        99< А что это такое?
 
-        //вопросы
-        Question doYouKnowMath = Question.with()
-                .id(50L)
-                .questId(mathQuest.getId())
-                .text("Вы знаете арифметику?")
-                .state(GameState.PLAY)
-                .build();
-        mathQuest.setStartQuestionId(doYouKnowMath.getId());
-        Question howBeTwoMulTwo = Question.with()
-                .id(51L)
-                .questId(mathQuest.getId())
-                .text("Сколько будет дважды два")
-                .state(GameState.PLAY)
-                .build();
-        Question lost = Question.with()
-                .id(52L)
-                .questId(mathQuest.getId())
-                .text("Вы проиграли :`(")
-                .state(GameState.LOST)
-                .build();
-        Question win = Question.with().id(53L)
-                .questId(mathQuest.getId())
-                .text("Ура! Вы выиграли! :D")
-                .state(GameState.WIN)
-                .build();
-        //добавим в репозитарий
-        questionRepository.create(doYouKnowMath);
-        questionRepository.create(howBeTwoMulTwo);
-        questionRepository.create(win);
-        questionRepository.create(lost);
+                        2: Сколько будет дважды два?
+                        99< Один
+                        99< Два
+                        99< Три
+                        100< Четыре
 
-        //а также в дерево зависимостей в сущностях
-        mathQuest.getQuestions().add(doYouKnowMath);
-        mathQuest.getQuestions().add(howBeTwoMulTwo);
-        mathQuest.getQuestions().add(win);
-        mathQuest.getQuestions().add(lost);
+                        99- Вы проиграли
 
-        //ответы
-        a21(doYouKnowMath, lost, howBeTwoMulTwo);
-        a22(howBeTwoMulTwo, lost, win);
+                        100+ Вы выиграли
+                        """,
+                ivanId
+        );
     }
 
-    private static void a21(Question q, Question lost, Question next) {
-        answerRepository.create(Answer.with()
-                .text("Конечно знаю")
-                .nextQuestionId(next.getId())
-                .questionId(q.getId())
-                .build());
-        answerRepository.create(Answer.with()
-                .text("А что это такое?")
-                .nextQuestionId(lost.getId())
-                .questionId(q.getId())
-                .build());
-        answerRepository.find(Answer.with().questionId(q.getId()).build())
-                .forEach(q.getAnswers()::add);
-    }
-
-    private static void a22(Question q, Question lost, Question win) {
-        answerRepository.create(Answer.with()
-                .text("Один")
-                .nextQuestionId(lost.getId())
-                .questionId(q.getId())
-                .build());
-        answerRepository.create(Answer.with()
-                .text("Два")
-                .nextQuestionId(lost.getId())
-                .questionId(q.getId())
-                .build());
-        answerRepository.create(Answer.with()
-                .text("Три")
-                .nextQuestionId(lost.getId())
-                .questionId(q.getId())
-                .build());
-        answerRepository.create(Answer.with()
-                .text("Четыре")
-                .nextQuestionId(win.getId())
-                .questionId(q.getId())
-                .build());
-        answerRepository.find(Answer.with().questionId(q.getId()).build())
-                .forEach(q.getAnswers()::add);
-    }
 }

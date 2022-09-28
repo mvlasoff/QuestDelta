@@ -33,7 +33,7 @@ public class ProfileServlet extends HttpServlet {
         userService
                 .get(id)
                 .ifPresent(value -> req.setAttribute(USER, value));
-        Jsp.show(req, resp, Go.PROFILE);
+        Jsp.forward(req, resp, Go.PROFILE);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ProfileServlet extends HttpServlet {
         if (EditUserServlet.checkProfileEditor(req)) {
             Jsp.redirect(req, resp, Go.EDIT_USER + "?id=" + Parser.getId(req));
         } else {
-            Jsp.show(req, resp, Go.PROFILE, "Недостаточно прав для редактирования");
+            Jsp.forward(req, resp, Go.PROFILE, "Недостаточно прав для редактирования");
         }
     }
 

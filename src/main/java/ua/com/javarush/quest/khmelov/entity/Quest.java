@@ -14,6 +14,7 @@ public class Quest extends Entity {
     Long id;
     Long authorId;
     String name;
+    String text;
     Long startQuestionId;
     final Collection<Question> questions = new ArrayList<>();
 }

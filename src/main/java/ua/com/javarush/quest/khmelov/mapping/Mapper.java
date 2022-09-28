@@ -1,7 +1,7 @@
 package ua.com.javarush.quest.khmelov.mapping;
 
 import lombok.experimental.UtilityClass;
-import ua.com.javarush.quest.khmelov.dto.*;
+import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.*;
 import ua.com.javarush.quest.khmelov.entity.*;
 

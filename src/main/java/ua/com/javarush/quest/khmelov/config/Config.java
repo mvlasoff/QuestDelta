@@ -1,48 +1,53 @@
 package ua.com.javarush.quest.khmelov.config;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
-public enum Config {
-    DB_FOLDER("db.folder", "db"),
-    DB_JSON("db.json", "tree.json");
+public class Config {
 
-    private final String key;
-    private String value;
+    public DataBase dataBase = new DataBase();
 
-    Config(String key, String value) {
-        this.key = key;
-        this.value = value;
+    private static final String APPLICATION_YAML = "/application.yaml";
+    private static volatile Config config;
+
+    private Config() {
     }
 
-    public static final String APPLICATION_JSON = "/application.json";
+    public static Config get() {
+        Config result = config;
+        if (Objects.isNull(config)) {
+            synchronized (Config.class) {
+                if (Objects.isNull(config)) {
+                    result = createAndUpdateConfig();
+                }
+            }
+        }
+        return result;
+    }
 
-    static {
+    private static Config createAndUpdateConfig() {
         try {
-            URL url = Config.class.getResource(APPLICATION_JSON);
-            JsonNode tree = new ObjectMapper().readTree(url);
-            Arrays.stream(Config.values())
-                    .filter(line -> tree.has(line.key))
-                    .forEach(line -> line.value = tree.get(line.key).asText());
+            config = new Config();
+            YAMLMapper yamlMapper = new YAMLMapper();
+            ObjectReader objectReader = yamlMapper.readerForUpdating(config);
+            URL resource = Config.class.getResource(APPLICATION_YAML);
+            Optional<URL> optionalURL = Optional.ofNullable(resource);
+            if (optionalURL.isPresent()) {
+                objectReader.readValue(optionalURL.get());
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return config;
     }
 
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    public String get() {
-        return value;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(DB_FOLDER + "/" + DB_JSON);
+    public static class DataBase {
+        public String folder = "db";
+        public String json = "tree.json";
     }
 }

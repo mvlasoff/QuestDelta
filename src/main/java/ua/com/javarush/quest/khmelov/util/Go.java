@@ -15,7 +15,7 @@ public class Go {
     public static final String USERS = "/users";
     public static final String EDIT_USER = "/edit-user";
 
-    public static final String CREATE = "/create";
+    public static final String CREATE = "/create-quest";
     public static final String QUEST = "/quest";
     public static final String QUESTS = "/quests";
     public static final String STAT = "/stat";

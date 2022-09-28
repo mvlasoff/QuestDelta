@@ -14,7 +14,7 @@ import ua.com.javarush.quest.khmelov.util.Jsp;
 import java.io.IOException;
 import java.util.Optional;
 
-import static ua.com.javarush.quest.khmelov.util.Jsp.Key.*;
+import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 
 
 @WebServlet(Go.LOGIN)
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Jsp.show(req, resp, Go.LOGIN);
+        Jsp.forward(req, resp, Go.LOGIN);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
             req.getSession().setAttribute(USER, optionalUser.get());
             Jsp.redirect(req, resp, Go.PROFILE);
         } else {
-            Jsp.show(req, resp, Go.LOGIN, "Нет такого пользователя");
+            Jsp.forward(req, resp, Go.LOGIN, "Нет такого пользователя");
         }
     }
 }

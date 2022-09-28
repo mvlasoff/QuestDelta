@@ -27,6 +27,7 @@
                     </div>
                 </c:forEach>
             </ul>
+            <input type="hidden" name="questId" value="${game.questId}">
             <div class=" form-group">
                 <label class="col-md-4 control-label" for="submit"></label>
                 <div class="col-md-4">

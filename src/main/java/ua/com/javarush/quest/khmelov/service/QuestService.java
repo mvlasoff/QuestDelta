@@ -1,20 +1,38 @@
 package ua.com.javarush.quest.khmelov.service;
 
+import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
+import ua.com.javarush.quest.khmelov.entity.Answer;
+import ua.com.javarush.quest.khmelov.entity.GameState;
 import ua.com.javarush.quest.khmelov.entity.Quest;
+import ua.com.javarush.quest.khmelov.entity.Question;
+import ua.com.javarush.quest.khmelov.exception.AppException;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.Repository;
+import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
 import ua.com.javarush.quest.khmelov.repository.QuestRepository;
+import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
+import ua.com.javarush.quest.khmelov.repository.Repository;
+import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public enum QuestService {
 
     INSTANCE;
 
+    public static final String QUEST_SYMBOL = ":";
+    public static final String WIN_SYMBOL = "+";
+    public static final String LOST_SYMBOL = "-";
+    public static final String LINK_SYMBOL = "<";
+    public static final String DIGITS = "\\d+";
     private final Repository<Quest> questRepository = QuestRepository.get();
-
+    private final Repository<Question> questionRepository = QuestionRepository.get();
+    private final Repository<Answer> answerRepository = AnswerRepository.get();
 
     public Collection<QuestDto> getAll() {
         return questRepository.getAll()
@@ -27,5 +45,102 @@ public enum QuestService {
     public Optional<QuestDto> get(long id) {
         Quest Quest = questRepository.get(id);
         return Mapper.quest.get(Quest);
+    }
+
+
+    public Optional<QuestDto> create(FormData formData, Long userId) {
+        String name = formData.getParameter(Jsp.Key.NAME);
+        String text = formData.getParameter(Jsp.Key.TEXT);
+        return create(name, text, userId);
+    }
+
+    public Optional<QuestDto> create(String name, String text, Long userId) {
+        Map<Long, Question> map = fillDraftMap(text);
+        if (map.size() < 1) {
+            return Optional.empty();
+        }
+        Quest quest = Quest.with()
+                .authorId(userId)
+                .name(name)
+                .build();
+        questRepository.create(quest);
+
+        map.values().forEach(questionRepository::create);
+
+        Long startKey = findStartQuestionLabel(text);
+        Long startId = map.get(startKey).getId();
+        quest.setStartQuestionId(startId);
+
+        updateLinksAndId(map, quest);
+        map.values().stream()
+                .flatMap(q -> q.getAnswers().stream())
+                .forEach(answerRepository::create);
+        return Mapper.quest.get(quest);
+    }
+
+    private Long findStartQuestionLabel(String text) {
+        Matcher matcher = Pattern.compile(DIGITS).matcher(text);
+        if (matcher.find()) {
+            return Long.parseLong(matcher.group());
+        }
+        throw new AppException("not found start index in text");
+    }
+
+    private Map<Long, Question> fillDraftMap(String text) {
+        Map<Long, Question> map = new TreeMap<>();
+        text = "\n" + text;
+        String pattern = "\n(%s)([:<+-])".formatted(DIGITS);
+        String[] parts = text.split(pattern);
+        int index = 1;
+        Matcher labelIterator = Pattern.compile(pattern).matcher(text);
+        Question question = Question.with().build();
+        while (labelIterator.find()) {
+            long key = Long.parseLong(labelIterator.group(1));
+            String type = labelIterator.group(2);
+            String partText = parts[index++].strip();
+            Optional<Question> newQuestion = fillQuestion(question, key, type, partText);
+            if (newQuestion.isPresent()) {
+                question = newQuestion.get();
+                map.put(key, question);
+            }
+        }
+        return map;
+    }
+
+    private Optional<Question> fillQuestion(Question currentQuestion, long key, String type, String partText) {
+        currentQuestion = switch (type) {
+            case QUEST_SYMBOL -> Question.with().text(partText).state(GameState.PLAY).build();
+            case WIN_SYMBOL -> Question.with().text(partText).state(GameState.WIN).build();
+            case LOST_SYMBOL -> Question.with().text(partText).state(GameState.LOST).build();
+            case LINK_SYMBOL -> {
+                Answer build = Answer.with()
+                        .nextQuestionId(key)
+                        .questionId(currentQuestion.getId())
+                        .text(partText)
+                        .build();
+                currentQuestion.getAnswers().add(build);
+                yield null;
+            }
+            default -> throw new AppException("incorrect parsing");
+        };
+        return Optional.ofNullable(currentQuestion);
+    }
+
+    private void updateLinksAndId(Map<Long, Question> map, Quest quest) {
+        for (Question question : map.values()) {
+            question.setQuestId(quest.getId());
+            quest.getQuestions().add(question);
+            for (Answer answer : question.getAnswers()) {
+                answer.setQuestionId(question.getId());
+                //old index
+                Long key = answer.getNextQuestionId();
+                if (map.containsKey(key)) {
+                    Question nextQuestion = map.get(key);
+                    //real index
+                    System.out.println(answer);
+                    answer.setNextQuestionId(nextQuestion.getId());
+                }
+            }
+        }
     }
 }
