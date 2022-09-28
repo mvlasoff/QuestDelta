@@ -34,15 +34,15 @@
         <tbody>
         <tr>
             <th scope="row">Space Quest.</th>
-            <td>${sessionScope.gamesplayed}</td>
-            <td>...</td>
-            <td>...</td>
+                <td>${requestScope.spacegame.gamesCount}</td>
+                <td>${requestScope.spacegame.gamesWon}</td>
+                <td>${requestScope.spacegame.gamesCount - requestScope.spacegame.gamesWon}</td>
         </tr>
         <tr>
             <th scope="row">Java Quest.</th>
-            <td>${sessionScope.gamesplayed}</td>
-            <td>...</td>
-            <td>...</td>
+            <td>${requestScope.javagame.gamesCount}</td>
+            <td>${requestScope.javagame.gamesWon}</td>
+            <td>${requestScope.javagame.gamesCount - requestScope.javagame.gamesWon}</td>
         </tr>
         </tbody>
     </table>

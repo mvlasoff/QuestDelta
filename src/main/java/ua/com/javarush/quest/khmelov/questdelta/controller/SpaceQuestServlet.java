@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ua.com.javarush.quest.khmelov.questdelta.entity.*;
+import ua.com.javarush.quest.khmelov.questdelta.service.GameService;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
@@ -17,20 +18,18 @@ import java.util.Optional;
 @WebServlet("/space-quest")
 public class SpaceQuestServlet extends HttpServlet {
     private QuestService questService = QuestService.getQuestService();
+    private GameService gameService = GameService.getGameService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession currentSession = req.getSession();
-        Integer gamesplayed = (Integer) currentSession.getAttribute("gamesplayed");
-
         if(getId(req) < 0) {
             getFirstQuestion(req, resp);
         } else {
-            getNextQuestion(req, resp, gamesplayed, currentSession);
+            getNextQuestion(req, resp);
         }
     }
 
-    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp, Integer gamesplayed, HttpSession currentSession) throws ServletException, IOException {
+    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         Optional<Question> optionalQuestion = questService.get(1L, Long.parseLong(id));
         if (optionalQuestion.isPresent()) {
@@ -38,21 +37,17 @@ public class SpaceQuestServlet extends HttpServlet {
             Collection<Answer> answers = questService.getAnswers(1L, nextQuestion);
 
             if(answers.isEmpty()) {
-                gamesplayed++;
-                currentSession.setAttribute("gamesplayed", gamesplayed);
+                gameService.setGamesCount(1L);
+                if(nextQuestion.isWon()) {
+                    gameService.setGamesWon(1L);
+                }
             }
 
             setQuestionAnswersAndForward(req, resp, nextQuestion, answers);
         }
     }
 
-    private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Question startQuestion = questService.getStartQuestion(1L);
-        Collection<Answer> answers = questService.getAnswers(1L, startQuestion);
-        setQuestionAnswersAndForward(req, resp, startQuestion, answers);
-    }
-
-    private static void setQuestionAnswersAndForward(HttpServletRequest req, HttpServletResponse resp, Question nextQuestion, Collection<Answer> answers) throws ServletException, IOException {
+    private void setQuestionAnswersAndForward(HttpServletRequest req, HttpServletResponse resp, Question nextQuestion, Collection<Answer> answers) throws ServletException, IOException {
         req.setAttribute("answers", answers);
         req.setAttribute("question", nextQuestion);
 
@@ -61,6 +56,12 @@ public class SpaceQuestServlet extends HttpServlet {
         }
 
         Jsp.reqRespForward(req, resp, "spacequest");
+    }
+
+    private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Question startQuestion = questService.getStartQuestion(1L);
+        Collection<Answer> answers = questService.getAnswers(1L, startQuestion);
+        setQuestionAnswersAndForward(req, resp, startQuestion, answers);
     }
 
     private long getId(HttpServletRequest req) {

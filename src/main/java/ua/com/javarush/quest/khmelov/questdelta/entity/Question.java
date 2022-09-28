@@ -6,12 +6,15 @@ public class Question {
     private final long id;
     private final String text;
     private final Set<Answer> answersSet;
+
+    private final boolean isWon;
     private final String picture;
 
 
-    public Question(long id, String text, String picture) {
+    public Question(long id, String text, boolean isWon, String picture) {
         this.id = id;
         this.text = text;
+        this.isWon = isWon;
         this.picture = picture;
         answersSet = new HashSet<>();
     }
@@ -22,6 +25,10 @@ public class Question {
 
     public String getText() {
         return text;
+    }
+
+    public boolean isWon() {
+        return isWon;
     }
 
     public Set<Answer> getAnswersSet() {

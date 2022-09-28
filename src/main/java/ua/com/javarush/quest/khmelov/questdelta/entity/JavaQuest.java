@@ -1,7 +1,5 @@
 package ua.com.javarush.quest.khmelov.questdelta.entity;
 
-import jakarta.servlet.annotation.WebServlet;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
@@ -12,18 +10,18 @@ public class JavaQuest implements Quest {
     private final HashMap<Long, Question> questions;
 
     public JavaQuest() {
-        Question question01 = new Question(21L, "What is the output of the following Java program?", "/images/java01.png");
-        Question question02 = new Question(22L, "How many types of constructors are used in Java?", null);
-        Question question03 = new Question(23L, "Does constructor return any value?", null);
-        Question question04 = new Question(24L, "What is the output of the following Java program?", "/images/java04.png");
-        Question question05 = new Question(25L, "What is the output of the following Java program?", "/images/java05.png");
-        Question question06 = new Question(26L, "What is the output of the following Java program?", "/images/java06.png");
-        Question question07 = new Question(27L, "Can we override the static methods?", null);
-        Question question08 = new Question(28L, "Can we execute a program without main() method?", null);
-        Question question09 = new Question(29L, "What if the static modifier is removed from the signature of the main() method?", null);
-        Question question10 = new Question(30L, "Can we assign the reference to 'this' variable?", "/images/java10.png");
-        Question question11 = new Question(31L, "You lost.", null);
-        Question question12 = new Question(32L, "You win!", null);
+        Question question01 = new Question(21L, "What is the output of the following Java program?", false, "/images/java01.png");
+        Question question02 = new Question(22L, "How many types of constructors are used in Java?", false, null);
+        Question question03 = new Question(23L, "Does constructor return any value?", false, null);
+        Question question04 = new Question(24L, "What is the output of the following Java program?", false, "/images/java04.png");
+        Question question05 = new Question(25L, "What is the output of the following Java program?", false, "/images/java05.png");
+        Question question06 = new Question(26L, "What is the output of the following Java program?", false, "/images/java06.png");
+        Question question07 = new Question(27L, "Can we override the static methods?", false, null);
+        Question question08 = new Question(28L, "Can we execute a program without main() method?", false, null);
+        Question question09 = new Question(29L, "What if the static modifier is removed from the signature of the main() method?", false, null);
+        Question question10 = new Question(30L, "Can we assign the reference to 'this' variable?", false, "/images/java10.png");
+        Question question11 = new Question(31L, "You lost.", false, null);
+        Question question12 = new Question(32L, "You win!", true, null);
 
         questions = new HashMap<>();
         startQuestion = question01;

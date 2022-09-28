@@ -8,13 +8,13 @@ public class SpaceQuest implements Quest {
     private final HashMap<Long, Question> questions;
 
     public SpaceQuest() {
-        Question question01 = new Question(11L, "You lost memory. Do you go toward UFO?", null);
-        Question question02 = new Question(12L,"Are you going to captain?", null);
-        Question question03 = new Question(13L,"Captain is asking: -Who are you?", null);
-        Question question04 = new Question(14L, "You refused. You lost.", null);
-        Question question05 = new Question(15L,"You didn't go to captain. You lost.", null);
-        Question question06 = new Question(16L,"I don't like pirates. You lost.", null);
-        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school. You won!", null);
+        Question question01 = new Question(11L, "You lost memory. Do you go toward UFO?", false, null);
+        Question question02 = new Question(12L,"Are you going to captain?", false, null);
+        Question question03 = new Question(13L,"Captain is asking: -Who are you?", false, null);
+        Question question04 = new Question(14L, "You refused. You lost.", false, null);
+        Question question05 = new Question(15L,"You didn't go to captain. You lost.", false, null);
+        Question question06 = new Question(16L,"I don't like pirates. You lost.", false, null);
+        Question question07 = new Question(17L, "Finally we found you. You going back to Jedi's school. You won!", true, null);
 
         questions = new HashMap<>();
         startQuestion = question01;
