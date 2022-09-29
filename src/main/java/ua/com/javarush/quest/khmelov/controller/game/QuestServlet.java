@@ -20,7 +20,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.QUEST;
 @WebServlet({Go.QUEST})
 public class QuestServlet extends HttpServlet {
 
-    private final QuestService questService= Winter.getBeen(QuestService.class);
+    private final QuestService questService= Winter.getBean(QuestService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

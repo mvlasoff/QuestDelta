@@ -21,7 +21,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 @WebServlet(Go.LOGIN)
 public class LoginServlet extends HttpServlet {
 
-    private final UserService userService = Winter.getBeen(UserService.class);
+    private final UserService userService = Winter.getBean(UserService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

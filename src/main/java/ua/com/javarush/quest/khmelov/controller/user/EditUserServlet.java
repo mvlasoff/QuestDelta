@@ -26,8 +26,8 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 @WebServlet(Go.EDIT_USER)
 public class EditUserServlet extends HttpServlet {
 
-    private final UserService userService = Winter.getBeen(UserService.class);
-    private final ImageService imageService = Winter.getBeen(ImageService.class);
+    private final UserService userService = Winter.getBean(UserService.class);
+    private final ImageService imageService = Winter.getBean(ImageService.class);
 
     @Override
     public void init() {

@@ -37,7 +37,7 @@ public class LoginServletIT {
     @Test
     void doPost() {
         //prepare db
-        Winter.getBeen(UserRepository.class).create(user);
+        Winter.getBean(UserRepository.class).create(user);
         UserDto userDto = Mapper.user.get(user).orElseThrow();
         //mock
         HttpSession httpSession = Mockito.mock(HttpSession.class);

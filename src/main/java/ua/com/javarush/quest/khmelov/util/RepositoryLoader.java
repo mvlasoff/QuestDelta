@@ -21,8 +21,8 @@ public class RepositoryLoader {
 
     public static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private final UserRepository userRepository = Winter.getBeen(UserRepository.class);
-    private final QuestService questService = Winter.getBeen(QuestService.class);
+    private final UserRepository userRepository = Winter.getBean(UserRepository.class);
+    private final QuestService questService = Winter.getBean(QuestService.class);
 
     public void load() {
         //load from json

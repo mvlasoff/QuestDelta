@@ -20,7 +20,7 @@ import java.util.Optional;
 @WebServlet(value = Go.CREATE)
 public class CreateServlet extends HttpServlet {
 
-    private final QuestService questService = Winter.getBeen(QuestService.class);
+    private final QuestService questService = Winter.getBean(QuestService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,7 +41,7 @@ public class CreateServlet extends HttpServlet {
             if (questDto.isPresent()){
                 Jsp.redirect(request, response, Go.QUESTS);
             } else {
-                Jsp.redirect(request, response, Go.CREATE,"Некорректые данные квеста");
+                Jsp.redirect(request, response, Go.CREATE,"Некорректные данные квеста");
             }
         } else {
             Jsp.redirect(request, response, Go.LOGIN,"Сначала нужно войти в аккаунт");

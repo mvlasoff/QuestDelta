@@ -21,7 +21,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 @WebServlet(Go.PROFILE)
 public class ProfileServlet extends HttpServlet {
 
-    private final UserService userService = Winter.getBeen(UserService.class);
+    private final UserService userService = Winter.getBean(UserService.class);
 
     @Override
     public void init() {

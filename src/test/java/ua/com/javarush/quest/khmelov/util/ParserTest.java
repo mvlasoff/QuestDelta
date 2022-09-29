@@ -32,10 +32,10 @@ class ParserTest {
             "profile/set?id=1,/set",
     })
     @DisplayName("check extract command from uri")
-    void getCommand(String uri, String cmd) {
+    void getCommand(String uri, String expectedCommand) {
         Mockito.when(request.getRequestURI()).thenReturn(uri);
-        String actual = Parser.getCommand(request);
-        Assertions.assertEquals(cmd, actual);
+        String actualCommand = Parser.getCommand(request);
+        Assertions.assertEquals(expectedCommand, actualCommand);
     }
 
     @ParameterizedTest

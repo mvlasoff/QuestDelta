@@ -15,7 +15,7 @@ import java.io.IOException;
 @WebServlet({Go.USERS})
 public class UsersServlet extends HttpServlet {
 
-    private final UserService userService = Winter.getBeen(UserService.class);
+    private final UserService userService = Winter.getBean(UserService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

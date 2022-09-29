@@ -10,23 +10,23 @@ import java.util.Map;
 @UtilityClass
 public class Winter {
     //need annotation @Component or other for scan package and auto build context
-    private final Map<Class<?>, Object> context = new HashMap<>();
+    private final Map<Class<?>, Object> container = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T> T getBeen(Class<T> type) {
+    public <T> T getBean(Class<T> type) {
         try {
-            if (context.containsKey(type)) {
-                return (T) context.get(type);
+            if (container.containsKey(type)) {
+                return (T) container.get(type);
             } else {
                 Constructor<?>[] constructors = type.getConstructors();
                 Constructor<?> constructor = constructors[0];
                 Class<?>[] parameterTypes = constructor.getParameterTypes();
                 Object[] parameters = new Object[parameterTypes.length];
                 for (int i = 0; i < parameters.length; i++) {
-                    parameters[i] = getBeen(parameterTypes[i]);
+                    parameters[i] = getBean(parameterTypes[i]);
                 }
                 Object component = constructor.newInstance(parameters);
-                context.put(type, component);
+                container.put(type, component);
                 return (T) component;
             }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {

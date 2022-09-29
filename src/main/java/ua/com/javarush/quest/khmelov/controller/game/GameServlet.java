@@ -20,7 +20,7 @@ import java.util.Optional;
 @WebServlet(value = Go.GAME, name = "GameServlet")
 public class GameServlet extends HttpServlet {
 
-    private final GameService gameService = Winter.getBeen(GameService.class);
+    private final GameService gameService = Winter.getBean(GameService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

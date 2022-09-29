@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserRepositoryTest {
 
-    private final UserRepository repository = Winter.getBeen(UserRepository.class);
+    private final UserRepository repository = Winter.getBean(UserRepository.class);
 
     @BeforeAll
     public static void load(){

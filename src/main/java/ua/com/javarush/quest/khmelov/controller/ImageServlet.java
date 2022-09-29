@@ -16,7 +16,7 @@ import java.util.Optional;
 @WebServlet("/images/*")
 public class ImageServlet extends HttpServlet {
 
-    private final ImageService imageService = Winter.getBeen(ImageService.class);
+    private final ImageService imageService = Winter.getBean(ImageService.class);
 
 
 
