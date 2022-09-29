@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="parts/header.jsp" %>
-<jsp:useBean id="user" scope="session" type="ua.com.javarush.quest.khmelov.dto.ui.UserDto"/>
 
 <div class="container">
     <h1 class="text-center">Выберите квест</h1>
@@ -17,7 +16,7 @@
                         <use xlink:href="#chevron-right"></use>
                     </svg>
                 </a>
-                <c:if test='${user.role=="ADMIN"}'>
+                <c:if test='${sessionScope.user.role=="ADMIN"}'>
                     <a href="quest?id=${quest.id}" class="icon-link d-inline-flex align-items-center">
                         Редактировать
                         <svg class="bi" width="1em" height="1em">
