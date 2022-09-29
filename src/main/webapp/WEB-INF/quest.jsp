@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@include file="parts/header.jsp" %>
 <div class="container">
-    In progress...
+    Тут форма для добавления рисунков к вопросам
 </div>
 <%@include file="parts/footer.jsp" %>
 

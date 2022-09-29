@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
@@ -25,8 +26,8 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 @WebServlet(Go.EDIT_USER)
 public class EditUserServlet extends HttpServlet {
 
-    private final UserService userService = UserService.INSTANCE;
-    private final ImageService imageService = ImageService.INSTANCE;
+    private final UserService userService = Winter.getBeen(UserService.class);
+    private final ImageService imageService = Winter.getBeen(ImageService.class);
 
     @Override
     public void init() {

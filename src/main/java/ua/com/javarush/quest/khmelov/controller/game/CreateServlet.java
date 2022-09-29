@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @WebServlet(value = Go.CREATE)
 public class CreateServlet extends HttpServlet {
 
-    private final QuestService questService = QuestService.INSTANCE;
+    private final QuestService questService = Winter.getBeen(QuestService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,7 +33,7 @@ public class CreateServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Optional<UserDto> user = Parser.getUser(request.getSession());
         FormData formData = FormData.of(request);
         if (user.isPresent()) {

@@ -8,15 +8,6 @@ import java.util.stream.Stream;
 
 public class UserRepository extends AbstractRepository<User> implements Repository<User> {
 
-    public static final UserRepository userRepository = new UserRepository();
-
-    public static UserRepository get() {
-        return userRepository;
-    }
-
-    private UserRepository() {
-    }
-
     @Override
     public Stream<User> find(User pattern) {
         return getAll()

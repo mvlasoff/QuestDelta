@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
@@ -20,7 +21,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 @WebServlet(Go.PROFILE)
 public class ProfileServlet extends HttpServlet {
 
-    private final UserService userService = UserService.INSTANCE;
+    private final UserService userService = Winter.getBeen(UserService.class);
 
     @Override
     public void init() {

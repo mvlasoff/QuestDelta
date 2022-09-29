@@ -54,7 +54,7 @@ public class Jsp {
     public void forward(HttpServletRequest req, HttpServletResponse resp, String uri, String errorMessage)
             throws ServletException, IOException {
         req.getSession().setAttribute(Key.ERROR_MESSAGE, errorMessage);
-        forward(req,resp,uri);
+        forward(req, resp, uri);
     }
 
     public void redirect(HttpServletRequest req, HttpServletResponse resp, String uri, String errorMessage)
@@ -67,8 +67,10 @@ public class Jsp {
         if (Objects.nonNull(req.getSession(false))) {
             HttpSession session = req.getSession();
             Object message = session.getAttribute(ERROR_MESSAGE);
-            session.removeAttribute(ERROR_MESSAGE);
-            req.setAttribute(ERROR_MESSAGE, message);
+            if (Objects.nonNull(message)) {
+                session.removeAttribute(ERROR_MESSAGE);
+                req.setAttribute(ERROR_MESSAGE, message);
+            }
         }
     }
 

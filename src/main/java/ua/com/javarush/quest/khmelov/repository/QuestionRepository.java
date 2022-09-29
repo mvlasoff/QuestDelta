@@ -7,16 +7,6 @@ import java.util.stream.Stream;
 
 public class QuestionRepository extends AbstractRepository<Question> implements Repository<Question> {
 
-    private static final QuestionRepository userRepository = new QuestionRepository();
-
-    public static QuestionRepository get() {
-        return userRepository;
-    }
-
-    private QuestionRepository() {
-    }
-
-
     @Override
     public Stream<Question> find(Question pattern) {
         return getAll()

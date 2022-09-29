@@ -1,5 +1,6 @@
 package ua.com.javarush.quest.khmelov.service;
 
+import lombok.AllArgsConstructor;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
 import ua.com.javarush.quest.khmelov.entity.Answer;
@@ -11,7 +12,6 @@ import ua.com.javarush.quest.khmelov.mapping.Mapper;
 import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
 import ua.com.javarush.quest.khmelov.repository.QuestRepository;
 import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
-import ua.com.javarush.quest.khmelov.repository.Repository;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.util.Collection;
@@ -21,18 +21,18 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum QuestService {
-
-    INSTANCE;
+@AllArgsConstructor
+public class QuestService {
 
     public static final String QUEST_SYMBOL = ":";
     public static final String WIN_SYMBOL = "+";
     public static final String LOST_SYMBOL = "-";
     public static final String LINK_SYMBOL = "<";
     public static final String DIGITS = "\\d+";
-    private final Repository<Quest> questRepository = QuestRepository.get();
-    private final Repository<Question> questionRepository = QuestionRepository.get();
-    private final Repository<Answer> answerRepository = AnswerRepository.get();
+
+    private final QuestRepository questRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     public Collection<QuestDto> getAll() {
         return questRepository.getAll()
@@ -132,13 +132,9 @@ public enum QuestService {
             quest.getQuestions().add(question);
             for (Answer answer : question.getAnswers()) {
                 answer.setQuestionId(question.getId());
-                //old index
-                Long key = answer.getNextQuestionId();
+                Long key = answer.getNextQuestionId(); //label (index in text)
                 if (map.containsKey(key)) {
-                    Question nextQuestion = map.get(key);
-                    //real index
-                    System.out.println(answer);
-                    answer.setNextQuestionId(nextQuestion.getId());
+                    answer.setNextQuestionId(map.get(key).getId()); //real index
                 }
             }
         }

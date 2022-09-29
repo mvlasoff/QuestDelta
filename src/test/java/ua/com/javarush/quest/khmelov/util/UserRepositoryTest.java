@@ -5,20 +5,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.Repository;
 import ua.com.javarush.quest.khmelov.repository.UserRepository;
-import ua.com.javarush.quest.khmelov.util.RepositoryLoader;
 
-import java.util.Collection;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserRepositoryTest {
 
-    private final Repository<User> repository =  UserRepository.get();
+    private final UserRepository repository = Winter.getBeen(UserRepository.class);
 
     @BeforeAll
     public static void load(){

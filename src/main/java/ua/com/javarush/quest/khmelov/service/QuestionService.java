@@ -1,20 +1,19 @@
 package ua.com.javarush.quest.khmelov.service;
 
+import lombok.AllArgsConstructor;
 import ua.com.javarush.quest.khmelov.dto.ui.AnswerDto;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestionDto;
 import ua.com.javarush.quest.khmelov.entity.Question;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
 import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
-import ua.com.javarush.quest.khmelov.repository.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public enum QuestionService {
+@AllArgsConstructor
+public class QuestionService {
 
-    INSTANCE;
-
-    private final Repository<Question> questRepository = QuestionRepository.get();
+    private final QuestionRepository questRepository;
 
     public Optional<QuestionDto> get(long id) {
         Question question = questRepository.get(id);

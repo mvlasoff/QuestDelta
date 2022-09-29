@@ -7,16 +7,6 @@ import java.util.stream.Stream;
 
 public class QuestRepository extends AbstractRepository<Quest> implements Repository<Quest> {
 
-    private static final QuestRepository userRepository = new QuestRepository();
-
-    public static QuestRepository get() {
-        return userRepository;
-    }
-
-    private QuestRepository() {
-    }
-
-
     @Override
     public Stream<Quest> find(Quest pattern) {
         return map.values().stream()

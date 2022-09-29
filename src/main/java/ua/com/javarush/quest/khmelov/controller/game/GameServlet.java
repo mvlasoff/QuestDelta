@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.GameDto;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @WebServlet(value = Go.GAME, name = "GameServlet")
 public class GameServlet extends HttpServlet {
 
-    private final GameService gameService = GameService.INSTANCE;
+    private final GameService gameService = Winter.getBeen(GameService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,13 +46,17 @@ public class GameServlet extends HttpServlet {
         Optional<GameDto> game = gameService.checkAnswer(gameId, answerId);
         if (game.isPresent()) {
             GameDto gameDto = game.get();
+            if (answerId == 0) {
+                request.setAttribute(Jsp.Key.ERROR_MESSAGE, "Нужно выбрать какой-то ответ");
+            }
             forwardToQuestion(request, response, gameDto);
         } else {
             Jsp.forward(request, response, Go.QUESTS, "Нет такой игры");
         }
     }
 
-    private static void forwardToQuestion(HttpServletRequest request, HttpServletResponse response, GameDto gameDto) throws ServletException, IOException {
+    private static void forwardToQuestion(HttpServletRequest request, HttpServletResponse response, GameDto gameDto)
+            throws ServletException, IOException {
         request.setAttribute(Jsp.Key.GAME, gameDto);
         request.setAttribute(Jsp.Key.QUESTION, gameDto.getQuestion());
         Jsp.forward(request, response, Go.GAME);

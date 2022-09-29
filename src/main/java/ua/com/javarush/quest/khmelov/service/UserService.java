@@ -1,22 +1,20 @@
 package ua.com.javarush.quest.khmelov.service;
 
+import lombok.AllArgsConstructor;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.Repository;
 import ua.com.javarush.quest.khmelov.repository.UserRepository;
 
 import java.util.Collection;
 import java.util.Optional;
 
-public enum UserService {
+@AllArgsConstructor
+public class UserService {
 
-    INSTANCE;
-
-    private final Repository<User> userRepository = UserRepository.get();
-
-
+    private final UserRepository userRepository;
+    
     public Collection<UserDto> getAll() {
         return userRepository.getAll()
                 .map(Mapper.user::get)

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
 import ua.com.javarush.quest.khmelov.service.QuestService;
 import ua.com.javarush.quest.khmelov.util.Go;
@@ -19,7 +20,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.QUEST;
 @WebServlet({Go.QUEST})
 public class QuestServlet extends HttpServlet {
 
-    private final QuestService questService=QuestService.INSTANCE;
+    private final QuestService questService= Winter.getBeen(QuestService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

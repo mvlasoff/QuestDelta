@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
+import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.service.ImageService;
 
 import java.nio.file.Files;
@@ -15,7 +16,9 @@ import java.util.Optional;
 @WebServlet("/images/*")
 public class ImageServlet extends HttpServlet {
 
-    private final ImageService imageService = ImageService.INSTANCE;
+    private final ImageService imageService = Winter.getBeen(ImageService.class);
+
+
 
     @Override
     @SneakyThrows

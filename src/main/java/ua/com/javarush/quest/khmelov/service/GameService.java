@@ -1,24 +1,28 @@
 package ua.com.javarush.quest.khmelov.service;
 
+import lombok.AllArgsConstructor;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.GameDto;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestionDto;
 import ua.com.javarush.quest.khmelov.entity.*;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.*;
+import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
+import ua.com.javarush.quest.khmelov.repository.GameRepository;
+import ua.com.javarush.quest.khmelov.repository.QuestRepository;
+import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
 
 import java.util.Comparator;
 import java.util.Optional;
 
-public enum GameService {
-    INSTANCE;
+@AllArgsConstructor
+public class GameService {
 
-    private final Repository<Game> gameRepository = GameRepository.get();
-    private final Repository<Quest> questRepository = QuestRepository.get();
-    private final Repository<Question> questionRepository = QuestionRepository.get();
-    private final Repository<Answer> answerRepository = AnswerRepository.get();
+    private final GameRepository gameRepository;
+    private final QuestRepository questRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
-    private final QuestionService questionService = QuestionService.INSTANCE;
+    private final QuestionService questionService;
 
     public Optional<GameDto> getGame(FormData formData, Long userId) {
         Game gamePattern = Mapper.game.parse(formData);

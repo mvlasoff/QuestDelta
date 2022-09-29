@@ -7,16 +7,6 @@ import java.util.stream.Stream;
 
 public class GameRepository extends AbstractRepository<Game> implements Repository<Game> {
 
-    private static final GameRepository userRepository = new GameRepository();
-
-    public static GameRepository get() {
-        return userRepository;
-    }
-
-    private GameRepository() {
-    }
-
-
     @Override
     public Stream<Game> find(Game pattern) {
         return getAll()
