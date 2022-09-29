@@ -30,9 +30,24 @@
                     </ul>
                 </div>
             </li>
-            <li><a href="stat" class="nav-link px-2 link-dark">Statistics</a></li>
+            <c:if test="${sessionScope.user != null}">
+                <li><a href="stat" class="nav-link px-2 link-dark">Statistics</a></li>
+            </c:if>
         </ul>
         <div class="col-md-3 text-end">
+            <c:if test="${sessionScope.user == null}">
+                <a class="btn btn-outline-primary me-2" href="log-in" role="button" aria-expanded="false">
+                    Login
+                </a>
+                <a class="btn btn-primary me-2" href="sign-up" role="button" aria-expanded="false">
+                    Sign-up
+                </a>
+            </c:if>
+            <c:if test="${sessionScope.user != null}">
+                <a class="btn btn-outline-primary me-2" href="log-out" role="button" aria-expanded="false">
+                    Logout
+                </a>
+            </c:if>
         </div>
     </header>
 </div>

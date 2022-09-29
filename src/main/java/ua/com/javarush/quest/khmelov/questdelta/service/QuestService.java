@@ -1,7 +1,6 @@
 package ua.com.javarush.quest.khmelov.questdelta.service;
 
 import ua.com.javarush.quest.khmelov.questdelta.entity.Answer;
-import ua.com.javarush.quest.khmelov.questdelta.entity.Quest;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
 import ua.com.javarush.quest.khmelov.questdelta.repository.QuestRepository;
 

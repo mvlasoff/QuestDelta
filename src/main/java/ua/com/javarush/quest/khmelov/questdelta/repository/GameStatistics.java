@@ -1,26 +1,17 @@
 package ua.com.javarush.quest.khmelov.questdelta.repository;
 
-import ua.com.javarush.quest.khmelov.questdelta.entity.Answer;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Game;
-import ua.com.javarush.quest.khmelov.questdelta.entity.Question;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-public class GameRepository {
-    private static final GameRepository GAME_REPOSITORY = new GameRepository();
+public class GameStatistics {
     private final Map<Long, Game> games;
 
-    private GameRepository() {
+    public GameStatistics() {
         games = new HashMap<>();
         games.put(1L, new Game());
         games.put(2L, new Game());
-    }
-
-    public static GameRepository get() {
-        return GAME_REPOSITORY;
     }
 
     public Map<Long, Game> getGames() {

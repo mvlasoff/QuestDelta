@@ -5,9 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import ua.com.javarush.quest.khmelov.questdelta.entity.*;
-import ua.com.javarush.quest.khmelov.questdelta.service.GameService;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
@@ -18,7 +16,8 @@ import java.util.Optional;
 @WebServlet("/space-quest")
 public class SpaceQuestServlet extends HttpServlet {
     private QuestService questService = QuestService.getQuestService();
-    private GameService gameService = GameService.getGameService();
+
+    //private GameService gameService = GameService.getGameService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,18 +30,21 @@ public class SpaceQuestServlet extends HttpServlet {
 
     private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
+        User user = (User) req.getSession().getAttribute("user");
+
         Optional<Question> optionalQuestion = questService.get(1L, Long.parseLong(id));
         if (optionalQuestion.isPresent()) {
             Question nextQuestion = optionalQuestion.get();
             Collection<Answer> answers = questService.getAnswers(1L, nextQuestion);
 
             if(answers.isEmpty()) {
-                gameService.setGamesCount(1L);
+                user.getGameStatistics().setGamesCount(1L);
                 if(nextQuestion.isWon()) {
-                    gameService.setGamesWon(1L);
+                    user.getGameStatistics().setGamesWon(1L);
                 }
             }
 
+            req.getSession().setAttribute("user", user);
             setQuestionAnswersAndForward(req, resp, nextQuestion, answers);
         }
     }
