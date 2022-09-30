@@ -28,8 +28,12 @@
                         Quests
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="space-quest">Space Quest</a></li>
-                        <li><a class="dropdown-item" href="java-quest">Java Quest</a></li>
+                        <li><a class="dropdown-item" href="
+                            <c:if test="${sessionScope.user != null}">space-quest</c:if>
+                        ">Space Quest</a></li>
+                        <li><a class="dropdown-item" href="
+                            <c:if test="${sessionScope.user != null}">java-quest</c:if>
+                        ">Java Quest</a></li>
                     </ul>
                 </div>
             </li>

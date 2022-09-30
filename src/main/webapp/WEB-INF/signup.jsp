@@ -8,11 +8,11 @@
 
         <main class="text-center form-signin w-100 m-auto">
             <form class="row g-3 needs-validation" action="sign-up" method="post" novalidate>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label for="validationCustom03" class="form-label">Login</label>
                     <input type="text" class="form-control" name="login" id="validationCustom03" required>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label for="validationCustom04" class="form-label">Role</label>
                     <select class="form-select" name="role" id="validationCustom04" required>
                         <option selected disabled value="">Choose...</option>
@@ -21,13 +21,12 @@
                         </c:forEach>
                     </select>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label class="form-label">Password</label>
                     <input type="password" class="form-control" name="password1" id="floatingPassword1"
                            placeholder="Password" required>
-                    <p style="color: crimson">${requestScope.message}</p>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label class="form-label">Repeat Password</label>
                     <input type="password" class="form-control" name="password2" id="floatingPassword2"
                            placeholder="Password" required>
