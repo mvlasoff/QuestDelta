@@ -7,12 +7,13 @@
 
 
         <main class="text-center form-signin w-100 m-auto">
-            <form>
+            <form action="log-in" method="post">
                 <c:if test="${sessionScope.user == null}">
                     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
                 </c:if>
                 <c:if test="${sessionScope.user != null}">
                     <h1 class="h3 mb-3 fw-normal">Welcome, ${sessionScope.user.login}</h1>
+                    <h1 class="h3 mb-3 fw-normal">Role, ${sessionScope.user.role}</h1>
                 </c:if>
                 <c:if test="${sessionScope.user == null}">
                     <div class="form-floating">

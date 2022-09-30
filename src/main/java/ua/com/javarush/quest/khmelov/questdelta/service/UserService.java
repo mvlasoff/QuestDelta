@@ -1,5 +1,6 @@
 package ua.com.javarush.quest.khmelov.questdelta.service;
 
+import ua.com.javarush.quest.khmelov.questdelta.entity.Role;
 import ua.com.javarush.quest.khmelov.questdelta.entity.User;
 import ua.com.javarush.quest.khmelov.questdelta.repository.UserRepository;
 
@@ -32,5 +33,9 @@ public class UserService {
     public Optional<User> find(String login, String password) {
         Optional<User> user = userRepository.find(login, password);
         return user;
+    }
+
+    public void doPost(String login, String password, Role role) {
+        userRepository.doPost(login, password, role);
     }
 }
