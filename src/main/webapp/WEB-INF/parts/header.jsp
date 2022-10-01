@@ -36,7 +36,7 @@
                 </div>
             </li>
             <c:if test='${sessionScope.user != null && sessionScope.user.role != "GUEST"}'>
-                <li><a href="stat" class="nav-link px-2 link-dark">Statistics</a></li>
+                <li><a href="stat" class="nav-link px-2 link-secondary">Statistics</a></li>
             </c:if>
         </ul>
         <div class="col-md-3 text-end">
