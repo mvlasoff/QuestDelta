@@ -5,7 +5,7 @@
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
 
-        <main class="text-center form-signin w-100 m-auto">
+        <main class="text-center form-signin w-50 m-auto">
             <form action="log-in" method="post">
                 <c:if test="${sessionScope.user == null}">
                     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
@@ -25,12 +25,9 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-
                 </c:if>
             </form>
         </main>
-
-
     </div>
 </div>
 

@@ -9,8 +9,9 @@
         </div>
         <div class="col-lg-6">
             <h1 class="display-5 fw-bold lh-1 mb-3">Hello, there!</h1>
-            <p class="lead">This website is made for training purpose. Choose your quest, think, learn, have fun.
-                Login/Sign-up first.</p>
+            <p class="lead">This website is made for training purpose.
+                Login/Sign-up first. Only ADMIN or USER can play.
+                Choose your quest, think, learn, have fun.</p>
         </div>
     </div>
 </div>

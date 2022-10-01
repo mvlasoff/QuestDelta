@@ -20,8 +20,8 @@ public class JavaQuest implements Quest {
         Question question08 = new Question(28L, "Can we execute a program without main() method?", false, null);
         Question question09 = new Question(29L, "What if the static modifier is removed from the signature of the main() method?", false, null);
         Question question10 = new Question(30L, "Can we assign the reference to 'this' variable?", false, "/images/java10.png");
-        Question question11 = new Question(31L, "You lost.", false, null);
-        Question question12 = new Question(32L, "You win!", true, null);
+        Question question11 = new Question(31L, "You lost.", false, "/images/sad.png");
+        Question question12 = new Question(32L, "You win!", true, "/images/happy.png");
 
         questions = new HashMap<>();
         startQuestion = question01;

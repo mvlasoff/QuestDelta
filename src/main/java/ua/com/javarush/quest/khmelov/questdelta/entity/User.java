@@ -5,9 +5,7 @@ import ua.com.javarush.quest.khmelov.questdelta.repository.GameStatistics;
 public class User {
     private String login;
     private String password;
-
     private Role role;
-
     private GameStatistics gameStatistics;
 
     public User(String login, String password, Role role, GameStatistics gameStatistics) {

@@ -10,7 +10,7 @@
             <form class="row g-3 needs-validation" action="sign-up" method="post" novalidate>
                 <div class="col-md-6">
                     <label for="validationCustom03" class="form-label">Login</label>
-                    <input type="text" class="form-control" name="login" id="validationCustom03" required>
+                    <input type="text" class="form-control" name="login" id="validationCustom03" placeholder="Login" required>
                 </div>
                 <div class="col-md-6">
                     <label for="validationCustom04" class="form-label">Role</label>

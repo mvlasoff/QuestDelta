@@ -27,17 +27,15 @@
                        aria-expanded="false">
                         Quests
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="
-                            <c:if test="${sessionScope.user != null}">space-quest</c:if>
-                        ">Space Quest</a></li>
-                        <li><a class="dropdown-item" href="
-                            <c:if test="${sessionScope.user != null}">java-quest</c:if>
-                        ">Java Quest</a></li>
-                    </ul>
+                    <c:if test='${sessionScope.user != null && sessionScope.user.role != "GUEST"}'>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="space-quest">Space Quest</a></li>
+                            <li><a class="dropdown-item" href="java-quest">Java Quest</a></li>
+                        </ul>
+                    </c:if>
                 </div>
             </li>
-            <c:if test="${sessionScope.user != null}">
+            <c:if test='${sessionScope.user != null && sessionScope.user.role != "GUEST"}'>
                 <li><a href="stat" class="nav-link px-2 link-dark">Statistics</a></li>
             </c:if>
         </ul>
