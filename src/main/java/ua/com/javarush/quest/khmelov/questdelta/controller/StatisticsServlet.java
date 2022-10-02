@@ -18,7 +18,6 @@ public class StatisticsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
-        //Map<Long, Game> games = gameService.getGameRepository().getGames();
         GameStatistics gameStatistics = user.getGameStatistics();
         Map<Long, Game> games = gameStatistics.getGames();
         Game spacegame = games.get(1L);

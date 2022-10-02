@@ -4,7 +4,7 @@
         <RollingFile name="RollingFile" fileName="logs/quest-delta.log"
                      filePattern="logs/quest-delta.%d{yyyy-MM-dd}.log">
             <PatternLayout>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}: %m%n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1} %M: %m%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />

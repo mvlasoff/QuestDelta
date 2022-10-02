@@ -15,22 +15,22 @@ import java.util.Optional;
 
 @WebServlet("/java-quest")
 public class JavaQuestServlet extends HttpServlet {
-    private QuestService questService = QuestService.getQuestService();
+    private final QuestService questService = QuestService.getQuestService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(getId(req) < 0) {
+        long id = getId(req);
+        if(id < 0) {
             getFirstQuestion(req, resp);
         } else {
-            getNextQuestion(req, resp);
+            getNextQuestion(req, resp, id);
         }
     }
 
-    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
+    private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp, long id) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
 
-        Optional<Question> optionalQuestion = questService.get(2L, Long.parseLong(id));
+        Optional<Question> optionalQuestion = questService.get(2L, id);
         if (optionalQuestion.isPresent()) {
             Question nextQuestion = optionalQuestion.get();
             Collection<Answer> answers = questService.getAnswers(2L, nextQuestion);
@@ -69,6 +69,6 @@ public class JavaQuestServlet extends HttpServlet {
             return -1;
         }
         boolean isNumeric = id.chars().allMatch(Character::isDigit);
-        return isNumeric ? Integer.parseInt(id) : 0;
+        return isNumeric ? Long.parseLong(id) : 0;
     }
 }

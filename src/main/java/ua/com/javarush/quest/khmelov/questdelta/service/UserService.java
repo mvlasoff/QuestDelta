@@ -35,6 +35,11 @@ public class UserService {
         return user;
     }
 
+    public Optional<User> verify(String login) {
+        Optional<User> user = userRepository.verify(login);
+        return user;
+    }
+
     public void doPost(String login, String password, Role role) {
         userRepository.doPost(login, password, role);
     }

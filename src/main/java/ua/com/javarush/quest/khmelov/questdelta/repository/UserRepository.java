@@ -37,6 +37,12 @@ public class UserRepository {
                 .findFirst();
     }
 
+    public Optional<User> verify(String login) {
+        return users.values().stream()
+                .filter(user -> user.getLogin().equals(login))
+                .findFirst();
+    }
+
     public void doPost(String login, String password, Role role) {
         users.put(id.getAndIncrement(), new User(login, password, role, new GameStatistics()));
     }
