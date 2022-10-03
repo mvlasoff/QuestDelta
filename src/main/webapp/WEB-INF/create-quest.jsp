@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@include file="parts/header.jsp" %>
+<c:import url="parts/header.jsp"/>
 <div class="container">
     <form action="create-quest" method="post">
 
@@ -12,7 +12,7 @@
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Содержимое квеста</label>
             <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="10"
-                      placeholder="<%@include file="parts/quest-demo.jsp" %>"></textarea>
+                      placeholder="<%@include file="./parts/quest-demo.jsp" %>"></textarea>
         </div>
 
         <div class=" form-group">
@@ -24,5 +24,5 @@
         </div>
     </form>
 </div>
-<%@include file="parts/footer.jsp" %>
+<c:import url="parts/footer.jsp"/>
 

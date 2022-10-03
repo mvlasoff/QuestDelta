@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@include file="parts/header.jsp" %>
+<c:import url="parts/header.jsp"/>
 <div class="container">
     <form class="form-horizontal" action="login" method="post">
         <fieldset>
@@ -45,5 +45,5 @@
         </fieldset>
     </form>
 </div>
-<%@include file="parts/footer.jsp" %>
+<c:import url="parts/footer.jsp"/>
 
