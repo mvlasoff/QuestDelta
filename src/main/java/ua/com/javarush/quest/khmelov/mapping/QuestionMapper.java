@@ -19,6 +19,11 @@ class QuestionMapper implements Mapper<Question, QuestionDto> {
                 .questId(question.getQuestId())
                 .image(question.getImage())
                 .text(question.getText())
+                .answers(question.getAnswers().stream()
+                        .map(Mapper.answer::get)
+                        .map(Optional::orElseThrow)
+                        .toList()
+                )
                 .build()
         ) : Optional.empty();
     }

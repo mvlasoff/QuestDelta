@@ -17,7 +17,7 @@ import ua.com.javarush.quest.khmelov.util.Parser;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(value = Go.CREATE)
+@WebServlet(value = Go.CREATE,name = "CreateServlet")
 public class CreateServlet extends HttpServlet {
 
     private final QuestService questService = Winter.getBean(QuestService.class);

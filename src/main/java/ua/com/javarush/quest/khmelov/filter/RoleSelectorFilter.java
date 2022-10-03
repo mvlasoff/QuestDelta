@@ -17,8 +17,8 @@ import java.util.Objects;
 import static ua.com.javarush.quest.khmelov.util.Go.*;
 
 
-@WebFilter({ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER, GAME, CREATE})
-public class RoleSelector implements Filter {
+@WebFilter(filterName = "RoleSelector", value = {ROOT, USERS, LOGIN, SIGNUP, PROFILE, LOGOUT, EDIT_USER, GAME, CREATE})
+public class RoleSelectorFilter implements Filter {
 
     private final Map<Role, List<String>> uriMap = Map.of(
             Role.GUEST, List.of(ROOT, USERS, LOGIN, SIGNUP, GAME),

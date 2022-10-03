@@ -12,7 +12,7 @@ import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.io.IOException;
 
-@WebServlet({Go.USERS})
+@WebServlet(value = {Go.USERS},name = "UsersServlet")
 public class UsersServlet extends HttpServlet {
 
     private final UserService userService = Winter.getBean(UserService.class);

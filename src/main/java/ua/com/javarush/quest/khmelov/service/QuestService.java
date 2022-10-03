@@ -43,8 +43,8 @@ public class QuestService {
     }
 
     public Optional<QuestDto> get(long id) {
-        Quest Quest = questRepository.get(id);
-        return Mapper.quest.get(Quest);
+        Quest quest = questRepository.get(id);
+        return Mapper.quest.get(quest);
     }
 
 

@@ -18,6 +18,10 @@ class QuestMapper implements Mapper<Quest, QuestDto> {
                 .id(quest.getId())
                 .name(quest.getName())
                 .authorId(quest.getAuthorId())
+                .questions(quest.getQuestions().stream()
+                        .map(Mapper.question::get)
+                        .map(Optional::orElseThrow)
+                        .toList())
                 .build()
         ) : Optional.empty();
     }

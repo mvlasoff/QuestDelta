@@ -10,7 +10,7 @@ import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.io.IOException;
 
-@WebServlet(Go.LOGOUT)
+@WebServlet(value = Go.LOGOUT, name = "LogoutServlet")
 public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

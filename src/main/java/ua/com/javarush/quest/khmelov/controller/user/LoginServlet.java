@@ -18,7 +18,7 @@ import java.util.Optional;
 import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 
 
-@WebServlet(Go.LOGIN)
+@WebServlet(value = Go.LOGIN, name = "LoginServlet")
 public class LoginServlet extends HttpServlet {
 
     private final UserService userService = Winter.getBean(UserService.class);

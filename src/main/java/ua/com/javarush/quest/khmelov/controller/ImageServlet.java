@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-@WebServlet("/images/*")
+@WebServlet(value = "/images/*", name = "ImageServlet")
 public class ImageServlet extends HttpServlet {
 
     private final ImageService imageService = Winter.getBean(ImageService.class);

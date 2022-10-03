@@ -23,7 +23,7 @@ import static ua.com.javarush.quest.khmelov.util.Jsp.Key.ROLES;
 import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 
 @MultipartConfig(fileSizeThreshold = 1 << 20)
-@WebServlet(Go.EDIT_USER)
+@WebServlet(value = Go.EDIT_USER, name = "EditUserServlet")
 public class EditUserServlet extends HttpServlet {
 
     private final UserService userService = Winter.getBean(UserService.class);

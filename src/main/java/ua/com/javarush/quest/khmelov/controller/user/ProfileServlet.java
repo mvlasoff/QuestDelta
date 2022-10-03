@@ -18,7 +18,7 @@ import java.io.IOException;
 import static ua.com.javarush.quest.khmelov.util.Jsp.Key.USER;
 
 @MultipartConfig(fileSizeThreshold = 1 << 20)
-@WebServlet(Go.PROFILE)
+@WebServlet(value = Go.PROFILE,name = "ProfileServlet")
 public class ProfileServlet extends HttpServlet {
 
     private final UserService userService = Winter.getBean(UserService.class);

@@ -22,7 +22,7 @@ import java.util.Optional;
 import static ua.com.javarush.quest.khmelov.util.Jsp.Key.ROLES;
 
 @MultipartConfig(fileSizeThreshold = 1 << 20)
-@WebServlet(Go.SIGNUP)
+@WebServlet(value = Go.SIGNUP,name = "SignupServlet")
 public class SignupServlet extends HttpServlet {
 
     private final UserService userService = Winter.getBean(UserService.class);
