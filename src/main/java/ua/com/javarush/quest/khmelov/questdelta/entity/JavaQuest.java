@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class JavaQuest implements Quest {
-    private final String questName = "Java Quest";
     private final Question startQuestion;
     private final HashMap<Long, Question> questions;
 
@@ -94,7 +93,7 @@ public class JavaQuest implements Quest {
 
     @Override
     public String getQuestName() {
-        return questName;
+        return "Java Quest";
     }
 
     @Override

@@ -21,7 +21,7 @@ public class SpaceQuestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = getId(req);
         if(id < 0) {
-            getFirstQuestion(req, resp);
+            getStartQuestion(req, resp);
         } else {
             getNextQuestion(req, resp, id);
         }
@@ -58,7 +58,7 @@ public class SpaceQuestServlet extends HttpServlet {
         Jsp.reqRespForward(req, resp, "spacequest");
     }
 
-    private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void getStartQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Question startQuestion = questService.getStartQuestion(1L);
         Collection<Answer> answers = questService.getAnswers(1L, startQuestion);
         setQuestionAnswersAndForward(req, resp, startQuestion, answers);

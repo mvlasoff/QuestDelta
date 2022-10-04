@@ -2,10 +2,11 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 
 import ua.com.javarush.quest.khmelov.questdelta.repository.GameStatistics;
 
+@SuppressWarnings("unused")
 public class UserDto {
-    private String name;
-    private Role role;
-    private GameStatistics gameStatistics;
+    private final String name;
+    private final Role role;
+    private final GameStatistics gameStatistics;
 
 
     public UserDto(User user) {

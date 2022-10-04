@@ -3,10 +3,10 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 import ua.com.javarush.quest.khmelov.questdelta.repository.GameStatistics;
 
 public class User {
-    private String login;
+    private final String login;
     private String password;
     private Role role;
-    private GameStatistics gameStatistics;
+    private final GameStatistics gameStatistics;
 
     public User(String login, String password, Role role, GameStatistics gameStatistics) {
         this.login = login;
@@ -31,6 +31,7 @@ public class User {
         return gameStatistics;
     }
 
+    @SuppressWarnings("unused")
     public void setPassword(String password) {
         this.password = password;
     }

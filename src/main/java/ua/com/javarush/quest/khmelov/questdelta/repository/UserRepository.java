@@ -9,7 +9,7 @@ public class UserRepository {
     private static final UserRepository userRepository = new UserRepository();
     private final Map<Long, User> users;
 
-    private AtomicLong id = new AtomicLong(0);
+    private final AtomicLong id = new AtomicLong(0);
 
     private UserRepository() {
         users = new HashMap<>();

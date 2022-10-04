@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public interface Quest {
 
+    @SuppressWarnings("unused")
     String getQuestName();
 
     Collection<Question> getAll();

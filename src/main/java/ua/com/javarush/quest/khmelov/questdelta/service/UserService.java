@@ -22,6 +22,7 @@ public class UserService {
         return userService;
     }
 
+    @SuppressWarnings("unused")
     public Map<Long, User> getAll() {
         return userRepository.getAll();
     }
@@ -31,13 +32,11 @@ public class UserService {
     }
 
     public Optional<User> find(String login, String password) {
-        Optional<User> user = userRepository.find(login, password);
-        return user;
+        return userRepository.find(login, password);
     }
 
     public Optional<User> verify(String login) {
-        Optional<User> user = userRepository.verify(login);
-        return user;
+        return userRepository.verify(login);
     }
 
     public void doPost(String login, String password, Role role) {

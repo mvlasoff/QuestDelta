@@ -18,10 +18,12 @@ public class GameStatistics {
         return games;
     }
 
+    @SuppressWarnings("unused")
     public int getGamesCount(long gameId) {
         return games.get(gameId).getGamesCount();
     }
 
+    @SuppressWarnings("unused")
     public int getGamesWon(long gameId) {
         return games.get(gameId).getGamesWon();
     }

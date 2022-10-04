@@ -15,9 +15,4 @@ public class Jsp {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         requestDispatcher.forward(request, response);
     }
-
-    public static void reqRespRedirect(HttpServletRequest request, HttpServletResponse response, String jspName) throws ServletException, IOException {
-        String path = "WEB-INF/%s.jsp".formatted(jspName);
-        response.sendRedirect(path);
-    }
 }

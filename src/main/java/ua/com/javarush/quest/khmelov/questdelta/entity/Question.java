@@ -6,7 +6,6 @@ public class Question {
     private final long id;
     private final String text;
     private final Set<Answer> answersSet;
-
     private final boolean isWon;
     private final String picture;
 
@@ -35,6 +34,7 @@ public class Question {
         return answersSet;
     }
 
+    @SuppressWarnings("unused")
     public String getPicture() {
         return picture;
     }

@@ -3,7 +3,6 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 import java.util.*;
 
 public class SpaceQuest implements Quest {
-    private final String questName = "Space Quest";
     private final Question startQuestion;
     private final HashMap<Long, Question> questions;
 
@@ -43,7 +42,7 @@ public class SpaceQuest implements Quest {
 
     @Override
     public String getQuestName() {
-        return questName;
+        return "Space Quest";
     }
 
     @Override

@@ -21,7 +21,7 @@ public class JavaQuestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = getId(req);
         if(id < 0) {
-            getFirstQuestion(req, resp);
+            getStartQuestion(req, resp);
         } else {
             getNextQuestion(req, resp, id);
         }
@@ -57,13 +57,14 @@ public class JavaQuestServlet extends HttpServlet {
         Jsp.reqRespForward(req, resp, "javaquest");
     }
 
-    private void getFirstQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void getStartQuestion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Question startQuestion = questService.getStartQuestion(2L);
         Collection<Answer> answers = questService.getAnswers(2L, startQuestion);
         setQuestionAnswersAndForward(req, resp, startQuestion, answers);
     }
 
     private long getId(HttpServletRequest req) {
+        @SuppressWarnings("DuplicatedCode")
         String id = req.getParameter("id");
         if(id == null || id.isBlank()) {
             return -1;

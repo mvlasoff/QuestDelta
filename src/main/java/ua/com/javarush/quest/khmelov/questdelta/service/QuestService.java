@@ -22,6 +22,7 @@ public class QuestService {
         return questService;
     }
 
+    @SuppressWarnings("unused")
     public Collection<Question> getAll(long questId) {
         return questRepository.getAll(questId);
     }
