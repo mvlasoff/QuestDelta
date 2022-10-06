@@ -6,24 +6,27 @@ import ua.com.javarush.quest.khmelov.exception.AppException;
 import ua.com.javarush.quest.khmelov.service.ImageService;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Config {
 
     public DataBase dataBase = new DataBase();
 
 
-    /**    for windows
-     *     public static final Path WEB_INF = Path.of(Objects.requireNonNull(
-     *             ImageService.class.getResource("/").toString()
-     *     ).replace("file:/", "")).getParent();
+    /**
+     * multiplatform path extractor
      */
-    public static final Path WEB_INF = Path.of(Objects.requireNonNull(
-            ImageService.class.getResource("/")
-    ).getPath()).getParent();
+    public static final Path WEB_INF = Path.of(
+            URI.create(
+                    Objects.requireNonNull(
+                            ImageService.class.getResource("/")
+                    ).toString()
+            )
+    ).getParent();
+
 
     private static final String APPLICATION_YAML = "/application.yaml";
     private static volatile Config config;

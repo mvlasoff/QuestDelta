@@ -13,7 +13,6 @@ import ua.com.javarush.quest.khmelov.repository.UserRepository;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -63,19 +62,17 @@ public class UserService {
     }
 
     public Collection<StatDto> getStat() {
-        //todo without user
-        return userRepository.getAll()
-                .map(user -> Game.with().userId(user.getId()).build())
-                .map(pattern -> gameRepository.find(pattern).toList())
-                .map(UserService::getStatDto).toList();
+        return userRepository.getAll().map(this::getStatDto).toList();
     }
 
-    private static StatDto getStatDto(List<Game> games) {
-        //todo many iterations
+    private StatDto getStatDto(User user) {
+        Game pattern = Game.with().userId(user.getId()).build();
+        List<Game> games = gameRepository.find(pattern).toList();
         long win = games.stream().filter(game -> game.getGameState().equals(GameState.WIN)).count();
         long lost = games.stream().filter(game -> game.getGameState().equals(GameState.LOST)).count();
         long play = games.stream().filter(game -> game.getGameState().equals(GameState.PLAY)).count();
         return StatDto.with()
+                .login(user.getLogin())
                 .win(win)
                 .lost(lost)
                 .play(play)

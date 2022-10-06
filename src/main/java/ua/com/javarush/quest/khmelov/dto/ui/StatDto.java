@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder(builderMethodName = "with")
 public class StatDto {
-    String userName;
+    String login;
     long win;
     long lost;
     long play;
