@@ -1,6 +1,7 @@
 package ua.com.javarush.quest.khmelov.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,8 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 public class RepositoryService {
 
-    public final ObjectMapper MAPPER = new ObjectMapper();
-    public final String IMAGES = "images";
+    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final String IMAGES = "images";
 
     {
         MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
@@ -34,7 +35,8 @@ public class RepositoryService {
     public void load() {
         Path jsonPath = getJsonPath();
         if (Files.exists(jsonPath)) {
-            List<User> list = MAPPER.readerForListOf(User.class).readValue(jsonPath.toFile());
+            ObjectReader objectReader = MAPPER.readerForListOf(User.class);
+            List<User> list = objectReader.readValue(jsonPath.toFile());
             final QuestRepository questRepository = Winter.getBean(QuestRepository.class);
             final GameRepository gameRepository = Winter.getBean(GameRepository.class);
             final QuestionRepository questionRepository = Winter.getBean(QuestionRepository.class);

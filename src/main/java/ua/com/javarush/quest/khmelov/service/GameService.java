@@ -6,10 +6,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.GameDto;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestionDto;
 import ua.com.javarush.quest.khmelov.entity.*;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
-import ua.com.javarush.quest.khmelov.repository.GameRepository;
-import ua.com.javarush.quest.khmelov.repository.QuestRepository;
-import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
+import ua.com.javarush.quest.khmelov.repository.*;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -17,6 +14,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class GameService {
 
+    private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final QuestRepository questRepository;
     private final QuestionRepository questionRepository;
@@ -67,6 +65,7 @@ public class GameService {
                 .gameState(firstQuestion.getState())
                 .userId(userId) //from session
                 .build();
+        userRepository.get(userId).getGames().add(newGame);
         gameRepository.create(newGame);
         return newGame;
     }

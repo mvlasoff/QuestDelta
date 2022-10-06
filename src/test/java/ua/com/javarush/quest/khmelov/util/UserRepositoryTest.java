@@ -1,6 +1,7 @@
 package ua.com.javarush.quest.khmelov.util;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,7 +23,7 @@ class UserRepositoryTest {
 
     @BeforeAll
     public static void load(){
-        repositoryService.load();
+        //repositoryService.load();
     }
 
     public static Stream<Arguments> getSamplePatternForSearch() {
@@ -45,6 +46,7 @@ class UserRepositoryTest {
     }
 
     @ParameterizedTest
+    @Disabled
     @MethodSource("getSamplePatternForSearch")
     @DisplayName("Check find by not null fields")
     public void find(User user, int count) {

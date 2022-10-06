@@ -15,6 +15,12 @@ public class Config {
 
     public DataBase dataBase = new DataBase();
 
+
+    /**    for windows
+     *     public static final Path WEB_INF = Path.of(Objects.requireNonNull(
+     *             ImageService.class.getResource("/").toString()
+     *     ).replace("file:/", "")).getParent();
+     */
     public static final Path WEB_INF = Path.of(Objects.requireNonNull(
             ImageService.class.getResource("/")
     ).getPath()).getParent();
