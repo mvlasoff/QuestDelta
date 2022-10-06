@@ -1,52 +1,85 @@
-package ua.com.javarush.quest.khmelov.util;
+package ua.com.javarush.quest.khmelov.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.io.FileUtils;
 import ua.com.javarush.quest.khmelov.config.Config;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.*;
 import ua.com.javarush.quest.khmelov.service.QuestService;
 
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-@UtilityClass
-public class RepositoryLoader {
+@AllArgsConstructor
+public class RepositoryService {
 
-    public static final ObjectMapper MAPPER = new ObjectMapper();
+    public final ObjectMapper MAPPER = new ObjectMapper();
+    public final String IMAGES = "images";
 
-    private final UserRepository userRepository = Winter.getBean(UserRepository.class);
-    private final QuestService questService = Winter.getBean(QuestService.class);
+    {
+        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+    }
 
+    private final UserRepository userRepository;
+    private final QuestService questService;
+
+    @SneakyThrows
     public void load() {
-        //load from json
-        defaultTxtInit();
-        save();
+        Path jsonPath = getJsonPath();
+        if (Files.exists(jsonPath)) {
+            List<User> list = MAPPER.readerForListOf(User.class).readValue(jsonPath.toFile());
+            final QuestRepository questRepository = Winter.getBean(QuestRepository.class);
+            final GameRepository gameRepository = Winter.getBean(GameRepository.class);
+            final QuestionRepository questionRepository = Winter.getBean(QuestionRepository.class);
+            final AnswerRepository answerRepository = Winter.getBean(AnswerRepository.class);
+            list.forEach(user -> {
+                user.getQuests().stream()
+                        .peek(quest -> quest.getQuestions().stream()
+                                .peek(question -> question.getAnswers().forEach(answerRepository::create))
+                                .forEach(questionRepository::create)
+                        )
+                        .forEach(questRepository::create);
+                user.getGames().forEach(gameRepository::create);
+                userRepository.create(user);
+            });
+            Path images = Config.WEB_INF.resolve(IMAGES);
+            Path backupImages = jsonPath.getParent().resolve(IMAGES);
+            FileUtils.copyDirectory(backupImages.toFile(), images.toFile());
+        } else {
+            defaultTxtInit();
+            save();
+        }
     }
-
-    public static void main(String[] args) {
-        RepositoryLoader.load();
-    }
-
 
     @SneakyThrows
     public void save() {
-        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         List<User> users = userRepository.getAll().toList();
-        Config config = Config.get();
-        Path folder = Path.of(config.dataBase.folder);
-        Files.createDirectories(folder);
-        String json = config.dataBase.json;
-        try (OutputStream outputStream = Files.newOutputStream(folder.resolve(json))) {
-            MAPPER.writeValue(outputStream, users);
+        Path jsonPath = getJsonPath();
+        if (!Files.exists(jsonPath.getParent())) {
+            Files.createDirectory(jsonPath.getParent());
         }
+        MAPPER.writeValue(jsonPath.toFile(), users);
+        Path images = Config.WEB_INF.resolve(IMAGES);
+        Path backupImages = jsonPath.getParent().resolve(IMAGES);
+        FileUtils.copyDirectory(images.toFile(), backupImages.toFile());
     }
+
+    private Path getJsonPath() {
+        Config config = Config.get();
+        Path backupFolder = Path.of(config.dataBase.folder);
+        if (!backupFolder.isAbsolute()) {
+            backupFolder = Config.WEB_INF.resolve(backupFolder);
+        }
+        return backupFolder.resolve(config.dataBase.json);
+    }
+
 
     private void defaultTxtInit() {
         //пользователи
@@ -64,15 +97,15 @@ public class RepositoryLoader {
                         1:  Ты потерял память. Принять вызов НЛО?
                         2<  Принять вызов
                         91< Отклонить вызов
-                        
+                                                
                         2:  Ты принял вызов. Подняться на мостик к капитану?
                         92< Отказаться подниматься на мостик
                         3< Подняться на мостик
-                        
+                                                
                         3:  Ты поднялся на мостик. Ты кто?
                         93< Солгать о себе
                         99< Рассказать правду
-                        
+                                                
                         91- Ты отклонил вызов. Поражение.
                         92- Ты не пошел на переговоры. Поражение.
                         93- Твою ложь разоблачили. Поражение.
@@ -114,13 +147,13 @@ public class RepositoryLoader {
                         7: Ого. Вот она, большая кучу золота.
                         11< Ура. Набиваем карманы....
                         2< Что-то тут не то, закрою-ка я этот сундук..
-                        
+                                                
                         8: Ты заходишь в пещеру, а там Кащей, с Бабой Ягой, и Змеем Горынычем смотрят ролики на Youtube. <br>Что будешь делать?
                         12< Ясно что! В Бой!!!
-                        
+                                                
                         9: Какая-то странная дорога, она ведет назад или мне это кажется?
                         1< Делать нечего, иду дальше....
-                        
+                                                
                         10+ Ура! Это победа! <br>Но мне пора действительно кодить, хватит уже ерундой заниматься.
                         11- И тут прибежали злые печенеги и убили тебя. <br>Жадность до добра не доведет. <br>Это поражение!
                         12- Тут и сказочке конец. <br>Ужасная смерть в неравном бою. <br>Это поражение!

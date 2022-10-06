@@ -12,6 +12,7 @@ import ua.com.javarush.quest.khmelov.mapping.Mapper;
 import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
 import ua.com.javarush.quest.khmelov.repository.QuestRepository;
 import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
+import ua.com.javarush.quest.khmelov.repository.UserRepository;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.util.Collection;
@@ -30,6 +31,7 @@ public class QuestService {
     public static final String LINK_SYMBOL = "<";
     public static final String DIGITS = "\\d+";
 
+    private final UserRepository userRepository;
     private final QuestRepository questRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -64,6 +66,7 @@ public class QuestService {
                 .name(name)
                 .build();
         questRepository.create(quest);
+        userRepository.get(userId).getQuests().add(quest);
 
         map.values().forEach(questionRepository::create);
 

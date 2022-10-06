@@ -38,7 +38,7 @@
                 <label class="col-md-4 control-label" for="submit"></label>
                 <div class="col-md-4">
                     <button id="submit" name="Sign-in"
-                            class="btn btn-success">Sign-in</button>
+                            class="btn btn-success">Войти</button>
                 </div>
             </div>
 

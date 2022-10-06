@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
 public class Quest extends Entity {
     Long id;

@@ -9,6 +9,7 @@ import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.service.RepositoryService;
 
 import java.util.stream.Stream;
 
@@ -16,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserRepositoryTest {
 
-    private final UserRepository repository = Winter.getBean(UserRepository.class);
+    private static final UserRepository userRepository = Winter.getBean(UserRepository.class);
+    private static final RepositoryService repositoryService = Winter.getBean(RepositoryService.class);
 
     @BeforeAll
     public static void load(){
-        RepositoryLoader.load();
+        repositoryService.load();
     }
 
     public static Stream<Arguments> getSamplePatternForSearch() {
@@ -46,7 +48,7 @@ class UserRepositoryTest {
     @MethodSource("getSamplePatternForSearch")
     @DisplayName("Check find by not null fields")
     public void find(User user, int count) {
-        long actualCount = repository.find(user).count();
+        long actualCount = userRepository.find(user).count();
         assertEquals(count, actualCount);
     }
 

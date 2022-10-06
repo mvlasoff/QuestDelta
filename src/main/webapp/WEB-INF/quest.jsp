@@ -2,13 +2,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <c:import url="parts/header.jsp"/>
 <div class="container">
-    <h5>${requestScope.quest.text}</h5>
+    <h5>${requestScope.quest.name}</h5>
     <c:forEach var="question" items="${requestScope.quest.questions}">
-        <img src="images/${question.image}" width="10%" >
-        <form class="row row-cols-lg-auto g-3 align-items-center">
-                <input class="w-25" id="question-image" name="image" type="file">
-                <input class="w-50" type="text" id="question-text" value="${question.text}">
-                <button type="submit" class="btn btn-primary w-25">Submit</button>
+        <a id="q${question.id}"></a>
+        <form class="row row-cols-lg-auto g-3 align-items-center"
+              action="quest"
+              method="post" enctype="multipart/form-data"
+              id="form${question.id}">
+            <input  name="text" class="w-100" type="text" value="${question.text}">
+            <img src="images/${question.image}" class="w-25" alt="${question.text}" height="10%">
+            <input name="image" class="w-25" type="file">
+            <button type="submit" class="btn btn-primary">Обновить</button>
+
+                <%-- WARNING Here id send as idQuest,
+                because in current form main identifier is question.id --%>
+            <input name="id" type="hidden" value="${question.id}">
+            <input name="idQuest" type="hidden" value="${requestScope.quest.id}">
         </form>
     </c:forEach>
 </div>

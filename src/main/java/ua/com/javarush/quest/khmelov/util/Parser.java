@@ -20,7 +20,6 @@ public class Parser {
         } else {
             throw new AppException("incorrect uri: " + uri);
         }
-
     }
 
     public Long getId(HttpServletRequest req) {

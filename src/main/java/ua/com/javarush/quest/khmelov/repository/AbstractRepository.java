@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public abstract class AbstractRepository<T extends Entity> implements Repository<T> {
 
-    public static final AtomicLong id = new AtomicLong(System.currentTimeMillis());
+    public static final AtomicLong id = new AtomicLong(10L);
     protected final Map<Long, T> map = new HashMap<>();
 
     @Override

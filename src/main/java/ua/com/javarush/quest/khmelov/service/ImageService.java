@@ -4,6 +4,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import lombok.SneakyThrows;
+import ua.com.javarush.quest.khmelov.config.Config;
+import ua.com.javarush.quest.khmelov.exception.AppException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,22 +18,29 @@ import java.util.Optional;
 
 public class ImageService {
 
-    public static final String ROOT = "/";
     public static final String IMAGES_FOLDER = "images";
     public static final String PART_NAME = "image";
     public static final String FILENAME_PREFIX = "image-";
     public static final String NO_IMAGE_PNG = "no-image.png";
     public static final List<String> EXTENSIONS = List.of(".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp");
-    private final Path imagesFolder = Path.of(Objects.requireNonNull(
-                    ImageService.class.getResource(ROOT)
-            ).getPath())
-            .getParent()
-            .resolve(IMAGES_FOLDER);
 
+    private final Path imagesFolder = Config.WEB_INF.resolve(IMAGES_FOLDER);
 
     @SneakyThrows
     public ImageService() {
         Files.createDirectories(imagesFolder);
+    }
+
+    @SneakyThrows
+    public void backup(Path destinationFolder) {
+        Files.list(imagesFolder)
+                .forEach(image -> {
+                    try {
+                        Files.copy(image, destinationFolder, StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException e) {
+                        throw new AppException(e.getMessage());
+                    }
+                });
     }
 
 
@@ -46,8 +55,7 @@ public class ImageService {
 
     public void uploadImage(HttpServletRequest req) throws IOException, ServletException {
         Part data = req.getPart(PART_NAME);
-        //todo add a file extension
-        if (data.getInputStream().available() > 0) {
+        if (Objects.nonNull(data) && data.getInputStream().available() > 0) {
             String id = req.getParameter("id");
             String filename = data.getSubmittedFileName();
             String ext = filename.substring(filename.lastIndexOf("."));
@@ -61,7 +69,7 @@ public class ImageService {
         EXTENSIONS.stream()
                 .map(ext -> imagesFolder.resolve(filename + ext))
                 .filter(Files::exists)
-                .forEach(p-> {
+                .forEach(p -> {
                     try {
                         Files.deleteIfExists(p);
                     } catch (IOException e) {

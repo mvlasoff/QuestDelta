@@ -5,8 +5,10 @@ import lombok.Data;
 
 @Data
 @Builder(builderMethodName = "with")
-public class AnswerDto {
-    Long id;
-    String text;
-    Long nextQuestionId;
+public class StatDto {
+    String userName;
+    long win;
+    long lost;
+    long play;
+    long total;
 }

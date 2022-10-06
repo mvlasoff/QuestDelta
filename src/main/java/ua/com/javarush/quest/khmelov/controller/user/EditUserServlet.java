@@ -64,7 +64,7 @@ public class EditUserServlet extends HttpServlet {
         }
     }
 
-    private boolean checkEditorInSession(HttpServletRequest req) {
+    private static boolean checkEditorInSession(HttpServletRequest req) {
         long id = Parser.getId(req);
         Optional<UserDto> editor = Parser.getUser(req.getSession());
         return editor.isPresent() &&

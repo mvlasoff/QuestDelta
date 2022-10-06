@@ -1,5 +1,6 @@
 package ua.com.javarush.quest.khmelov.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -7,9 +8,9 @@ import java.util.Collection;
 
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
 public final class User extends Entity {
 
@@ -19,6 +20,7 @@ public final class User extends Entity {
 
     String password;
 
+    @JsonIgnore
     public String getImage() {
         return "image-" + id;
     }

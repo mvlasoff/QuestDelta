@@ -10,7 +10,7 @@
     <div class="px-3 py-3 my-3 text-left">
 
         <div class="form-group text-center">
-            <img src="images/${question.image}" width="30%" alt="${question.image}">
+            <img src="images/${question.image}" height="50%" alt="${question.image}">
         </div>
         <p class="lead mb-2">
 

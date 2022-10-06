@@ -2,19 +2,26 @@ package ua.com.javarush.quest.khmelov.service;
 
 import lombok.AllArgsConstructor;
 import ua.com.javarush.quest.khmelov.dto.FormData;
+import ua.com.javarush.quest.khmelov.dto.ui.StatDto;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
+import ua.com.javarush.quest.khmelov.entity.Game;
+import ua.com.javarush.quest.khmelov.entity.GameState;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
+import ua.com.javarush.quest.khmelov.repository.GameRepository;
 import ua.com.javarush.quest.khmelov.repository.UserRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    
+    private final GameRepository gameRepository;
+
     public Collection<UserDto> getAll() {
         return userRepository.getAll()
                 .map(Mapper.user::get)
@@ -53,5 +60,26 @@ public class UserService {
     public void delete(FormData formData) {
         User user = userRepository.get(formData.getId());
         userRepository.delete(user);
+    }
+
+    public Collection<StatDto> getStat() {
+        //todo without user
+        return userRepository.getAll()
+                .map(user -> Game.with().userId(user.getId()).build())
+                .map(pattern -> gameRepository.find(pattern).toList())
+                .map(UserService::getStatDto).toList();
+    }
+
+    private static StatDto getStatDto(List<Game> games) {
+        //todo many iterations
+        long win = games.stream().filter(game -> game.getGameState().equals(GameState.WIN)).count();
+        long lost = games.stream().filter(game -> game.getGameState().equals(GameState.LOST)).count();
+        long play = games.stream().filter(game -> game.getGameState().equals(GameState.PLAY)).count();
+        return StatDto.with()
+                .win(win)
+                .lost(lost)
+                .play(play)
+                .total(win + lost + play)
+                .build();
     }
 }

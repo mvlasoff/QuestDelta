@@ -13,6 +13,7 @@ import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
+import ua.com.javarush.quest.khmelov.repository.GameRepository;
 import ua.com.javarush.quest.khmelov.repository.UserRepository;
 
 import java.util.Map;
@@ -31,6 +32,9 @@ class UserServiceTest {
     UserRepository userRepositoryMock;
 
     @Mock
+    GameRepository gameRepository;
+
+    @Mock
     HttpServletRequest requestStub;
 
     private UserService userService;
@@ -40,7 +44,7 @@ class UserServiceTest {
 
     @BeforeEach
     void createService() {
-        userService = new UserService(userRepositoryMock);
+        userService = new UserService(userRepositoryMock, gameRepository);
         user = User.with()
                 .id(ID)
                 .login("Test")
