@@ -83,7 +83,7 @@ public class RepositoryService {
     }
 
 
-    private void defaultTxtInit() {
+    public void defaultTxtInit() {
         //пользователи
         User ivan = new User(1L, "Ivan", "456", Role.ADMIN);
         User andrew = new User(2L, "Andrew", "789", Role.GUEST);
