@@ -9,10 +9,15 @@ public class JdbcStarter {
     public static final String DB_PASSWORD = "postgre";
 
     public static void main(String[] args) {
-        execute(SqlData.sqlDeleteTableUser);
-        execute(SqlData.sqlCreateTableUser);
-        executeUpdate(SqlData.sqlAddUsers);
-        printAllUsers(SqlData.sqlAllUsers);
+        try {
+            execute(SqlData.sqlDeleteTableUser);
+            execute(SqlData.sqlCreateTableUser);
+            executeUpdate(SqlData.sqlAddUsers);
+            printAllUsers(SqlData.sqlAllUsers);
+        } finally {
+           CnnPool.destroy();
+        }
+
     }
 
     private static void printAllUsers(String sqlAllUsers) {
@@ -68,9 +73,6 @@ public class JdbcStarter {
     }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                DB_URL,
-                DB_USER,
-                DB_PASSWORD);
+        return CnnPool.get();
     }
 }

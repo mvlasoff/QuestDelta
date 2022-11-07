@@ -75,11 +75,11 @@ public class RepositoryService {
 
     private Path getJsonPath() {
         Config config = Config.get();
-        Path backupFolder = Path.of(config.dataBase.folder);
+        Path backupFolder = Path.of(config.dataBase.getFolder());
         if (!backupFolder.isAbsolute()) {
             backupFolder = Config.WEB_INF.resolve(backupFolder);
         }
-        return backupFolder.resolve(config.dataBase.json);
+        return backupFolder.resolve(config.dataBase.getJson());
     }
 
 
