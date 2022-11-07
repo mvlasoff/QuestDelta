@@ -4,12 +4,11 @@ import lombok.experimental.UtilityClass;
 import ua.com.javarush.quest.khmelov.config.Config;
 
 import java.lang.reflect.Proxy;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @UtilityClass
@@ -44,8 +43,7 @@ public class CnnPool {
                         (proxy, method, args) -> "close".equals(method.getName())
                                 ? Boolean.valueOf(queue.add(proxy))
                                 : method.invoke(connection, args));
-                queue.put(proxyCnn
-                );
+                queue.put(proxyCnn);
             }
         } catch (InterruptedException | SQLException e) {
             throw new RuntimeException(e);
