@@ -1,12 +1,12 @@
 package ua.com.javarush.quest.khmelov.dao;
 
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import ua.com.javarush.quest.khmelov.config.Config;
 
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -33,39 +33,30 @@ public class CnnPool {
         fill();
     }
 
+    @SneakyThrows
     private void fill() {
-        try {
-            for (int i = 0; i < SIZE; i++) {
-                Connection connection = DriverManager.getConnection(URI, USER, PASSWORD);
-                Object proxyCnn = Proxy.newProxyInstance(
-                        CnnPool.class.getClassLoader(),
-                        new Class[]{Connection.class},
-                        (proxy, method, args) -> "close".equals(method.getName())
-                                ? Boolean.valueOf(queue.add(proxy))
-                                : method.invoke(connection, args));
-                queue.put(proxyCnn);
-            }
-        } catch (InterruptedException | SQLException e) {
-            throw new RuntimeException(e);
+        for (int i = 0; i < SIZE; i++) {
+            Connection connection = DriverManager.getConnection(URI, USER, PASSWORD);
+            Object proxyCnn = Proxy.newProxyInstance(
+                    CnnPool.class.getClassLoader(),
+                    new Class[]{Connection.class},
+                    (proxy, method, args) -> "close".equals(method.getName())
+                            ? Boolean.valueOf(queue.add(proxy))
+                            : method.invoke(connection, args));
+            queue.put(proxyCnn);
         }
-
     }
 
+    @SneakyThrows
     Connection get() {
-        try {
-            return (Connection) queue.take();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        return (Connection) queue.take();
     }
 
+    @SneakyThrows
     void destroy() {
         for (Connection connection : connections) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            connection.close();
         }
     }
 }
+
