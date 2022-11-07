@@ -2,6 +2,7 @@ package ua.com.javarush.quest.khmelov.config;
 
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import lombok.Data;
 import ua.com.javarush.quest.khmelov.exception.AppException;
 import ua.com.javarush.quest.khmelov.service.ImageService;
 
@@ -61,8 +62,13 @@ public class Config {
         return config;
     }
 
+    @Data
     public static class DataBase {
-        public String folder = "db";
-        public String json = "tree.json";
+        String folder = "db";
+        String json = "tree.json";
+        //db connection data
+        String uri = null;
+        String user = null;
+        String password = null;
     }
 }
