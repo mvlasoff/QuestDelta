@@ -44,6 +44,7 @@ public class CnnPool {
                             ? Boolean.valueOf(queue.add(proxy))
                             : method.invoke(connection, args));
             queue.put(proxyCnn);
+            connections.add(connection);
         }
     }
 
