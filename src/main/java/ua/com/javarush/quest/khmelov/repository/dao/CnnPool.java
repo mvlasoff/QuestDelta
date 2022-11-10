@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.dao;
+package ua.com.javarush.quest.khmelov.repository.dao;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -49,13 +49,18 @@ public class CnnPool {
     }
 
     @SneakyThrows
-    Connection get() {
+    public Connection get() {
         return (Connection) queue.take();
     }
 
+
     @SneakyThrows
-    void destroy() {
+    public void destroy() {
         for (Connection connection : connections) {
+            if (!connection.getAutoCommit()) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }
             connection.close();
         }
     }

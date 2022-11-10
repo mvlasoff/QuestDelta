@@ -9,10 +9,10 @@ import ua.com.javarush.quest.khmelov.entity.Quest;
 import ua.com.javarush.quest.khmelov.entity.Question;
 import ua.com.javarush.quest.khmelov.exception.AppException;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.AnswerRepository;
-import ua.com.javarush.quest.khmelov.repository.QuestRepository;
-import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
-import ua.com.javarush.quest.khmelov.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.AnswerRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.QuestRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.QuestionRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.UserRepository;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.util.Collection;

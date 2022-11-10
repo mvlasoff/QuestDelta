@@ -13,8 +13,8 @@ import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.GameRepository;
-import ua.com.javarush.quest.khmelov.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.GameRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.UserRepository;
 
 import java.util.Map;
 import java.util.Optional;

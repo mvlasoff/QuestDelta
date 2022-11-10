@@ -1,6 +1,7 @@
-package ua.com.javarush.quest.khmelov.repository;
+package ua.com.javarush.quest.khmelov.repository.memory;
 
 import ua.com.javarush.quest.khmelov.entity.Entity;
+import ua.com.javarush.quest.khmelov.repository.Repository;
 
 import java.util.HashMap;
 import java.util.Map;

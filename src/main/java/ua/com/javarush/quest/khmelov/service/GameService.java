@@ -6,7 +6,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.GameDto;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestionDto;
 import ua.com.javarush.quest.khmelov.entity.*;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.*;
+import ua.com.javarush.quest.khmelov.repository.memory.*;
 
 import java.util.Comparator;
 import java.util.Optional;

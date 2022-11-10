@@ -7,7 +7,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.AnswerDto;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestionDto;
 import ua.com.javarush.quest.khmelov.entity.Question;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.QuestionRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.QuestionRepository;
 
 import java.util.List;
 import java.util.Optional;

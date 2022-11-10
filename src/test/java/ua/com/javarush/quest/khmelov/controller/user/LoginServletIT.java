@@ -12,7 +12,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.memory.UserRepository;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
