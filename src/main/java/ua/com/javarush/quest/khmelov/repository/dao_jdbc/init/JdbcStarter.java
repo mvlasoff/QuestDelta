@@ -1,7 +1,7 @@
-package ua.com.javarush.quest.khmelov.repository.dao.init;
+package ua.com.javarush.quest.khmelov.repository.dao_jdbc.init;
 
-import ua.com.javarush.quest.khmelov.repository.dao.CnnPool;
-import ua.com.javarush.quest.khmelov.repository.dao.DaoException;
+import ua.com.javarush.quest.khmelov.repository.dao_jdbc.CnnPool;
+import ua.com.javarush.quest.khmelov.repository.dao_jdbc.DaoException;
 
 import java.sql.*;
 

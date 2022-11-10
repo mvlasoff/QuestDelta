@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.repository.dao;
+package ua.com.javarush.quest.khmelov.repository.dao_jdbc;
 
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
@@ -12,18 +12,18 @@ public class UserDao implements Repository<User> {
 
     public static final String SQL_GET_ALL = """
             SELECT "id", "login", "password", "role"
-            FROM "user"
+            FROM "t_user"
             """;
 
     public static final String SQL_GET_BY_ID = """
             SELECT "id", "login", "password", "role"
-            FROM "user"
+            FROM "t_user"
             WHERE id=?
             """;
 
     public static final String SQL_FIND = """
             SELECT "id", "login", "password", "role"
-            FROM "user"
+            FROM "t_user"
             WHERE
             (? OR id=?) AND
             (? OR login=?) AND
@@ -31,11 +31,11 @@ public class UserDao implements Repository<User> {
             (? OR role=?);
             """;
     public static final String SQL_CREATE = """
-             INSERT INTO "user"(login, password, role)
+             INSERT INTO "t_user"(login, password, role)
              VALUES (?,?,?)
             """;
     public static final String SQL_UPDATE = """
-            UPDATE "user"
+            UPDATE "t_user"
                SET login=?,
                    password=?,
                    role=?
@@ -43,7 +43,7 @@ public class UserDao implements Repository<User> {
             """;
     public static final String SQL_DELETE = """
             DELETE
-            FROM "user"
+            FROM "t_user"
             WHERE id=?
             """;
 

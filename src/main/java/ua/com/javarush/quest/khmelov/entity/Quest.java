@@ -10,7 +10,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class Quest extends Entity {
+public class Quest extends AbstractEntity {
     Long id;
     Long authorId;
     String name;

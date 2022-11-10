@@ -16,7 +16,7 @@ import java.util.function.Function;
 /**
  * Mapper Entity -> DTO and fill from Request -> Entity
  */
-public interface Mapper<E extends Entity, R> {
+public interface Mapper<E extends AbstractEntity, R> {
 
     /**
      * form Service to Servlet layer
@@ -49,7 +49,7 @@ public interface Mapper<E extends Entity, R> {
      * @return existing entity
      */
     default E fill(E entity, FormData formData) {
-        Class<? extends Entity> aClass = entity.getClass();
+        Class<? extends AbstractEntity> aClass = entity.getClass();
         Method[] methods = aClass.getMethods();
         for (Method method : methods) {
             String methodName = method.getName();
@@ -91,7 +91,7 @@ public interface Mapper<E extends Entity, R> {
         );
     }
 
-    private static void set(Object entity, Class<? extends Entity> aClass, String name, Class<?> type, Object o) {
+    private static void set(Object entity, Class<? extends AbstractEntity> aClass, String name, Class<?> type, Object o) {
         try {
             String setter = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
             aClass.getMethod(setter, type).invoke(entity, o);

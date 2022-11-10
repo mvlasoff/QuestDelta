@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class Answer extends Entity {
+public class Answer extends AbstractEntity {
     Long id;
     Long questionId;
     String text;

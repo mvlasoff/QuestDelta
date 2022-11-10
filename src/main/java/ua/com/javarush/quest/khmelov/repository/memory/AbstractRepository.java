@@ -1,6 +1,6 @@
 package ua.com.javarush.quest.khmelov.repository.memory;
 
-import ua.com.javarush.quest.khmelov.entity.Entity;
+import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
 import ua.com.javarush.quest.khmelov.repository.Repository;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public abstract class AbstractRepository<T extends Entity> implements Repository<T> {
+public abstract class AbstractRepository<T extends AbstractEntity> implements Repository<T> {
 
     public static final AtomicLong id = new AtomicLong(System.currentTimeMillis());
     protected final Map<Long, T> map = new HashMap<>();

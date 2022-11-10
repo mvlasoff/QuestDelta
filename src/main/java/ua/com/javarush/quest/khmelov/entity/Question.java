@@ -11,7 +11,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class Question extends Entity {
+public class Question extends AbstractEntity {
     Long id;
     Long questId;
     @JsonIgnore

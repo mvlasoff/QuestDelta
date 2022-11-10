@@ -1,23 +1,23 @@
-package ua.com.javarush.quest.khmelov.repository.dao.init;
+package ua.com.javarush.quest.khmelov.repository.dao_jdbc.init;
 
 public final class SqlData {
 
     public static final String SQL_ALL_USERS = """
             SELECT *
-              FROM "user";
+              FROM "t_user";
             """;
 
     private SqlData() {
     }
 
     public static final String SQL_DELETE_TABLE_USER = """
-                    DROP TABLE IF EXISTS "user";
+                    DROP TABLE IF EXISTS "t_user";
                     """;
 
     public static final String SQL_CREATE_TABLE_USER = """
-            CREATE TABLE "user"
+            CREATE TABLE "t_user"
             (
-                id       SERIAL PRIMARY KEY,
+                id       BIGSERIAL PRIMARY KEY,
                 login    VARCHAR(128) UNIQUE,
                 password VARCHAR(128) NOT NULL,
                 role     VARCHAR(32)
@@ -25,7 +25,7 @@ public final class SqlData {
             """;
 
     public static final String SQL_ADD_USERS = """
-            INSERT INTO "user"(login, password, role)
+            INSERT INTO "t_user"(login, password, role)
             VALUES ('Ivan', '456', 'ADMIN'),
                    ('Andrew', '678', 'GUEST'),
                    ('Elena', '123', 'USER');

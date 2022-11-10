@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
-public class Game extends Entity {
+public class Game extends AbstractEntity {
     Long id;
     Long questId;
     Long userId;

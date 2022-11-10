@@ -1,10 +1,10 @@
 package ua.com.javarush.quest.khmelov.repository;
 
-import ua.com.javarush.quest.khmelov.entity.Entity;
+import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
 
 import java.util.stream.Stream;
 
-public interface Repository<T extends Entity> {
+public interface Repository<T extends AbstractEntity> {
 
     Stream<T> getAll();
 
