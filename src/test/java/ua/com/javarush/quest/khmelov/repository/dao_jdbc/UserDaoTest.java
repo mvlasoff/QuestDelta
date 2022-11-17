@@ -42,19 +42,19 @@ class UserDaoTest {
         );
     }
 
-    @Test
-    @DisplayName("When get all count=3")
-    void getAll() {
-        long count = userDao.getAll().count();
-        assertEquals(3, count);
-    }
-
     @ParameterizedTest
     @MethodSource("getSamplePatternForSearch")
     @DisplayName("Check find by not null fields")
     public void find(User user, int count) {
         long actualCount = userDao.find(user).count();
         assertEquals(count, actualCount);
+    }
+
+    @Test
+    @DisplayName("When get all count=3")
+    void getAll() {
+        long count = userDao.getAll().count();
+        assertEquals(3, count);
     }
 
     @Test
