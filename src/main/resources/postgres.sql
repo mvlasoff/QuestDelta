@@ -17,7 +17,7 @@ CREATE TABLE "user"
 
 INSERT INTO "user"(id, login, password, role)
 VALUES (1, 'Ivan', '456', 'ADMIN'),
-       (2, 'Andrew', '678', 'GUEST'),
+       (2, 'Andrew', '789', 'GUEST'),
        (3, 'Elena', '123', 'USER');
 
 SELECT DISTINCT id f_id, login f_login, password

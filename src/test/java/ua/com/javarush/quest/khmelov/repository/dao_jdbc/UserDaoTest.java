@@ -1,7 +1,6 @@
 package ua.com.javarush.quest.khmelov.repository.dao_jdbc;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,20 +42,19 @@ class UserDaoTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("getSamplePatternForSearch")
+    @DisplayName("Check find by not null fields")
+    public void find(User user, int count) {
+        long actualCount = userDao.find(user).count();
+        assertEquals(count, actualCount);
+    }
+
     @Test
     @DisplayName("When get all count=3")
     void getAll() {
         long count = userDao.getAll().count();
         assertEquals(3, count);
-    }
-
-    @ParameterizedTest
-    @MethodSource("getSamplePatternForSearch")
-    @DisplayName("Check find by not null fields")
-    @Disabled
-    public void find(User user, int count) {
-        long actualCount = userDao.find(user).count();
-        assertEquals(count, actualCount);
     }
 
     @Test

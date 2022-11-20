@@ -27,7 +27,7 @@ public final class SqlData {
     public static final String SQL_ADD_USERS = """
             INSERT INTO "t_user"(login, password, role)
             VALUES ('Ivan', '456', 'ADMIN'),
-                   ('Andrew', '678', 'GUEST'),
+                   ('Andrew', '789', 'GUEST'),
                    ('Elena', '123', 'USER');
                    """;
 }
