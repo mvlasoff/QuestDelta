@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.repository.dao_jdbc.shmibernate;
+package ua.com.javarush.quest.khmelov.repository.shmibernate;
 
 import lombok.experimental.UtilityClass;
 
