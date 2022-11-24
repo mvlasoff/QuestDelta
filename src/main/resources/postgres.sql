@@ -77,8 +77,4 @@ SELECT *
   FROM "quest";
 
 
-SELECT *
-    FROM "user";
-
-
 DROP TABLE quest;

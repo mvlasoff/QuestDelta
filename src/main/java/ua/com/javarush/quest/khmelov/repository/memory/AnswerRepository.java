@@ -6,7 +6,7 @@ import ua.com.javarush.quest.khmelov.repository.Repository;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-public class AnswerRepository extends AbstractRepository<Answer> implements Repository<Answer> {
+public class AnswerRepository extends AbstractRepository<Answer> {
 
     @Override
     public Stream<Answer> find(Answer pattern) {

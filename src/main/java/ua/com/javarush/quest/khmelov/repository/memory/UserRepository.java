@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 
-public class UserRepository extends AbstractRepository<User> implements Repository<User> {
+public class UserRepository extends AbstractRepository<User> {
 
     @Override
     public Stream<User> find(User pattern) {
