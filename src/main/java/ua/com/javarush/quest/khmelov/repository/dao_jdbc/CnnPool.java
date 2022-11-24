@@ -14,7 +14,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 @UtilityClass
 public class CnnPool {
 
-
     private static final Config.DataBase DATA_BASE = Config.get().dataBase;
     private static final String URI = DATA_BASE.getUri();
     private static final String USER = DATA_BASE.getUser();

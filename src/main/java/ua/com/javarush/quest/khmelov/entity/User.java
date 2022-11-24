@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
+
+@Getter
+@Setter
+@ToString
 
 @Entity
 @Table(name = "t_user")
