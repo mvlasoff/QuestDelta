@@ -18,6 +18,9 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "t_user")
+
+@SuppressWarnings({"com.haulmont.jpb.LombokEqualsAndHashCodeInspection", "Lombok"})
+@EqualsAndHashCode(exclude = {"games","quest"})
 public final class User extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,3 +45,6 @@ public final class User extends AbstractEntity {
     }
 
 }
+
+
+

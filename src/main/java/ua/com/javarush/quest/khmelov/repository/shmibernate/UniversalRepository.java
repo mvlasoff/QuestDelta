@@ -7,82 +7,83 @@ import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.repository.Repository;
 import ua.com.javarush.quest.khmelov.repository.dao_jdbc.CnnPool;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UniversalRepository<T extends AbstractEntity> implements Repository<T> {
 
-    public static final String DELIMITER = ",\n";
-    public static final String PREFIX = "(\n";
-    public static final String SUFFIX = "\n)";
-    public static final String COMMA = ",";
-    public static final String PRIMARY_KEY = "BIGSERIAL PRIMARY KEY";
-    public static final String NOT_NULL = "NOT NULL ";
-    public static final String UNIQUE = "UNIQUE ";
-    public static final String SPACE = " ";
-    private final Field fieldId;
-    private final List<Field> dataFields;
-    private final List<Field> allFields;
-    private final String tableName;
+
     private final Class<T> type;
     private final Dialect dialect;
 
-    private String createSql;
-    private String updateSql;
-    private String deleteSql;
-    private String getSql;
-    private String getAll;
+    //fieldsWithFirstId
+    private final List<Field> fields;
+    private final String tableName;
 
     public UniversalRepository(Class<T> type, Dialect dialect) {
         this.type = type;
         this.dialect = dialect;
-        if (!type.isAnnotationPresent(Entity.class)) {
+        if (type.isAnnotationPresent(Entity.class)) {
+            fields = Arrays.stream(type.getDeclaredFields())
+                    .sorted(Comparator.comparingInt(f -> (f.isAnnotationPresent(Id.class) ? 0 : 1)))
+                    .filter(f -> !f.isAnnotationPresent(Transient.class))
+                    .toList();
+            tableName = StrategyNaming.getTableName(type);
+            createTableIfNotExists();
+        } else {
             throw new RuntimeException("incorrect class");
         }
-        fieldId = Arrays.stream(type.getDeclaredFields())
-                .filter(f -> f.isAnnotationPresent(Id.class))
-                .findFirst().orElseThrow();
-        dataFields = Arrays.stream(type.getDeclaredFields())
-                .filter(f -> !f.isAnnotationPresent(Id.class))
-                .filter(f -> !f.isAnnotationPresent(Transient.class))
-                .toList();
-        allFields = Arrays.stream(type.getDeclaredFields())
-                .filter(f -> !f.isAnnotationPresent(Transient.class))
-                .toList();
-        tableName = StrategyNaming.getTableName(type);
-        createTableIfNotExists();
     }
 
+
+    @SneakyThrows
+    @Override
+    public Stream<T> getAll() {
+        String sql = dialect.getGetAllSql(tableName, fields);
+        System.out.println(sql);
+        try (Connection connection = CnnPool.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<T> list = new ArrayList<>();
+            while (resultSet.next()) {
+                T entity = type.getConstructor().newInstance();
+                for (Field field : fields) {
+                    String valueString = resultSet.getString(StrategyNaming.getFieldName(field));
+                    dialect.read(entity, field, valueString);
+                }
+                list.add(entity);
+            }
+            return list.stream();
+        }
+    }
+
+    @Override
+    public Stream<T> find(T entity) {
+        return null;
+    }
 
     @Override
     @SneakyThrows
     public T get(long id) {
-        T entity = type.getConstructor().newInstance();
-        if (Objects.isNull(getSql)) {
-            String fieldNames = dataFields.stream()
-                    .map(StrategyNaming::getFieldName)
-                    .collect(Collectors.joining(COMMA));
-            String where = StrategyNaming.getFieldName(fieldId) + "=?";
-            getSql = "SELECT %s \n\tFROM \"%s\"\n\tWHERE %s;"
-                    .formatted(fieldNames, tableName, where);
-            System.out.println(getSql);
-        }
+        String sql = dialect.getGetByIdSql(tableName, fields);
+        System.out.println(sql);
         try (Connection connection = CnnPool.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(getSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            T entity = type.getConstructor().newInstance();
             entity.setId(id);
             setId(entity, preparedStatement, 1);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                for (Field field : dataFields) {
+                for (int i = 1; i < fields.size(); i++) {
+                    Field field = fields.get(i);
                     String valueString = resultSet.getString(StrategyNaming.getFieldName(field));
                     dialect.read(entity, field, valueString);
                 }
@@ -93,37 +94,18 @@ public class UniversalRepository<T extends AbstractEntity> implements Repository
     }
 
     @Override
-    public Stream<T> getAll() {
-        return null;
-    }
-
-    @Override
-    public Stream<T> find(T entity) {
-        return null;
-    }
-
-    @Override
     @SneakyThrows
     public void create(T entity) {
-        if (Objects.isNull(createSql)) {
-            String fieldNames = dataFields.stream()
-                    .map(StrategyNaming::getFieldName)
-                    .collect(Collectors.joining(COMMA));
-            String places = dataFields.stream()
-                    .map(f -> "?")
-                    .collect(Collectors.joining(COMMA));
-            createSql = "INSERT INTO \"%s\" (%s) VALUES (%s)"
-                    .formatted(tableName, fieldNames, places);
-            System.out.println(createSql);
-        }
-        //INSERT INTO "user"(login, password, role) VALUES (?, ?, ?);
+        String sql = dialect.getCreateSql(tableName, fields);
+        System.out.println(sql);
         try (Connection connection = CnnPool.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             fill(entity, preparedStatement);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                entity.setId(resultSet.getLong(1));
+                long id = resultSet.getLong(1);
+                entity.setId(id);
             } else {
                 throw new RuntimeException("error save " + entity);
             }
@@ -134,21 +116,12 @@ public class UniversalRepository<T extends AbstractEntity> implements Repository
     @SneakyThrows
     @Override
     public void update(T entity) {
-        if (Objects.isNull(updateSql)) {
-            String setExpression = dataFields.stream()
-                    .map(StrategyNaming::getFieldName)
-                    .map(" %s=?"::formatted)
-                    .collect(Collectors.joining(COMMA));
-            String where = StrategyNaming.getFieldName(fieldId) + "=?";
-            updateSql = "UPDATE \"%s\"\n\tSET %s \n\tWHERE %s;"
-                    .formatted(tableName, setExpression, where);
-            System.out.println(updateSql);
-
-        }
+        String sql = dialect.getUpdateSql(tableName, fields);
+        System.out.println(sql);
         try (Connection connection = CnnPool.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             fill(entity, preparedStatement);
-            setId(entity, preparedStatement, dataFields.size() + 1);
+            setId(entity, preparedStatement, fields.size());
             preparedStatement.executeUpdate();
         }
     }
@@ -156,16 +129,58 @@ public class UniversalRepository<T extends AbstractEntity> implements Repository
     @SneakyThrows
     @Override
     public void delete(T entity) {
-        if (Objects.isNull(deleteSql)) {
-            String where = StrategyNaming.getFieldName(fieldId) + "=?";
-            deleteSql = "DELETE FROM \"%s\"\n\tWHERE %s;"
-                    .formatted(tableName, where);
-            System.out.println(deleteSql);
-        }
+        String sql = dialect.getDeleteSql(tableName, fields);
         try (Connection connection = CnnPool.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             setId(entity, preparedStatement, 1);
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @SneakyThrows
+    private void createTableIfNotExists() {
+        String sql = dialect.getCreateTableSql(tableName, fields);
+        System.out.println(sql);
+        try (Connection connection = CnnPool.get();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(sql);
+        }
+    }
+
+
+    private Object getValue(T entity, Field field) {
+        field.setAccessible(true);
+        try {
+            Object value = field.get(entity);
+            if (field.getType().isEnum()) {
+                value = value.toString();
+            }
+            return value;
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void fill(T entity, PreparedStatement preparedStatement) {
+        for (int i = 1; i < fields.size(); i++) {
+            Field field = fields.get(i);
+            try {
+                Object value = getValue(entity, field);
+                preparedStatement.setObject(i, value);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void setId(T entity, PreparedStatement preparedStatement, int pos) {
+        try {
+            Field idField = fields.get(0);
+            Object value = getValue(entity, idField);
+            preparedStatement.setObject(pos, value);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -178,64 +193,6 @@ public class UniversalRepository<T extends AbstractEntity> implements Repository
         user1.setLogin("L333");
         userUniversalRepository.update(user1);
         userUniversalRepository.delete(user1);
-    }
-
-    @SneakyThrows
-    private void createTableIfNotExists() {
-        String fieldData = allFields.stream()
-                .map(this::getOneType)
-                .collect(Collectors.joining(DELIMITER, PREFIX, SUFFIX));
-        String sql = "CREATE TABLE IF NOT EXISTS %s %s;".formatted(tableName, fieldData);
-        System.out.println(sql);
-        try (Connection connection = CnnPool.get();
-             Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sql);
-        }
-    }
-
-    private String getOneType(Field field) {
-        String fieldName = StrategyNaming.getFieldName(field);
-        String typeField = field.isAnnotationPresent(Id.class)
-                ? PRIMARY_KEY
-                : dialect.getDatabaseType(field);
-        String constraint = "";
-        if (field.isAnnotationPresent(Column.class)) {
-            Column column = field.getAnnotation(Column.class);
-            constraint = !column.nullable() ? NOT_NULL : SPACE +
-                    (column.unique() ? UNIQUE : SPACE);
-        }
-        String lineFormat = "\t%-20s %-24s %s";
-        return lineFormat.formatted(fieldName, typeField, constraint);
-    }
-
-
-    private void fill(T entity, PreparedStatement preparedStatement) {
-        for (int i = 0; i < dataFields.size(); i++) {
-            Field field = dataFields.get(i);
-            try {
-                Object value = getValue(entity, field);
-                preparedStatement.setObject(i + 1, value);
-            } catch (SQLException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private void setId(T entity, PreparedStatement preparedStatement, int pos) {
-        try {
-            Object value = getValue(entity, fieldId);
-            preparedStatement.setObject(pos, value);
-        } catch (SQLException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Object getValue(T entity, Field field) throws IllegalAccessException {
-        field.setAccessible(true);
-        Object value = field.get(entity);
-        if (field.getType().isEnum()) {
-            value = value.toString();
-        }
-        return value;
+        userUniversalRepository.getAll().forEach(System.out::println);
     }
 }

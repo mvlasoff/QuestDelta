@@ -1,17 +1,29 @@
 package ua.com.javarush.quest.khmelov.repository.shmibernate;
 
-import lombok.SneakyThrows;
 import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UnknownFormatConversionException;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
-public class PostgresDialect implements Dialect{
+public class PostgresDialect implements Dialect {
+
+    private static final String DELIMITER = ",\n";
+    private static final String PREFIX = "(\n";
+    private static final String SUFFIX = "\n)";
+    private static final String COMMA = ",";
+    private static final String PRIMARY_KEY = "BIGSERIAL PRIMARY KEY";
+    private static final String NOT_NULL = "NOT NULL ";
+    private static final String UNIQUE = "UNIQUE ";
+    private static final String SPACE = " ";
 
     private static final Map<Class<?>, String> dbType = Map.of(
             int.class, "INT",
@@ -35,9 +47,99 @@ public class PostgresDialect implements Dialect{
             //..................... и т.д.
     );
 
-    @SneakyThrows
+    private String createTableSql;
+    private String getAllSql;
+    private String getFindSql;
+    private String getSql;
+    private String createSql;
+    private String updateSql;
+    private String deleteSql;
+
+    @Override
+    public String getCreateTableSql(String tableName, List<Field> fields) {
+        if (Objects.isNull(createTableSql)) {
+            String fieldData = fields.stream()
+                    .map(this::getOneTypeCreateTable)
+                    .collect(Collectors.joining(DELIMITER, PREFIX, SUFFIX));
+            createTableSql = "CREATE TABLE IF NOT EXISTS %s %s;"
+                    .formatted(tableName, fieldData);
+        }
+        return createTableSql;
+    }
+
+    @Override
+    public String getGetAllSql(String tableName, List<Field> fields) {
+        if (Objects.isNull(getAllSql)) {
+            String fieldNames = fields.stream()
+                    .map(StrategyNaming::getFieldName)
+                    .collect(Collectors.joining(COMMA));
+            getAllSql = "SELECT %s FROM \"%s\";"
+                    .formatted(fieldNames, tableName);
+        }
+        return getAllSql;
+    }
+
+    @Override
+    public String getFindSql(String tableName, List<Field> fields) {
+        return null;
+    }
+
+    @Override
+    public String getGetByIdSql(String tableName, List<Field> fields) {
+        if (Objects.isNull(getSql)) {
+            String fieldNames = fields.stream()
+                    .skip(1L)
+                    .map(StrategyNaming::getFieldName)
+                    .collect(Collectors.joining(COMMA));
+            String where = StrategyNaming.getFieldName(fields.get(0)) + "=?";
+            getSql = "SELECT %s \n\tFROM \"%s\"\n\tWHERE %s;"
+                    .formatted(fieldNames, tableName, where);
+        }
+        return getSql;
+    }
+
+    @Override
+    public String getCreateSql(String tableName, List<Field> fields) {
+        if (Objects.isNull(createSql)) {
+            String fieldNames = fields.stream()
+                    .skip(1L)
+                    .map(StrategyNaming::getFieldName)
+                    .collect(Collectors.joining(COMMA));
+            String places = fieldNames.replaceAll("[^,]+", "?");
+            createSql = "INSERT INTO \"%s\" (%s) VALUES (%s)"
+                    .formatted(tableName, fieldNames, places);
+        }
+        return createSql;
+    }
+
+    @Override
+    public String getUpdateSql(String tableName, List<Field> fields) {
+        if (Objects.isNull(updateSql)) {
+            String setExpression = fields.stream()
+                    .skip(1)
+                    .map(StrategyNaming::getFieldName)
+                    .map(" %s=?"::formatted)
+                    .collect(Collectors.joining(COMMA));
+            String where = StrategyNaming.getFieldName(fields.get(0)) + "=?";
+            updateSql = "UPDATE \"%s\"\n\tSET %s \n\tWHERE %s;"
+                    .formatted(tableName, setExpression, where);
+        }
+        return updateSql;
+    }
+
+    @Override
+    public String getDeleteSql(String tableName, List<Field> fields) {
+        if (Objects.isNull(deleteSql)) {
+            String where = StrategyNaming.getFieldName(fields.get(0)) + "=?";
+            deleteSql = "DELETE FROM \"%s\"\n\tWHERE %s;"
+                    .formatted(tableName, where);
+            System.out.println(deleteSql);
+        }
+        return deleteSql;
+    }
+
+    @Override
     public <T extends AbstractEntity> void read(T entity, Field field, String valueString) {
-        field.setAccessible(true);
         Class<?> type = field.getType();
         Object value = null;
         if (!type.isEnum()) {
@@ -50,10 +152,15 @@ public class PostgresDialect implements Dialect{
                 }
             }
         }
-        field.set(entity, value);
+        try {
+            field.setAccessible(true);
+            field.set(entity, value);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String getDatabaseType(Field field) {
+    private String getDatabaseType(Field field) {
         if (field.isAnnotationPresent(Enumerated.class)) {
             return "VARCHAR(255)"; //enum
         }
@@ -63,6 +170,21 @@ public class PostgresDialect implements Dialect{
             throw new UnknownFormatConversionException(aClass.getName());
         }
         return type;
+    }
+
+    private String getOneTypeCreateTable(Field field) {
+        String fieldName = StrategyNaming.getFieldName(field);
+        String typeField = field.isAnnotationPresent(Id.class)
+                ? PRIMARY_KEY
+                : getDatabaseType(field);
+        String constraint = "";
+        if (field.isAnnotationPresent(Column.class)) {
+            Column column = field.getAnnotation(Column.class);
+            constraint = !column.nullable() ? NOT_NULL : SPACE +
+                    (column.unique() ? UNIQUE : SPACE);
+        }
+        String lineFormat = "\t%-20s %-24s %s";
+        return lineFormat.formatted(fieldName, typeField, constraint);
     }
 
 }
