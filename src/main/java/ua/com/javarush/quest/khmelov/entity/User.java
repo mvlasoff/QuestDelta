@@ -8,14 +8,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Builder(builderMethodName = "with")
+
+@Getter
+@Setter
+@ToString
 
 @Entity
 @Table(name = "t_user")
+
+@SuppressWarnings({"com.haulmont.jpb.LombokEqualsAndHashCodeInspection", "Lombok"})
+@EqualsAndHashCode(exclude = {"games","quest"})
 public final class User extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,3 +45,6 @@ public final class User extends AbstractEntity {
     }
 
 }
+
+
+

@@ -76,9 +76,5 @@ VALUES (10, 1, 'Проверим арифметику', 'исходный тек
 SELECT *
   FROM "quest";
 
-
-SELECT *
-    FROM "user";
-
-
+SELECT f_login,f_password,f_role FROM "t_user"  WHERE f_id=27;
 DROP TABLE quest;
