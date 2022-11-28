@@ -4,7 +4,7 @@
 <div class="container">
     <h5>${requestScope.quest.name}</h5>
     <c:forEach var="question" items="${requestScope.quest.questions}">
-        <a id="q${question.id}"></a>
+        <a id="testEntityClass${question.id}"></a>
         <form class="row row-cols-lg-auto g-3 align-items-center"
               action="quest"
               method="post" enctype="multipart/form-data"

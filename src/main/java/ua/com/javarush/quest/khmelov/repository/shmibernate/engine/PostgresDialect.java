@@ -1,9 +1,8 @@
-package ua.com.javarush.quest.khmelov.repository.shmibernate;
+package ua.com.javarush.quest.khmelov.repository.shmibernate.engine;
 
 import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
 
 import javax.persistence.Column;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -19,7 +18,7 @@ public class PostgresDialect implements Dialect {
     private static final String DELIMITER = ",\n";
     private static final String PREFIX = "(\n";
     private static final String SUFFIX = "\n)";
-    private static final String COMMA = ",";
+    private static final String COMMA = ", ";
     private static final String PRIMARY_KEY = "BIGSERIAL PRIMARY KEY";
     private static final String NOT_NULL = "NOT NULL ";
     private static final String UNIQUE = "UNIQUE ";
@@ -49,7 +48,6 @@ public class PostgresDialect implements Dialect {
 
     private String createTableSql;
     private String getAllSql;
-    private String getFindSql;
     private String getSql;
     private String createSql;
     private String updateSql;
@@ -73,26 +71,34 @@ public class PostgresDialect implements Dialect {
             String fieldNames = fields.stream()
                     .map(StrategyNaming::getFieldName)
                     .collect(Collectors.joining(COMMA));
-            getAllSql = "SELECT %s FROM \"%s\";"
+            getAllSql = "SELECT %s\n\tFROM \"%s\";"
                     .formatted(fieldNames, tableName);
         }
         return getAllSql;
     }
 
     @Override
-    public String getFindSql(String tableName, List<Field> fields) {
-        return null;
+    public String getFindSql(String tableName, List<Field> fields, List<Field> whereFields) {
+        String fieldNames = fields.stream()
+                .map(StrategyNaming::getFieldName)
+                .collect(Collectors.joining(COMMA));
+        String where_ = whereFields.size() > 0
+                ? whereFields.stream()
+                .map(StrategyNaming::getFieldName)
+                .collect(Collectors.joining("=? AND ", "WHERE ", "=?"))
+                : "";
+        return "SELECT %s\n\tFROM \"%s\" %s;"
+                .formatted(fieldNames, tableName, where_);
     }
 
     @Override
     public String getGetByIdSql(String tableName, List<Field> fields) {
         if (Objects.isNull(getSql)) {
             String fieldNames = fields.stream()
-                    .skip(1L)
                     .map(StrategyNaming::getFieldName)
                     .collect(Collectors.joining(COMMA));
             String where = StrategyNaming.getFieldName(fields.get(0)) + "=?";
-            getSql = "SELECT %s \n\tFROM \"%s\"\n\tWHERE %s;"
+            getSql = "SELECT %s\n\tFROM \"%s\"\n\tWHERE %s;"
                     .formatted(fieldNames, tableName, where);
         }
         return getSql;
@@ -106,7 +112,7 @@ public class PostgresDialect implements Dialect {
                     .map(StrategyNaming::getFieldName)
                     .collect(Collectors.joining(COMMA));
             String places = fieldNames.replaceAll("[^,]+", "?");
-            createSql = "INSERT INTO \"%s\" (%s) VALUES (%s)"
+            createSql = "INSERT INTO \"%s\" (%s)\n\tVALUES (%s)"
                     .formatted(tableName, fieldNames, places);
         }
         return createSql;
@@ -161,8 +167,10 @@ public class PostgresDialect implements Dialect {
     }
 
     private String getDatabaseType(Field field) {
-        if (field.isAnnotationPresent(Enumerated.class)) {
-            return "VARCHAR(255)"; //enum
+        //any enum as string (but hibernate by default use INT !)
+        //here we have a behavior similar annotation @Enumerated(EnumType.STRING)
+        if (field.getType().isEnum()) {
+            return "VARCHAR(255)";
         }
         Class<?> aClass = field.getType();
         String type = dbType.get(aClass);
