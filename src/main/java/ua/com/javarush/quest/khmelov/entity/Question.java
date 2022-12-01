@@ -16,13 +16,21 @@ import java.util.Collection;
 @ToString
 
 @Entity
-public class Question extends AbstractEntity {
+@Table(name = "t_question")
+public class Question implements AbstractEntity {
     @Id
     Long id;
-    Long questId;
+
+    @ManyToOne
+    @JoinColumn(name = "quest_id")
+    Quest quest;
+
     String text;
+
     @Transient
     final Collection<Answer> answers = new ArrayList<>();
+
+    @Transient
     GameState state;
 
     @JsonIgnore

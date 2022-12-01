@@ -9,7 +9,7 @@ import java.util.Collection;
 @Builder(builderMethodName = "with")
 public class QuestDto {
     Long id;
-    Long authorId;
+    Long userId;
     String name;
     String text;
     Long startQuestionId;

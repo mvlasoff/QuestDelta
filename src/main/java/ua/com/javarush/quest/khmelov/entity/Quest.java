@@ -2,11 +2,7 @@ package ua.com.javarush.quest.khmelov.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.Collection;
 
 @NoArgsConstructor
@@ -15,16 +11,19 @@ import java.util.Collection;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "user")
 
 @Entity
-public class Quest extends AbstractEntity {
+@Table(name = "t_quest")
+public class Quest implements AbstractEntity {
     @Id
     Long id;
-    Long authorId;
+    @ManyToOne
+    User user;
     String name;
     String text;
     Long startQuestionId;
+
     @Transient
-    final Collection<Question> questions = new ArrayList<>();
+    Collection<Question> questions;
 }

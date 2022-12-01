@@ -16,7 +16,7 @@ class QuestionMapper implements Mapper<Question, QuestionDto> {
         return question != null
                 ? Optional.of(QuestionDto.with()
                 .id(question.getId())
-                .questId(question.getQuestId())
+                .questId(question.getQuest().getId())
                 .image(question.getImage())
                 .text(question.getText())
                 .answers(question.getAnswers().stream()

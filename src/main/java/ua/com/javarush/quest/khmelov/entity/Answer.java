@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +15,8 @@ import javax.persistence.Id;
 @ToString
 
 @Entity
-public class Answer extends AbstractEntity {
+@Table(name = "t_answer")
+public class Answer implements AbstractEntity {
     @Id
     Long id;
     Long questionId;

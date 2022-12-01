@@ -62,7 +62,7 @@ public class QuestService {
             return Optional.empty();
         }
         Quest quest = Quest.with()
-                .authorId(userId)
+                .user(userRepository.get(userId))
                 .name(name)
                 .build();
         questRepository.create(quest);
@@ -131,7 +131,7 @@ public class QuestService {
 
     private void updateLinksAndId(Map<Long, Question> map, Quest quest) {
         for (Question question : map.values()) {
-            question.setQuestId(quest.getId());
+            question.setQuest(quest);
             quest.getQuestions().add(question);
             for (Answer answer : question.getAnswers()) {
                 answer.setQuestionId(question.getId());

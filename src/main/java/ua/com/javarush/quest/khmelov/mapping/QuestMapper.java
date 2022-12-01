@@ -17,7 +17,7 @@ class QuestMapper implements Mapper<Quest, QuestDto> {
                 ? Optional.of(QuestDto.with()
                 .id(quest.getId())
                 .name(quest.getName())
-                .authorId(quest.getAuthorId())
+                .userId(quest.getUser().getId())
                 .questions(quest.getQuestions().stream()
                         .map(Mapper.question::get)
                         .map(Optional::orElseThrow)

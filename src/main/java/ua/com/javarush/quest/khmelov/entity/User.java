@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -14,14 +13,12 @@ import java.util.Collection;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "quest")
 
 @Entity
 @Table(name = "t_user")
-
-@SuppressWarnings({"com.haulmont.jpb.LombokEqualsAndHashCodeInspection", "Lombok"})
-@EqualsAndHashCode(exclude = {"games","quest"})
-public final class User extends AbstractEntity {
+@EqualsAndHashCode(exclude = {"games", "quest"})
+public final class User implements AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -33,11 +30,12 @@ public final class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    @Transient
-    final Collection<Game> games = new ArrayList<>(); //as user
+    @OneToMany(mappedBy = "user")
+    Collection<Quest> quests;
 
     @Transient
-    final Collection<Quest> quests = new ArrayList<>(); //as author (admin)
+    Collection<Game> games;
+
 
     @JsonIgnore
     public String getImage() {
