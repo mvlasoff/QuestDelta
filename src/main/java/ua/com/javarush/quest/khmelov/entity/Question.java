@@ -21,8 +21,6 @@ public class Question implements AbstractEntity {
     @Id
     Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "quest_id")
     Quest quest;
 
     String text;

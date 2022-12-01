@@ -18,8 +18,10 @@ import java.util.Collection;
 public class Quest implements AbstractEntity {
     @Id
     Long id;
-    @ManyToOne
+
+    @Transient
     User user;
+
     String name;
     String text;
     Long startQuestionId;

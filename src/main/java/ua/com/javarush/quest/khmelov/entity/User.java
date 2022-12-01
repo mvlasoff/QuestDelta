@@ -30,7 +30,7 @@ public final class User implements AbstractEntity {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    @OneToMany(mappedBy = "user")
+    @Transient
     Collection<Quest> quests;
 
     @Transient
