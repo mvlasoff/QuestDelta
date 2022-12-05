@@ -25,12 +25,6 @@ import java.util.Collection;
                 association = "questions",
                 mode = FetchMode.JOIN
         )
-        ,
-        @FetchProfile.FetchOverride(
-                entity = User.class,
-                association = "user",
-                mode = FetchMode.SELECT
-        )
 })
 public class Quest implements AbstractEntity {
     @Id
