@@ -25,6 +25,7 @@ public class GameService {
     public Optional<GameDto> getGame(FormData formData, Long userId) {
         Game gamePattern = Mapper.game.parse(formData);
         gamePattern.setGameState(GameState.PLAY);
+        User user = userRepository.get(userId);
         gamePattern.setUserId(userId);
         Optional<Game> currentGame = gameRepository
                 .find(gamePattern)
@@ -47,7 +48,7 @@ public class GameService {
                     : game.getCurrentQuestionId();
             game.setCurrentQuestionId(nextQuestionId);
             Question question = questionRepository.get(nextQuestionId);
-            game.setGameState(question.getState());
+            game.setGameState(question.getGameState());
             gameRepository.update(game);
         } else {
             game = getNewGame(game.getUserId(), game.getQuestId());
@@ -62,7 +63,7 @@ public class GameService {
         Game newGame = Game.with()
                 .questId(questId)
                 .currentQuestionId(startQuestionId)
-                .gameState(firstQuestion.getState())
+                .gameState(firstQuestion.getGameState())
                 .userId(userId) //from session
                 .build();
         userRepository.get(userId).getGames().add(newGame);

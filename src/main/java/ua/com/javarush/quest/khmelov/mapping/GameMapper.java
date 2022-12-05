@@ -16,7 +16,7 @@ class GameMapper implements Mapper<Game, GameDto> {
         return game != null
                 ? Optional.of(GameDto.with()
                 .id(game.getId())
-                .questId(game.getUserId())
+                .questId(game.getQuestId())
                 .gameState(game.getGameState())
                 .userId(game.getUserId())
                 .build()

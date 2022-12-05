@@ -19,17 +19,23 @@ import java.util.Collection;
 @Table(name = "t_question")
 public class Question implements AbstractEntity {
     @Id
+    @Column(name = "id")
+    @OrderColumn
     Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     Quest quest;
 
     String text;
 
-    @Transient
-    final Collection<Answer> answers = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "question_id")
+    @ToString.Exclude
+    Collection<Answer> answers = new ArrayList<>();
 
-    @Transient
-    GameState state;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "game_state")
+    GameState gameState;
 
     @JsonIgnore
     public String getImage() {

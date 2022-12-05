@@ -12,7 +12,6 @@ import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @WebServlet(value = Go.STAT, name = "StatServlet")
