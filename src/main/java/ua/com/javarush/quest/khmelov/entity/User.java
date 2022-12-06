@@ -2,10 +2,13 @@ package ua.com.javarush.quest.khmelov.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 
 @NoArgsConstructor
@@ -18,32 +21,56 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "t_user")
-
-@SuppressWarnings({"com.haulmont.jpb.LombokEqualsAndHashCodeInspection", "Lombok"})
-@EqualsAndHashCode(exclude = {"games","quest"})
-public final class User extends AbstractEntity {
+public final class User implements AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String login;
+    private String login;
 
-    String password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    Role role;
+    private Role role;
 
-    @Transient
-    final Collection<Game> games = new ArrayList<>(); //as user
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    private Collection<Quest> quests;
 
-    @Transient
-    final Collection<Quest> quests = new ArrayList<>(); //as author (admin)
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private Collection<Game> games;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    UserInfo userInfo;
+
+    @ManyToMany
+    @JoinTable(name = "t_game",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "quest_id", referencedColumnName = "id"))
+    @ToString.Exclude
+    @LazyCollection(value = LazyCollectionOption.TRUE)
+    Collection<Quest> questsInGame;
+
+    //---------------------------- end  entity ------------------------------------------
     @JsonIgnore
     public String getImage() {
         return "image-" + id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
 
 

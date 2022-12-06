@@ -1,12 +1,12 @@
 package ua.com.javarush.quest.khmelov.entity;
 
 import lombok.*;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.FetchProfile;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.Collection;
 
 @NoArgsConstructor
@@ -18,13 +18,40 @@ import java.util.Collection;
 @ToString
 
 @Entity
-public class Quest extends AbstractEntity {
+@Table(name = "t_quest")
+@FetchProfile(name = "quest_sub_select_question", fetchOverrides = {
+        @FetchProfile.FetchOverride(
+                entity = Quest.class,
+                association = "questions",
+                mode = FetchMode.JOIN
+        )
+})
+public class Quest implements AbstractEntity {
     @Id
+    @OrderColumn
     Long id;
-    Long authorId;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    User user;
+
+    @ManyToMany
+    @JoinTable(name = "t_game",
+            joinColumns = @JoinColumn(name = "quest_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    @ToString.Exclude
+    Collection<User> players;
+
     String name;
+
     String text;
+
     Long startQuestionId;
-    @Transient
-    final Collection<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "quest")
+    @ToString.Exclude
+    @LazyCollection(value = LazyCollectionOption.EXTRA)
+    Collection<Question> questions;
 }

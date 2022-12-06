@@ -2,8 +2,7 @@ package ua.com.javarush.quest.khmelov.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,11 +13,23 @@ import javax.persistence.Id;
 @ToString
 
 @Entity
-public class Game extends AbstractEntity {
+@Table(name = "t_game")
+public class Game implements AbstractEntity {
     @Id
     Long id;
+
+    @Column(name = "quest_id")
     Long questId;
+
+    @Column(name = "user_id")
     Long userId;
+
+    @Column(name = "current_question_id")
     Long currentQuestionId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "game_state")
+
     GameState gameState;
+
 }

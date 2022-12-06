@@ -16,14 +16,27 @@ import java.util.Collection;
 @ToString
 
 @Entity
-public class Question extends AbstractEntity {
+@Table(name = "t_question")
+public class Question implements AbstractEntity {
     @Id
+    @Column(name = "id")
+    @OrderColumn
     Long id;
-    Long questId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    Quest quest;
+
     String text;
-    @Transient
-    final Collection<Answer> answers = new ArrayList<>();
-    GameState state;
+
+    @OneToMany
+    @JoinColumn(name = "question_id")
+    @ToString.Exclude
+    Collection<Answer> answers = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "game_state")
+    GameState gameState;
 
     @JsonIgnore
     public String getImage() {

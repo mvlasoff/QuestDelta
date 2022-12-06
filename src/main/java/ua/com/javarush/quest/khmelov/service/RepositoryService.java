@@ -83,9 +83,9 @@ public class RepositoryService {
 
     public void defaultTxtInit() {
         //пользователи
-        User ivan = new User(1L, "Ivan", "456", Role.ADMIN);
-        User andrew = new User(2L, "Andrew", "789", Role.GUEST);
-        User elena = new User(3L, "Elena", "123", Role.USER);
+        User ivan = User.with().id(1L).login("Ivan").password("456").role(Role.ADMIN).build();
+        User andrew = User.with().id(2L).login("Andrew").password("789").role(Role.GUEST).build();
+        User elena = User.with().id(1L).login("Elena").password("123").role(Role.USER).build();
         userRepository.create(ivan);
         userRepository.create(andrew);
         userRepository.create(elena);

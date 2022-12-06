@@ -1,7 +1,6 @@
 package ua.com.javarush.quest.khmelov.repository.memory;
 
 import ua.com.javarush.quest.khmelov.entity.Answer;
-import ua.com.javarush.quest.khmelov.repository.Repository;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
