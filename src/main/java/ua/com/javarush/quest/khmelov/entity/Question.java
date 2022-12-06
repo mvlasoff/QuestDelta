@@ -24,6 +24,7 @@ public class Question implements AbstractEntity {
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     Quest quest;
 
     String text;
