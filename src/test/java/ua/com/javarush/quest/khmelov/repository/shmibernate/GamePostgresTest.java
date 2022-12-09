@@ -20,7 +20,7 @@ class GamePostgresTest {
         Game tempGame = Game.with()
                 .gameState(GameState.PLAY)
                 .userId(user.getId())
-                .questId(12L)
+                .questId(1L)
                 .build();
         gameRepository.create(tempGame);
         System.out.println("CREATE " + tempGame);

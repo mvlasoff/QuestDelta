@@ -5,10 +5,7 @@ import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
 import ua.com.javarush.quest.khmelov.repository.Repository;
 import ua.com.javarush.quest.khmelov.repository.dao_jdbc.CnnPool;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
@@ -33,7 +30,10 @@ public class UniversalRepository<T extends AbstractEntity> implements Repository
             fields = Arrays.stream(type.getDeclaredFields())
                     .sorted(Comparator.comparingInt(f -> (f.isAnnotationPresent(Id.class) ? 0 : 1)))
                     .filter(f -> !f.isAnnotationPresent(Transient.class))
+                    .filter(f -> !f.isAnnotationPresent(ManyToOne.class))
                     .filter(f -> !f.isAnnotationPresent(OneToMany.class))
+                    .filter(f -> !f.isAnnotationPresent(OneToOne.class))
+                    .filter(f -> !f.isAnnotationPresent(ManyToMany.class))
                     .toList();
             tableName = StrategyNaming.getTableName(type);
             createTableIfNotExists();

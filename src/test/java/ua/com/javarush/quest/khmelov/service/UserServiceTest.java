@@ -79,10 +79,8 @@ class UserServiceTest {
 
     @Test
     void delete() {
-        Mockito.when(userRepositoryMock.get(ID)).thenReturn(user, userIdOnly);
+        Mockito.when(userRepositoryMock.get(ID)).thenReturn(user);
         userService.delete(formData);
         Mockito.verify(userRepositoryMock).delete(user);
-        userService.delete(formData);
-        Mockito.verify(userRepositoryMock).delete(userIdOnly);
     }
 }

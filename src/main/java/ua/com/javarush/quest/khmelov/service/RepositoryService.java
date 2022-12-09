@@ -85,7 +85,7 @@ public class RepositoryService {
         //пользователи
         User ivan = User.with().id(1L).login("Ivan").password("456").role(Role.ADMIN).build();
         User andrew = User.with().id(2L).login("Andrew").password("789").role(Role.GUEST).build();
-        User elena = User.with().id(1L).login("Elena").password("123").role(Role.USER).build();
+        User elena = User.with().id(3L).login("Elena").password("123").role(Role.USER).build();
         userRepository.create(ivan);
         userRepository.create(andrew);
         userRepository.create(elena);
@@ -94,15 +94,15 @@ public class RepositoryService {
         questService.create(
                 "Играем в неопознанный летающий объект (обязательный квест)",
                 """
-                        1:  Ты потерял память. Принять вызов НЛО?
+                        1: Ты потерял память. Принять вызов НЛО?
                         2<  Принять вызов
                         91< Отклонить вызов
                                                 
-                        2:  Ты принял вызов. Подняться на мостик к капитану?
+                        2: Ты принял вызов. Подняться на мостик к капитану?
                         92< Отказаться подниматься на мостик
                         3< Подняться на мостик
                                                 
-                        3:  Ты поднялся на мостик. Ты кто?
+                        3: Ты поднялся на мостик. Ты кто?
                         93< Солгать о себе
                         99< Рассказать правду
                                                 

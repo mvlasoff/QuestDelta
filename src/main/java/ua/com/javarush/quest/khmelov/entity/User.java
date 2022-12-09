@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -24,23 +25,23 @@ import java.util.Objects;
 public final class User implements AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private String login;
+    String login;
 
-    private String password;
+    String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    Role role;
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
-    private Collection<Quest> quests;
+    final Collection<Quest> quests = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "user_id")
     @ToString.Exclude
-    private Collection<Game> games;
+    Collection<Game> games = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     UserInfo userInfo;
@@ -51,7 +52,7 @@ public final class User implements AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "quest_id", referencedColumnName = "id"))
     @ToString.Exclude
     @LazyCollection(value = LazyCollectionOption.TRUE)
-    Collection<Quest> questsInGame;
+    final Collection<Quest> questsInGame = new ArrayList<>();
 
     //---------------------------- end  entity ------------------------------------------
     @JsonIgnore

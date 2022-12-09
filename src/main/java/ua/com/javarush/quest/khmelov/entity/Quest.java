@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @NoArgsConstructor
@@ -42,7 +43,7 @@ public class Quest implements AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
     @ToString.Exclude
-    Collection<User> players;
+    final Collection<User> players=new ArrayList<>();
 
     String name;
 
@@ -53,5 +54,5 @@ public class Quest implements AbstractEntity {
     @OneToMany(mappedBy = "quest")
     @ToString.Exclude
     @LazyCollection(value = LazyCollectionOption.EXTRA)
-    Collection<Question> questions;
+    final Collection<Question> questions = new ArrayList<>();
 }

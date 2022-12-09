@@ -54,10 +54,10 @@ SELECT DISTINCT id f_id, login f_login, password
 --   FROM "user"
 --  WHERE id NOT BETWEEN 7 AND 22;
 
-UPDATE t_user
-   SET login='vanya',
-       password='654'
- WHERE id = 1;
+-- UPDATE t_user
+--    SET login='vanya',
+--        password='654'
+--  WHERE id = 1;
 
 SELECT *
   FROM t_user

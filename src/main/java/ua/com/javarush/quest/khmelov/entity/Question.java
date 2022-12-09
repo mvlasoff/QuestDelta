@@ -32,7 +32,7 @@ public class Question implements AbstractEntity {
     @OneToMany
     @JoinColumn(name = "question_id")
     @ToString.Exclude
-    Collection<Answer> answers = new ArrayList<>();
+    final Collection<Answer> answers = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "game_state")

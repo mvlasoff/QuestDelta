@@ -13,6 +13,7 @@
 
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
+    <property name="log4j.logger.org.hibernate">ERROR</property>
 
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->

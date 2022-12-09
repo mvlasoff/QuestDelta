@@ -5,7 +5,7 @@ import org.hibernate.query.Query;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.repository.Repository;
 
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -52,7 +52,13 @@ public class UserRepository implements Repository<User> {
             Class<User> userClass = User.class;
             Field[] fields = userClass.getDeclaredFields();
             for (Field field : fields) {
-                if (!field.isAnnotationPresent(Transient.class)){
+                if (
+                        !field.isAnnotationPresent(Transient.class) &&
+                                !field.isAnnotationPresent(ManyToOne.class) &&
+                                !field.isAnnotationPresent(OneToMany.class) &&
+                                !field.isAnnotationPresent(OneToOne.class) &&
+                                !field.isAnnotationPresent(ManyToMany.class)
+                ){
                     field.setAccessible(true);
                     try {
                         String name = field.getName();

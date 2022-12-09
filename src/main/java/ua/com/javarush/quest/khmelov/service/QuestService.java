@@ -96,7 +96,7 @@ public class QuestService {
         String[] parts = text.split(pattern);
         int index = 1;
         Matcher labelIterator = Pattern.compile(pattern).matcher(text);
-        Question question = Question.with().build();
+        Question question = new Question();
         while (labelIterator.find()) {
             long key = Long.parseLong(labelIterator.group(1));
             String type = labelIterator.group(2);
