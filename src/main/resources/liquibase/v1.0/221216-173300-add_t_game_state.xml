@@ -13,7 +13,11 @@
         </createTable>
         <insert tableName="t_game_state">
             <column name="value">PLAY</column>
+        </insert>
+        <insert tableName="t_game_state">
             <column name="value">WIN</column>
+        </insert>
+        <insert tableName="t_game_state">
             <column name="value">LOST</column>
         </insert>
     </changeSet>
