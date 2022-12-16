@@ -19,13 +19,13 @@ import javax.persistence.Table;
 @Table(name = "t_answer")
 public class Answer implements AbstractEntity {
     @Id
-    Long id;
+    private Long id;
 
     @Column(name="question_id")
-    Long questionId;
+    private Long questionId;
 
-    String text;
+    private String text;
 
     @Column(name="next_question_id")
-    Long nextQuestionId;
+    private Long nextQuestionId;
 }

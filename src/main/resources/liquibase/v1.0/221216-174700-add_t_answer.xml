@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+<!--    CREATE TABLE t_answer
+(
+    id               BIGSERIAL PRIMARY KEY,
+    question_id      BIGINT REFERENCES t_question (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    "text"           text,
+    next_question_id BIGINT
+);
+-->
+    <changeSet id="221216-174700" author="akhmelev">
+        <createTable tableName="t_answer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints referencedTableName="t_question" deleteCascade="true"/>
+            </column>
+            <column name="text" type="text"/>
+            <column name="next_question_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

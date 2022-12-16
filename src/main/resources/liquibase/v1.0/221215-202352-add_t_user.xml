@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="221215-202352" author="akhmelev">
+        <!--    CREATE TABLE t_user
+        (
+            id       BIGSERIAL PRIMARY KEY,
+            login    VARCHAR(128) UNIQUE,
+            password VARCHAR(128) NOT NULL,
+            role     VARCHAR(32)
+        );-->
+        <createTable tableName="t_user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(128)">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(32)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="221215-202352-1" author="akhmelev">
+        <insert tableName="t_user">
+            <column name="login">Ivan</column>
+            <column name="password">456</column>
+            <column name="role">ADMIN</column>
+        </insert>
+    </changeSet>
+
+
+    <changeSet id="221215-202352-2" author="akhmelev">
+        <insert tableName="t_user">
+            <column name="login">Andrew</column>
+            <column name="password">789</column>
+            <column name="role">GUEST</column>
+        </insert>
+    </changeSet>
+
+
+    <changeSet id="221215-202352-3" author="akhmelev" >
+        <insert tableName="t_user">
+            <column name="login">Elena</column>
+            <column name="password">123</column>
+            <column name="role">USER</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

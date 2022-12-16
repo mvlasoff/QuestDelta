@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="221216-173300" author="akhmelev">
+        <createTable tableName="t_game_state">
+            <column name="value" type="varchar(64)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+        <insert tableName="t_game_state">
+            <column name="value">PLAY</column>
+            <column name="value">WIN</column>
+            <column name="value">LOST</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

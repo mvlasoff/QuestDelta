@@ -21,22 +21,22 @@ public class Question implements AbstractEntity {
     @Id
     @Column(name = "id")
     @OrderColumn
-    Long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    Quest quest;
+    private Quest quest;
 
-    String text;
+    private String text;
 
     @OneToMany
     @JoinColumn(name = "question_id")
     @ToString.Exclude
-    final Collection<Answer> answers = new ArrayList<>();
+    private final Collection<Answer> answers = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "game_state")
-    GameState gameState;
+    private GameState gameState;
 
     @JsonIgnore
     public String getImage() {

@@ -16,20 +16,19 @@ import javax.persistence.*;
 @Table(name = "t_game")
 public class Game implements AbstractEntity {
     @Id
-    Long id;
+    private Long id;
 
     @Column(name = "quest_id")
-    Long questId;
+    private Long questId;
 
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @Column(name = "current_question_id")
-    Long currentQuestionId;
+    private Long currentQuestionId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "game_state")
-
-    GameState gameState;
+    private GameState gameState;
 
 }

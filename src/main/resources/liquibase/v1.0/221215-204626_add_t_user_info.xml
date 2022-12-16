@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="221215-204626" author="akhmelev">
+        <createTable tableName="t_user_info">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="address" type="varchar(128)"/>
+            <column name="phone" type="varchar(128)"/>
+            <column name="user_id" type="bigint">
+                <constraints referencedTableName="t_user"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="221215-204626-1" author="akhmelev">
+        <insert tableName="t_user_info">
+            <column name="user_id">1</column>
+            <column name="address">Urban street 11 23</column>
+            <column name="phone">+380 (50) 123-45-67</column>
+        </insert>
+    </changeSet>
+    <changeSet id="221215-204626-2" author="akhmelev">
+        <insert tableName="t_user_info">
+            <column name="user_id">2</column>
+            <column name="address">Lenina 22 34</column>
+            <column name="phone">+7 (095) 123-45-67</column>
+        </insert>
+    </changeSet>
+    <changeSet id="221215-204626-3" author="akhmelev">
+        <insert tableName="t_user_info">
+            <column name="user_id">3</column>
+            <column name="address">Very 33 45</column>
+            <column name="phone">+380 (50) 123-45-67</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

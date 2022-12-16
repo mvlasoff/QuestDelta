@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+<!--
+CREATE TABLE t_game
+(
+    id                  BIGSERIAL PRIMARY KEY,
+    quest_id            BIGINT REFERENCES t_quest (id),
+    user_id             BIGINT REFERENCES t_user (id),
+    current_question_id BIGINT,
+    game_state          varchar(64) REFERENCES t_game_state (value)
+);
+-->
+    <changeSet id="221216-175100" author="akhmelev">
+        <createTable tableName="t_game">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="quest_id" type="bigint">
+                <constraints referencedTableName="t_quest"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints referencedTableName="t_user"/>
+            </column>
+            <column name="current_question_id" type="bigint"/>
+            <column name="game_state" type="varchar(64)">
+                <constraints referencedTableName="t_game_state"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

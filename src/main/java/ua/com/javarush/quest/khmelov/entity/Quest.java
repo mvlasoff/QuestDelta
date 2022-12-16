@@ -30,12 +30,12 @@ import java.util.Collection;
 public class Quest implements AbstractEntity {
     @Id
     @OrderColumn
-    Long id;
+    private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
-    User user;
+    private User user;
 
     @ManyToMany
     @JoinTable(name = "t_game",
@@ -43,16 +43,16 @@ public class Quest implements AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
     @ToString.Exclude
-    final Collection<User> players=new ArrayList<>();
+    private final Collection<User> players=new ArrayList<>();
 
-    String name;
+    private String name;
 
-    String text;
+    private String text;
 
-    Long startQuestionId;
+    private Long startQuestionId;
 
     @OneToMany(mappedBy = "quest")
     @ToString.Exclude
     @LazyCollection(value = LazyCollectionOption.EXTRA)
-    final Collection<Question> questions = new ArrayList<>();
+    private final Collection<Question> questions = new ArrayList<>();
 }

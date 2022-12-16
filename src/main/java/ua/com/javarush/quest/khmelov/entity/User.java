@@ -25,26 +25,26 @@ import java.util.Objects;
 public final class User implements AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String login;
+    private String login;
 
-    String password;
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    Role role;
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
-    final Collection<Quest> quests = new ArrayList<>();
+    private final Collection<Quest> quests = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "user_id")
     @ToString.Exclude
-    Collection<Game> games = new ArrayList<>();
+    private Collection<Game> games = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    UserInfo userInfo;
+    private UserInfo userInfo;
 
     @ManyToMany
     @JoinTable(name = "t_game",
@@ -52,7 +52,7 @@ public final class User implements AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "quest_id", referencedColumnName = "id"))
     @ToString.Exclude
     @LazyCollection(value = LazyCollectionOption.TRUE)
-    final Collection<Quest> questsInGame = new ArrayList<>();
+    private final Collection<Quest> questsInGame = new ArrayList<>();
 
     //---------------------------- end  entity ------------------------------------------
     @JsonIgnore
