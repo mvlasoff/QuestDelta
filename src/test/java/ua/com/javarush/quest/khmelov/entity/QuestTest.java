@@ -11,7 +11,7 @@ class QuestTest extends BaseEntityTest{
     void find() {
         session.enableFetchProfile("quest_sub_select_question");
         Quest quest = session.load(Quest.class, 123456789L);
-        Assertions.assertNull(quest.id);
+        Assertions.assertNull(quest.getId());
 //        System.out.println(quest);
 //        Collection<User> players = quest.getPlayers();
 //        System.out.println(players);

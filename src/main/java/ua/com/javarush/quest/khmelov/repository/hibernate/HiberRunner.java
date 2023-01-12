@@ -1,5 +1,6 @@
 package ua.com.javarush.quest.khmelov.repository.hibernate;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.User;

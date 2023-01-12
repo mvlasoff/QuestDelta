@@ -6,7 +6,7 @@
         ${line}
         <hr>
     </c:forEach>
-    <form action="/stat" method="post">
+    <form action="stat" method="post">
         <!-- Button -->
         <div class=" form-group">
             <label class="col-md-4 control-label" for="submit"></label>

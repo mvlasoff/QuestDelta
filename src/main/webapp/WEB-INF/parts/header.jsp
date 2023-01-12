@@ -9,7 +9,14 @@
 </head>
 <body>
 
-<header class="bg-light d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+<header class="
+bg-light
+d-flex
+flex-wrap
+align-items-center
+justify-content-center
+justify-content-md-between py-3 mb-4 border-bottom"
+>
     <a href="${pageContext.request.contextPath}/"
        class="d-flex align-items-left col-md-1 mb-2 mb-md-0 text-dark text-decoration-none">
         <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
