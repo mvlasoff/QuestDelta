@@ -8,8 +8,8 @@ import ua.com.javarush.quest.khmelov.entity.Game;
 import ua.com.javarush.quest.khmelov.entity.GameState;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
-import ua.com.javarush.quest.khmelov.repository.memory.GameRepository;
-import ua.com.javarush.quest.khmelov.repository.memory.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.impl.GameRepository;
+import ua.com.javarush.quest.khmelov.repository.impl.UserRepository;
 
 import java.util.Collection;
 import java.util.List;

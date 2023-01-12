@@ -4,7 +4,7 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import ua.com.javarush.quest.khmelov.config.Winter;
-import ua.com.javarush.quest.khmelov.repository.hibernate.SessionCreator;
+import ua.com.javarush.quest.khmelov.repository.SessionCreator;
 
 public class BaseEntityTest {
     protected static Session session;

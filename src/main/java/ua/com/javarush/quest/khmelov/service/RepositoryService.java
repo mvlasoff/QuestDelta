@@ -10,7 +10,7 @@ import ua.com.javarush.quest.khmelov.config.Config;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.memory.*;
+import ua.com.javarush.quest.khmelov.repository.impl.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

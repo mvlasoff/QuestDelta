@@ -1,9 +1,8 @@
-package ua.com.javarush.quest.khmelov.repository.hibernate;
+package ua.com.javarush.quest.khmelov.repository;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.Repository;
+import ua.com.javarush.quest.khmelov.entity.AbstractEntity;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -16,55 +15,56 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class UserRepository implements Repository<User> {
+public abstract class BaseRepository<T extends AbstractEntity> implements Repository<T> {
 
     private final SessionCreator sessionCreator;
+    private final Class<T> aClass;
 
-    public UserRepository(SessionCreator sessionCreator) {
+    public BaseRepository(SessionCreator sessionCreator, Class<T> aClass) {
         this.sessionCreator = sessionCreator;
+        this.aClass = aClass;
     }
 
     @Override
-    public Stream<User> getAll() {
+    public Stream<T> getAll() {
         Session session = sessionCreator.open();
-        try (session){
+        try (session) {
             session.beginTransaction();
-            Query<User> queryAll = session.createQuery("select u from User u", User.class);
-            List<User> list = queryAll.list();
+            Query<T> queryAll = session.createQuery("select data from %s data".formatted(aClass.getSimpleName()), aClass);
+            List<T> list = queryAll.list();
             session.getTransaction().commit();
             return list.stream();
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             session.getTransaction().rollback();
             throw e;
         }
     }
 
     @Override
-    public Stream<User> find(User entity) {
+    public Stream<T> find(T entity) {
         Session session = sessionCreator.open();
-        try (session){
+        try (session) {
             session.beginTransaction();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-            Root<User> userRoot = query.from(User.class);
-            query = query.select(userRoot);
-            List<Predicate> predicates=new ArrayList<>();
-            Class<User> userClass = User.class;
-            Field[] fields = userClass.getDeclaredFields();
+            CriteriaQuery<T> query = criteriaBuilder.createQuery(aClass);
+            Root<T> root = query.from(aClass);
+            query = query.select(root);
+            List<Predicate> predicates = new ArrayList<>();
+            Field[] fields = aClass.getDeclaredFields();
             for (Field field : fields) {
                 if (
                         !field.isAnnotationPresent(Transient.class) &&
+                                !field.isAnnotationPresent(OneToOne.class) &&
                                 !field.isAnnotationPresent(ManyToOne.class) &&
                                 !field.isAnnotationPresent(OneToMany.class) &&
-                                !field.isAnnotationPresent(OneToOne.class) &&
                                 !field.isAnnotationPresent(ManyToMany.class)
-                ){
+                ) {
                     field.setAccessible(true);
                     try {
                         String name = field.getName();
                         Object value = field.get(entity);
-                        if (Objects.nonNull(value)){
-                            Predicate condition = criteriaBuilder.equal(userRoot.get(name), value);
+                        if (Objects.nonNull(value)) {
+                            Predicate condition = criteriaBuilder.equal(root.get(name), value);
                             predicates.add(condition);
                         }
                     } catch (IllegalAccessException e) {
@@ -72,24 +72,24 @@ public class UserRepository implements Repository<User> {
                     }
                 }
             }
-            query=query.where(predicates.toArray(Predicate[]::new));
-            List<User> users = session.createQuery(query).list();
+            query = query.where(predicates.toArray(Predicate[]::new));
+            List<T> users = session.createQuery(query).list();
             session.getTransaction().commit();
             return users.stream();
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             session.getTransaction().rollback();
             throw e;
         }
     }
 
     @Override
-    public User get(long id) {
+    public T get(long id) {
         try (Session session = sessionCreator.open()) {
             session.beginTransaction();
             try {
-                User user = session.get(User.class, id);
+                T data = session.get(aClass, id);
                 session.getTransaction().commit();
-                return user;
+                return data;
             } catch (RuntimeException e) {
                 session.getTransaction().rollback();
                 throw e;
@@ -98,25 +98,11 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public void create(User user) {
+    public void create(T data) {
         try (Session session = sessionCreator.open()) {
             session.beginTransaction();
             try {
-                session.save(user);
-                session.getTransaction().commit();
-            } catch (RuntimeException e) {
-                session.getTransaction().rollback();
-                throw e;
-            }
-        }
-    }
-
-    @Override
-    public void update(User user) {
-        try (Session session = sessionCreator.open()) {
-            session.beginTransaction();
-            try {
-                session.update(user);
+                session.save(data);
                 session.getTransaction().commit();
             } catch (RuntimeException e) {
                 session.getTransaction().rollback();
@@ -126,11 +112,25 @@ public class UserRepository implements Repository<User> {
     }
 
     @Override
-    public void delete(User user) {
+    public void update(T data) {
         try (Session session = sessionCreator.open()) {
             session.beginTransaction();
             try {
-                session.delete(user);
+                session.update(data);
+                session.getTransaction().commit();
+            } catch (RuntimeException e) {
+                session.getTransaction().rollback();
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public void delete(T data) {
+        try (Session session = sessionCreator.open()) {
+            session.beginTransaction();
+            try {
+                session.delete(data);
                 session.getTransaction().commit();
             } catch (RuntimeException e) {
                 session.getTransaction().rollback();

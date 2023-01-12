@@ -9,7 +9,6 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
-import ua.com.javarush.quest.khmelov.repository.dao_jdbc.CnnPool;
 
 import java.sql.Connection;
 import java.util.HashMap;

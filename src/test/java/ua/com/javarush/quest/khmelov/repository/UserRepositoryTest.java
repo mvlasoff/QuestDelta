@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.repository.hibernate;
+package ua.com.javarush.quest.khmelov.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.Repository;
+import ua.com.javarush.quest.khmelov.repository.impl.UserRepository;
 
 import java.util.stream.Stream;
 

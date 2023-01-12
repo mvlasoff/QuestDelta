@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.repository.dao_jdbc;
+package ua.com.javarush.quest.khmelov.repository.liquibase;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -64,4 +64,3 @@ public class CnnPool {
         }
     }
 }
-

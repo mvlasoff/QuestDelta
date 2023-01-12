@@ -1,15 +1,11 @@
-package ua.com.javarush.quest.khmelov.repository.hibernate;
+package ua.com.javarush.quest.khmelov.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ua.com.javarush.quest.khmelov.entity.*;
 
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-public class SessionCreator implements AutoCloseable{
+public class SessionCreator implements AutoCloseable {
 
     private final SessionFactory sessionFactory;
 
@@ -25,7 +21,7 @@ public class SessionCreator implements AutoCloseable{
         sessionFactory = configuration.buildSessionFactory();
     }
 
-    public Session open(){
+    public Session open() {
         return sessionFactory.openSession();
     }
 

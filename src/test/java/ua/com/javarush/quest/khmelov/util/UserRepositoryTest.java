@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.memory.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.impl.UserRepository;
 import ua.com.javarush.quest.khmelov.service.RepositoryService;
 
 import java.util.stream.Stream;

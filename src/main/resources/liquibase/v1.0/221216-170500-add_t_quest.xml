@@ -11,7 +11,12 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="bigint">
-                <constraints referencedTableName="t_user"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_quest_user"
+                        referencedColumnNames="id"
+                        referencedTableName="t_user"
+                />
             </column>
             <column name="name" type="varchar(256)">
                 <constraints nullable="false"/>
