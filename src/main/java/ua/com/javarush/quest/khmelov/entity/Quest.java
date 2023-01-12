@@ -49,6 +49,7 @@ public class Quest implements AbstractEntity {
 
     private String text;
 
+    @Column(name="start_question_id")
     private Long startQuestionId;
 
     @OneToMany(mappedBy = "quest")

@@ -70,10 +70,10 @@ CREATE TABLE t_quest
     user_id         BIGINT REFERENCES t_user (id),
     "name"          varchar(256) NOT NULL,
     "text"          text         NOT NULL,
-    startQuestionId INT DEFAULT NULL
+    start_question_id INT DEFAULT NULL
 );
 
-INSERT INTO t_quest(user_id, name, text, startQuestionId)
+INSERT INTO t_quest(user_id, name, text, start_question_id)
 VALUES (1, 'Проверим арифметику', 'исходный текст квеста', -1),
        (1, 'Второй квест', 'исходный текст второго квеста', -1),
        (1, 'Третий квест', 'исходный текст третьего квеста', -1);

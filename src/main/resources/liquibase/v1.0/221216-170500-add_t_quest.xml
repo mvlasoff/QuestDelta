@@ -19,7 +19,7 @@
             <column name="text" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="startQuestionId" type="bigint" defaultValue="null">
+            <column name="start_question_id" type="bigint" defaultValue="null">
                 <constraints nullable="true"/>
             </column>
         </createTable>
