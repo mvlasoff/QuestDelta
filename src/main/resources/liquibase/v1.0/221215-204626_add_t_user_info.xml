@@ -18,6 +18,14 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="221215-204626-0" author="akhmelev">
+        <insert tableName="t_user_info">
+            <column name="user_id">0</column>
+            <column name="address">test_address</column>
+            <column name="phone">test_phone</column>
+        </insert>
+    </changeSet>
+
     <changeSet id="221215-204626-1" author="akhmelev">
         <insert tableName="t_user_info">
             <column name="user_id">1</column>
@@ -32,6 +40,7 @@
             <column name="phone">+7 (095) 123-45-67</column>
         </insert>
     </changeSet>
+
     <changeSet id="221215-204626-3" author="akhmelev">
         <insert tableName="t_user_info">
             <column name="user_id">3</column>

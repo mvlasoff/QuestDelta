@@ -30,6 +30,7 @@ import java.util.Collection;
 public class Quest implements AbstractEntity {
     @Id
     @OrderColumn
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

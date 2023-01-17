@@ -1,12 +1,9 @@
 package ua.com.javarush.quest.khmelov.entity;
 
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-
-class QuestTest extends BaseEntityTest{
+class QuestTest extends BaseEntityTest {
 
     @Test
     void find() {

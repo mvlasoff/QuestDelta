@@ -1,11 +1,10 @@
 package ua.com.javarush.quest.khmelov.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,9 +15,11 @@ import javax.persistence.Table;
 @ToString
 
 @Entity
+@RequiredArgsConstructor
 @Table(name = "t_answer")
 public class Answer implements AbstractEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="question_id")
@@ -28,4 +29,5 @@ public class Answer implements AbstractEntity {
 
     @Column(name="next_question_id")
     private Long nextQuestionId;
+
 }

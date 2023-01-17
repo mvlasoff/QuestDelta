@@ -102,7 +102,7 @@ public abstract class BaseRepository<T extends AbstractEntity> implements Reposi
         try (Session session = sessionCreator.open()) {
             session.beginTransaction();
             try {
-                session.save(data);
+                session.persist(data);
                 session.getTransaction().commit();
             } catch (RuntimeException e) {
                 session.getTransaction().rollback();

@@ -47,7 +47,7 @@ class ParserTest {
     void getId(String key, String value, Long expectedId) {
         Mockito.when(request.getParameter(key)).thenReturn(value);
         Long actual = Parser.getId(request, key);
-        Assertions.assertEquals(expectedId,actual);
+        Assertions.assertEquals(expectedId, actual);
     }
 
     @Test
@@ -55,6 +55,6 @@ class ParserTest {
         UserDto userDto = UserDto.with().login("test").build();
         Mockito.when(session.getAttribute("user")).thenReturn(userDto);
         UserDto actual = Parser.getUser(session).orElseThrow();
-        Assertions.assertEquals(userDto.getLogin(),actual.getLogin());
+        Assertions.assertEquals(userDto.getLogin(), actual.getLogin());
     }
 }

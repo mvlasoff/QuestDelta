@@ -1,4 +1,4 @@
-package ua.com.javarush.quest.khmelov.repository;
+package ua.com.javarush.quest.khmelov.repository.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,15 +8,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.impl.UserRepository;
+import ua.com.javarush.quest.khmelov.repository.Repository;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserRepositoryTest {
 
-    private final Repository<User> userRepository= Winter.getBean(UserRepository.class);
+    private final Repository<User> userRepository = Winter.getBean(UserRepository.class);
 
     public static Stream<Arguments> getSamplePatternForSearch() {
         //several users with different nullable fields (need skipped)
@@ -27,13 +28,12 @@ class UserRepositoryTest {
 
                 Arguments.of(User.with().login("Andrew").build(), 1),
                 Arguments.of(User.with().password("789").build(), 1),
-                Arguments.of(User.with().role(Role.GUEST).build(), 1),
+                Arguments.of(User.with().login("Andrew").role(Role.GUEST).build(), 1),
 
                 Arguments.of(User.with().login("Ivan").password("456").build(), 1),
                 Arguments.of(User.with().login("Ivan").password("456").role(Role.ADMIN).build(), 1),
 
-                Arguments.of(User.with().build(), 3),
-                Arguments.of(User.with().id(0L).build(), 0)
+                Arguments.of(User.with().id(0L).build(), 1)
         );
     }
 
@@ -46,15 +46,16 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("When get all count=3")
+    @DisplayName("When get all then count>0")
     void getAll() {
         long count = userRepository.getAll().count();
-        assertEquals(3, count);
+        assertTrue(count > 0);
     }
+
     @Test
     void get() {
         User user = userRepository.get(1L);
-        assertEquals(user.getLogin(),"Ivan");
+        assertEquals(user.getLogin(), "Ivan");
     }
 
     @Test

@@ -10,12 +10,28 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="quest_id" type="bigint">
-                <constraints referencedTableName="t_quest" deleteCascade="true"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_question_quest"
+                        referencedColumnNames="id"
+                        referencedTableName="t_quest" deleteCascade="true"/>
             </column>
             <column name="text" type="text"/>
             <column name="game_state" type="varchar(64)">
-                <constraints referencedTableName="t_game_state"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_question_game_state"
+                        referencedColumnNames="value"
+                        referencedTableName="t_game_state"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet id="221216-173800-0" author="akhmelev">
+        <insert tableName="t_question">
+            <column name="id">0</column>
+            <column name="text">test_text</column>
+            <column name="quest_id">0</column>
+            <column name="game_state">PLAY</column>
+        </insert>
     </changeSet>
 </databaseChangeLog>

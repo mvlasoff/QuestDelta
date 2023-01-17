@@ -20,15 +20,36 @@ CREATE TABLE t_game
                 <constraints primaryKey="true"/>
             </column>
             <column name="quest_id" type="bigint">
-                <constraints referencedTableName="t_quest"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_game_quest"
+                        referencedColumnNames="id"
+                        referencedTableName="t_quest"/>
             </column>
             <column name="user_id" type="bigint">
-                <constraints referencedTableName="t_user"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_game_user"
+                        referencedColumnNames="id"
+                        referencedTableName="t_user"/>
             </column>
             <column name="current_question_id" type="bigint"/>
             <column name="game_state" type="varchar(64)">
-                <constraints referencedTableName="t_game_state"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_game_game_state"
+                        referencedColumnNames="value"
+                        referencedTableName="t_game_state"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet id="221216-175100-0" author="akhmelev">
+        <insert tableName="t_game">
+            <column name="id">0</column>
+            <column name="game_state">PLAY</column>
+            <column name="quest_id">0</column>
+            <column name="user_id">0</column>
+            <column name="current_question_id">0</column>
+        </insert>
     </changeSet>
 </databaseChangeLog>

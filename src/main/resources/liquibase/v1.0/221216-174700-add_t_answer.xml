@@ -20,10 +20,22 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="question_id" type="bigint">
-                <constraints referencedTableName="t_question" deleteCascade="true"/>
+                <constraints
+                        nullable="false"
+                        foreignKeyName="fk_answer_question"
+                        referencedColumnNames="id"
+                        referencedTableName="t_question" deleteCascade="true"/>
             </column>
             <column name="text" type="text"/>
             <column name="next_question_id" type="bigint"/>
         </createTable>
+    </changeSet>
+    <changeSet id="221216-174700-0" author="akhmelev">
+        <insert tableName="t_answer">
+            <column name="id">0</column>
+            <column name="text">test_text</column>
+            <column name="next_question_id">0</column>
+            <column name="question_id">0</column>
+        </insert>
     </changeSet>
 </databaseChangeLog>

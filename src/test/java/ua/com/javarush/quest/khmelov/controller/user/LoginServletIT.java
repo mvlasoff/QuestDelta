@@ -53,7 +53,7 @@ public class LoginServletIT {
             LoginServlet loginServlet = new LoginServlet();
             loginServlet.doPost(requestStub, responseStub);
             //assert forward (static method)
-            jsp.verify(()->Jsp.redirect(requestStub, responseStub, Go.PROFILE));
+            jsp.verify(() -> Jsp.redirect(requestStub, responseStub, Go.PROFILE));
             //assert addition userDto to session (instance method)
             Mockito.verify(httpSession).setAttribute(Jsp.Key.USER, userDto);
         } catch (ServletException | IOException e) {

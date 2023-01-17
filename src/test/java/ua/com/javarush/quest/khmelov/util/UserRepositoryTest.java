@@ -21,7 +21,7 @@ class UserRepositoryTest {
     private static final RepositoryService repositoryService = Winter.getBean(RepositoryService.class);
 
     @BeforeAll
-    public static void load(){
+    public static void load() {
         repositoryService.defaultTxtInit();
     }
 

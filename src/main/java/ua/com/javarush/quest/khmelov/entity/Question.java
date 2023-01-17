@@ -19,8 +19,7 @@ import java.util.Collection;
 @Table(name = "t_question")
 public class Question implements AbstractEntity {
     @Id
-    @Column(name = "id")
-    @OrderColumn
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

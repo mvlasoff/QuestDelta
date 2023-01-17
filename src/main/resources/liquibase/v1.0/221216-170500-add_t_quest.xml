@@ -7,7 +7,7 @@
 
     <changeSet id="221216-170500" author="akhmelev">
         <createTable tableName="t_quest">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="bigserial" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="bigint">
@@ -28,5 +28,15 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="221216-170500-0" author="akhmelev">
+        <insert tableName="t_quest">
+            <column name="id">0</column>
+            <column name="text">test_text</column>
+            <column name="name">test_name</column>
+            <column name="user_id">0</column>
+            <column name="start_question_id">0</column>
+        </insert>
     </changeSet>
 </databaseChangeLog>

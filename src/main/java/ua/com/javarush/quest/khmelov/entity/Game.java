@@ -16,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "t_game")
 public class Game implements AbstractEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "quest_id")
