@@ -123,8 +123,8 @@ public abstract class BaseRepository<T extends AbstractEntity> implements Reposi
         }
     }
 
-    public Transaction beginTransactional() {
-        return sessionCreator.startTransactional();
+    public void beginTransactional() {
+        sessionCreator.startTransactional();
     }
 
     public void endTransactional() {

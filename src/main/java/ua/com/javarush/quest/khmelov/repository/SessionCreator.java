@@ -12,7 +12,6 @@ public class SessionCreator implements AutoCloseable {
 
     private final SessionFactory sessionFactory;
     private final AtomicInteger level = new AtomicInteger();
-    private volatile Transaction transaction;
 
     {
         try {
@@ -22,12 +21,19 @@ public class SessionCreator implements AutoCloseable {
         }
     }
 
+    /**
+     * default constructor
+     */
     public SessionCreator() {
         Configuration configuration = new Configuration();
         configuration.configure();
         sessionFactory = getSessionFactory(configuration);
     }
 
+    /**
+     * Constructor for testcontainers
+     * @param configuration - set special mode (for tests)
+     */
     protected SessionCreator(Configuration configuration) {
         sessionFactory = getSessionFactory(configuration);
     }
@@ -52,26 +58,24 @@ public class SessionCreator implements AutoCloseable {
         sessionFactory.close();
     }
 
-    public Transaction startTransactional() {
+    public void startTransactional() {
+        Session session = get();
         if (level.getAndIncrement() == 0) {
-            Session session = get();
-            transaction = session.beginTransaction();
-            Transaction sessionTransaction = session.getTransaction();
+            session.beginTransaction();
         }
-        return transaction;
     }
 
     public void endTransactional() {
-
+        Session session = get();
         if (level.decrementAndGet() == 0) {
             try {
-                transaction.commit();
+                session.getTransaction().commit();
             } catch (RuntimeException e) {
-                transaction.rollback();
+                session.getTransaction().rollback();
                 throw e;
             }
         } else {
-            get().flush();
+            session.flush();
         }
     }
 }
