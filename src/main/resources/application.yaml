@@ -1,7 +1,0 @@
----
-dataBase:
-  folder: database
-  json: tree.json
-  uri: jdbc:postgresql://localhost:5432/game
-  user: postgres
-  password: postgres

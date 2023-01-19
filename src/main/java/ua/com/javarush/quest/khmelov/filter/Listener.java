@@ -4,20 +4,20 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import ua.com.javarush.quest.khmelov.config.Winter;
-import ua.com.javarush.quest.khmelov.service.RepositoryService;
+import ua.com.javarush.quest.khmelov.service.InitService;
 
 @WebListener
 public class Listener implements ServletContextListener {
 
-    private final RepositoryService repositoryService;
+    private final InitService initService;
 
     public Listener() {
-        this.repositoryService = Winter.getBean(RepositoryService.class);
+        this.initService = Winter.getBean(InitService.class);
     }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        repositoryService.load();
+        initService.load();
     }
 
     @Override

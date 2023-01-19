@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import ua.com.javarush.quest.khmelov.config.Winter;
+import ua.com.javarush.quest.khmelov.repository.Container;
 import ua.com.javarush.quest.khmelov.repository.SessionCreator;
 
 public class BaseEntityTest {
@@ -12,12 +13,9 @@ public class BaseEntityTest {
 
     @BeforeAll
     static void setUp() {
+        Container.init();
         sessionCreator = Winter.getBean(SessionCreator.class);
-        session = sessionCreator.open();
+        session = sessionCreator.get();
     }
 
-    @AfterAll
-    static void tearDown() throws Exception {
-        session.close();
-    }
 }

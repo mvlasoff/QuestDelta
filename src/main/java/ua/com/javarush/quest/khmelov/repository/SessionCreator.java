@@ -7,22 +7,31 @@ import ua.com.javarush.quest.khmelov.entity.*;
 
 public class SessionCreator implements AutoCloseable {
 
-    private final SessionFactory sessionFactory;
+    protected final SessionFactory sessionFactory;
 
     public SessionCreator() {
         Configuration configuration = new Configuration();
         configuration.configure();
+        sessionFactory = getSessionFactory(configuration);
+    }
+
+    protected SessionCreator(Configuration configuration) {
+        sessionFactory = getSessionFactory(configuration);
+    }
+
+    private SessionFactory getSessionFactory(Configuration configuration) {
+        LiquibaseChecker.check(configuration);
         configuration.addAnnotatedClass(Game.class);
         configuration.addAnnotatedClass(Answer.class);
         configuration.addAnnotatedClass(Question.class);
         configuration.addAnnotatedClass(Quest.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(UserInfo.class);
-        sessionFactory = configuration.buildSessionFactory();
+        return configuration.buildSessionFactory();
     }
 
-    public Session open() {
-        return sessionFactory.openSession();
+    public Session get() {
+        return sessionFactory.getCurrentSession();
     }
 
     @Override

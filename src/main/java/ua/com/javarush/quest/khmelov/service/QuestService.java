@@ -3,10 +3,7 @@ package ua.com.javarush.quest.khmelov.service;
 import lombok.AllArgsConstructor;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
-import ua.com.javarush.quest.khmelov.entity.Answer;
-import ua.com.javarush.quest.khmelov.entity.GameState;
-import ua.com.javarush.quest.khmelov.entity.Quest;
-import ua.com.javarush.quest.khmelov.entity.Question;
+import ua.com.javarush.quest.khmelov.entity.*;
 import ua.com.javarush.quest.khmelov.exception.AppException;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
 import ua.com.javarush.quest.khmelov.repository.impl.AnswerRepository;
@@ -64,9 +61,13 @@ public class QuestService {
         Quest quest = Quest.with()
                 .user(userRepository.get(userId))
                 .name(name)
+                .text(text)
+                .startQuestionId(0L)
                 .build();
         questRepository.create(quest);
-        userRepository.get(userId).getQuests().add(quest);
+        User user = userRepository.get(userId);
+        Collection<Quest> quests = user.getQuests();
+        quests.add(quest);
 
         map.values().forEach(questionRepository::create);
 

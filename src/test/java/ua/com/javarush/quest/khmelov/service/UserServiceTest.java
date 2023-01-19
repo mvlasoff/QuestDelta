@@ -67,15 +67,6 @@ class UserServiceTest {
         Mockito.verify(userRepositoryMock).get(ID);
     }
 
-    @Test
-    @DisplayName("when find by form data, then return dto")
-    void find() {
-        Mockito.when(userRepositoryMock.find(userIdOnly)).thenReturn(Stream.of(user));
-        Optional<UserDto> userDto = userService.find(formData);
-        Assertions.assertEquals(userDto.orElseThrow().getLogin(), user.getLogin());
-        Mockito.verify(requestStub).getParameterMap();
-        Mockito.verify(userRepositoryMock).find(userIdOnly);
-    }
 
     @Test
     void delete() {

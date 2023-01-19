@@ -15,7 +15,6 @@ import java.util.Objects;
 @ToString
 
 @Entity
-@RequiredArgsConstructor
 @Table(name = "t_answer")
 public class Answer implements AbstractEntity {
     @Id

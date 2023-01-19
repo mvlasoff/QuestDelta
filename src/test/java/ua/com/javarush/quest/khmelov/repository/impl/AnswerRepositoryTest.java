@@ -1,5 +1,6 @@
 package ua.com.javarush.quest.khmelov.repository.impl;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,6 +10,7 @@ import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.entity.Answer;
 import ua.com.javarush.quest.khmelov.entity.GameState;
 import ua.com.javarush.quest.khmelov.entity.Question;
+import ua.com.javarush.quest.khmelov.repository.Container;
 import ua.com.javarush.quest.khmelov.repository.Repository;
 
 import java.util.stream.Stream;
@@ -17,7 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AnswerRepositoryTest {
-
+    @BeforeAll
+    static void init(){
+        Container.init();
+    }
     private final Repository<Answer> answerRepository = Winter.getBean(AnswerRepository.class);
     private final Repository<Question> questionRepository = Winter.getBean(QuestionRepository.class);
 

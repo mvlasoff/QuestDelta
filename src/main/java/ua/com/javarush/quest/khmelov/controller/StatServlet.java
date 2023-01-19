@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.config.Winter;
-import ua.com.javarush.quest.khmelov.service.RepositoryService;
+import ua.com.javarush.quest.khmelov.service.InitService;
 import ua.com.javarush.quest.khmelov.service.UserService;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class StatServlet extends HttpServlet {
 
     UserService userService = Winter.getBean(UserService.class);
-    RepositoryService repositoryService = Winter.getBean(RepositoryService.class);
+    InitService initService = Winter.getBean(InitService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,7 +28,7 @@ public class StatServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        repositoryService.save();
+        initService.save();
         Jsp.redirect(request,response,Go.STAT,"Сохранено: "+ LocalDateTime.now());
     }
 }

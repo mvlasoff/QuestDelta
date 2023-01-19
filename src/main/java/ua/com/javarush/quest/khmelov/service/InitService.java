@@ -1,54 +1,33 @@
 package ua.com.javarush.quest.khmelov.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import ua.com.javarush.quest.khmelov.config.Config;
 import ua.com.javarush.quest.khmelov.config.Winter;
-import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
-import ua.com.javarush.quest.khmelov.repository.impl.*;
+import ua.com.javarush.quest.khmelov.repository.impl.UserRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 @AllArgsConstructor
-public class RepositoryService {
+public class InitService {
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
     private final String IMAGES = "images";
-
-    {
-        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-    }
 
     private final UserRepository userRepository;
     private final QuestService questService;
+
+    public static void main(String[] args) {
+        Winter.getBean(InitService.class).load();
+    }
 
     @SneakyThrows
     public void load() {
         Path jsonPath = getJsonPath();
         if (Files.exists(jsonPath)) {
-            ObjectReader objectReader = MAPPER.readerForListOf(User.class);
-            List<User> list = objectReader.readValue(jsonPath.toFile());
-            final QuestRepository questRepository = Winter.getBean(QuestRepository.class);
-            final GameRepository gameRepository = Winter.getBean(GameRepository.class);
-            final QuestionRepository questionRepository = Winter.getBean(QuestionRepository.class);
-            final AnswerRepository answerRepository = Winter.getBean(AnswerRepository.class);
-            list.forEach(user -> {
-                user.getQuests().stream()
-                        .peek(quest -> quest.getQuestions().stream()
-                                .peek(question -> question.getAnswers().forEach(answerRepository::create))
-                                .forEach(questionRepository::create)
-                        )
-                        .forEach(questRepository::create);
-                user.getGames().forEach(gameRepository::create);
-                userRepository.create(user);
-            });
             Path images = Config.WEB_INF.resolve(IMAGES);
             Path backupImages = jsonPath.getParent().resolve(IMAGES);
             FileUtils.copyDirectory(backupImages.toFile(), images.toFile());
@@ -65,7 +44,6 @@ public class RepositoryService {
         if (!Files.exists(jsonPath.getParent())) {
             Files.createDirectory(jsonPath.getParent());
         }
-        MAPPER.writeValue(jsonPath.toFile(), users);
         Path images = Config.WEB_INF.resolve(IMAGES);
         Path backupImages = jsonPath.getParent().resolve(IMAGES);
         FileUtils.copyDirectory(images.toFile(), backupImages.toFile());
@@ -83,13 +61,8 @@ public class RepositoryService {
 
     public void defaultTxtInit() {
         //пользователи
-        User ivan = User.with().id(1L).login("Ivan").password("456").role(Role.ADMIN).build();
-        User andrew = User.with().id(2L).login("Andrew").password("789").role(Role.GUEST).build();
-        User elena = User.with().id(3L).login("Elena").password("123").role(Role.USER).build();
-        userRepository.create(ivan);
-        userRepository.create(andrew);
-        userRepository.create(elena);
-        Long ivanId = ivan.getId();
+        User admin = userRepository.get(1L);
+        Long adminId = admin.getId();
 
         questService.create(
                 "Играем в неопознанный летающий объект (обязательный квест)",
@@ -112,7 +85,7 @@ public class RepositoryService {
 
                         99+ Вы выиграли
                         """,
-                ivanId
+                adminId
         );
 
 
@@ -158,7 +131,7 @@ public class RepositoryService {
                         11- И тут прибежали злые печенеги и убили тебя. <br>Жадность до добра не доведет. <br>Это поражение!
                         12- Тут и сказочке конец. <br>Ужасная смерть в неравном бою. <br>Это поражение!
                         """,
-                ivanId
+                adminId
         );
         questService.create(
                 "Проверим твои знания арифметики",
@@ -177,7 +150,7 @@ public class RepositoryService {
 
                         100+ Ура, победа в сложнейшем квесте!!!
                         """,
-                ivanId
+                adminId
         );
     }
 

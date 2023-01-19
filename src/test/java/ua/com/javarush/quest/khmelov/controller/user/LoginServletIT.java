@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -12,6 +13,7 @@ import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.entity.User;
 import ua.com.javarush.quest.khmelov.mapping.Mapper;
+import ua.com.javarush.quest.khmelov.repository.Container;
 import ua.com.javarush.quest.khmelov.repository.impl.UserRepository;
 import ua.com.javarush.quest.khmelov.util.Go;
 import ua.com.javarush.quest.khmelov.util.Jsp;
@@ -23,13 +25,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class LoginServletIT {
 
-    Map<String, String[]> formData = Map.of(
-            "login", new String[]{"login"},
-            "password", new String[]{"password"}
-    );
-    public static final User user = User.with()
-            .id(1L)
-            .login("login")
+    @BeforeAll
+    static void setUp() {
+        Container.init();
+    }
+
+
+    private final String login = "login" + System.currentTimeMillis();
+
+
+    public final User user = User.with()
+            .login(login)
             .password("password")
             .role(Role.USER)
             .build();
@@ -37,11 +43,16 @@ public class LoginServletIT {
     @Test
     void doPost() {
         //prepare db
-        Winter.getBean(UserRepository.class).create(user);
+        UserRepository userRepository = Winter.getBean(UserRepository.class);
+        userRepository.create(user);
         UserDto userDto = Mapper.user.get(user).orElseThrow();
         //mock
         HttpSession httpSession = Mockito.mock(HttpSession.class);
         //stub
+        Map<String, String[]>  formData = Map.of(
+                "login", new String[]{login},
+                "password", new String[]{"password"}
+        );
         HttpServletRequest requestStub = Mockito.mock(HttpServletRequest.class);
         Mockito.when(requestStub.getParameterMap()).thenReturn(formData);
         Mockito.when(requestStub.getSession()).thenReturn(httpSession);
@@ -59,5 +70,6 @@ public class LoginServletIT {
         } catch (ServletException | IOException e) {
             fail(e);
         }
+        userRepository.delete(user);
     }
 }
