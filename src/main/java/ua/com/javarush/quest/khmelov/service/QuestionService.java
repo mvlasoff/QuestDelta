@@ -18,21 +18,32 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     public Optional<QuestionDto> get(long id) {
-        Question question = questionRepository.get(id);
-        //here can be service for answers, but it found in entity
-        List<AnswerDto> answersDto = question.getAnswers().stream()
-                .map(Mapper.answer::get)
-                .map(Optional::orElseThrow)
-                .toList();
-        Optional<QuestionDto> questionDto = Mapper.question.get(question);
-        questionDto.orElseThrow().setAnswers(answersDto);
-        return questionDto;
+        questionRepository.beginTransactional();
+        try {
+            Question question = questionRepository.get(id);
+            //here can be service for answers, but it found in entity
+            List<AnswerDto> answersDto = question.getAnswers().stream()
+                    .map(Mapper.answer::get)
+                    .map(Optional::orElseThrow)
+                    .toList();
+            Optional<QuestionDto> questionDto = Mapper.question.get(question);
+            questionDto.orElseThrow().setAnswers(answersDto);
+            return questionDto;
+        } finally {
+            questionRepository.endTransactional();
+        }
     }
 
     @SneakyThrows
-    public void update(FormData formData) {
-        Question question = questionRepository.get(formData.getId());
-        Mapper.question.fill(question, formData);
-        questionRepository.update(question);
+    public Optional<QuestionDto> update(FormData formData) {
+        questionRepository.beginTransactional();
+        try {
+            Question question = questionRepository.get(formData.getId());
+            Mapper.question.fill(question, formData);
+            questionRepository.update(question);
+            return Mapper.question.get(question);
+        } finally {
+            questionRepository.endTransactional();
+        }
     }
 }

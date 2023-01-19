@@ -40,35 +40,45 @@ public class GameService {
     }
 
     public Optional<GameDto> checkAnswer(Long gameId, Long answerId) {
-        Game game = gameRepository.get(gameId);
-        if (game.getGameState() == GameState.PLAY) {
-            Answer answer = answerRepository.get(answerId);
-            Long nextQuestionId = answer != null
-                    ? answer.getNextQuestionId()
-                    : game.getCurrentQuestionId();
-            game.setCurrentQuestionId(nextQuestionId);
-            Question question = questionRepository.get(nextQuestionId);
-            game.setGameState(question.getGameState());
-            gameRepository.update(game);
-        } else {
-            game = getNewGame(game.getUserId(), game.getQuestId());
+        gameRepository.beginTransactional();
+        try {
+            Game game = gameRepository.get(gameId);
+            if (game.getGameState() == GameState.PLAY) {
+                Answer answer = answerRepository.get(answerId);
+                Long nextQuestionId = answer != null
+                        ? answer.getNextQuestionId()
+                        : game.getCurrentQuestionId();
+                game.setCurrentQuestionId(nextQuestionId);
+                Question question = questionRepository.get(nextQuestionId);
+                game.setGameState(question.getGameState());
+                gameRepository.update(game);
+            } else {
+                game = getNewGame(game.getUserId(), game.getQuestId());
+            }
+            return fill(game);
+        } finally {
+            gameRepository.endTransactional();
         }
-        return fill(game);
     }
 
     private Game getNewGame(Long userId, Long questId) {
-        Quest quest = questRepository.get(questId);
-        Long startQuestionId = quest.getStartQuestionId();
-        Question firstQuestion = questionRepository.get(startQuestionId);
-        Game newGame = Game.with()
-                .questId(questId)
-                .currentQuestionId(startQuestionId)
-                .gameState(firstQuestion.getGameState())
-                .userId(userId) //from session
-                .build();
-        userRepository.get(userId).getGames().add(newGame);
-        gameRepository.create(newGame);
-        return newGame;
+        gameRepository.beginTransactional();
+        try {
+            Quest quest = questRepository.get(questId);
+            Long startQuestionId = quest.getStartQuestionId();
+            Question firstQuestion = questionRepository.get(startQuestionId);
+            Game newGame = Game.with()
+                    .questId(questId)
+                    .currentQuestionId(startQuestionId)
+                    .gameState(firstQuestion.getGameState())
+                    .userId(userId) //from session
+                    .build();
+            userRepository.get(userId).getGames().add(newGame);
+            gameRepository.create(newGame);
+            return newGame;
+        } finally {
+            gameRepository.endTransactional();
+        }
     }
 
     private Optional<GameDto> fill(Game game) {

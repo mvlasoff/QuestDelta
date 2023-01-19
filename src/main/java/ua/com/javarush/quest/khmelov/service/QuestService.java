@@ -34,16 +34,27 @@ public class QuestService {
     private final AnswerRepository answerRepository;
 
     public Collection<QuestDto> getAll() {
-        return questRepository.getAll()
-                .map(Mapper.quest::get)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
+        questionRepository.beginTransactional();
+        try {
+            return questRepository.getAll()
+                    .map(Mapper.quest::get)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList();
+        } finally {
+            questionRepository.endTransactional();
+        }
     }
 
     public Optional<QuestDto> get(long id) {
-        Quest quest = questRepository.get(id);
-        return Mapper.quest.get(quest);
+        questRepository.beginTransactional();
+        try {
+            Quest quest = questRepository.get(id);
+            return Mapper.quest.get(quest);
+        } finally {
+            questRepository.endTransactional();
+        }
+
     }
 
 
@@ -54,32 +65,40 @@ public class QuestService {
     }
 
     public Optional<QuestDto> create(String name, String text, Long userId) {
-        Map<Long, Question> map = fillDraftMap(text);
-        if (map.size() < 1) {
-            return Optional.empty();
+        userRepository.beginTransactional();
+        try {
+            Map<Long, Question> map = fillDraftMap(text);
+            if (map.size() < 1) {
+                return Optional.empty();
+            }
+            Quest quest = Quest.with()
+                    .user(userRepository.get(userId))
+                    .name(name)
+                    .text(text)
+                    .startQuestionId(0L)
+                    .build();
+            questRepository.create(quest);
+            User user = userRepository.get(userId);
+            Collection<Quest> quests = user.getQuests();
+            quests.add(quest);
+            questRepository.update(quest);
+            for (Question question : map.values()) {
+                question.setQuest(quest);
+                questionRepository.create(question);
+            }
+
+            Long startKey = findStartQuestionLabel(text);
+            Long startId = map.get(startKey).getId();
+            quest.setStartQuestionId(startId);
+
+            updateLinksAndId(map, quest);
+            map.values().stream()
+                    .flatMap(q -> q.getAnswers().stream())
+                    .forEach(answerRepository::create);
+            return Mapper.quest.get(quest);
+        } finally {
+            userRepository.endTransactional();
         }
-        Quest quest = Quest.with()
-                .user(userRepository.get(userId))
-                .name(name)
-                .text(text)
-                .startQuestionId(0L)
-                .build();
-        questRepository.create(quest);
-        User user = userRepository.get(userId);
-        Collection<Quest> quests = user.getQuests();
-        quests.add(quest);
-
-        map.values().forEach(questionRepository::create);
-
-        Long startKey = findStartQuestionLabel(text);
-        Long startId = map.get(startKey).getId();
-        quest.setStartQuestionId(startId);
-
-        updateLinksAndId(map, quest);
-        map.values().stream()
-                .flatMap(q -> q.getAnswers().stream())
-                .forEach(answerRepository::create);
-        return Mapper.quest.get(quest);
     }
 
     private Long findStartQuestionLabel(String text) {
@@ -119,7 +138,7 @@ public class QuestService {
             case LINK_SYMBOL -> {
                 Answer build = Answer.with()
                         .nextQuestionId(key)
-                        .questionId(currentQuestion.getId())
+                        .questionId(0L)
                         .text(partText)
                         .build();
                 currentQuestion.getAnswers().add(build);

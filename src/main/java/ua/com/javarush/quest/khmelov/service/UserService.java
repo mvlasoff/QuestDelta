@@ -44,21 +44,37 @@ public class UserService {
                 : Optional.empty();
     }
 
-    public void update(FormData formData) {
-        User user = userRepository.get(formData.getId());
-        Mapper.user.fill(user, formData);
-        userRepository.update(user);
+    public Optional<UserDto> update(FormData formData) {
+        userRepository.beginTransactional();
+        try {
+            User user = userRepository.get(formData.getId());
+            Mapper.user.fill(user, formData);
+            userRepository.update(user);
+            return Mapper.user.get(user);
+        } finally {
+            userRepository.endTransactional();
+        }
     }
 
-    public void create(FormData formData) {
-        User user = new User();
-        Mapper.user.fill(user, formData);
-        userRepository.create(user);
+    public Optional<UserDto> create(FormData formData) {
+        try {
+            User user = new User();
+            Mapper.user.fill(user, formData);
+            userRepository.create(user);
+            return Mapper.user.get(user);
+        } finally {
+            userRepository.endTransactional();
+        }
     }
 
-    public void delete(FormData formData) {
-        User user = userRepository.get(formData.getId());
-        userRepository.delete(user);
+    public Optional<UserDto> delete(FormData formData) {
+        try {
+            User user = userRepository.get(formData.getId());
+            userRepository.delete(user);
+            return Mapper.user.get(user);
+        } finally {
+            userRepository.endTransactional();
+        }
     }
 
     public Collection<StatDto> getStat() {

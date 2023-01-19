@@ -28,24 +28,22 @@ public abstract class BaseRepository<T extends AbstractEntity> implements Reposi
 
     @Override
     public Stream<T> getAll() {
-        Session session = sessionCreator.get();
-        Transaction tx = session.beginTransaction();
+        beginTransactional();
         try {
+            Session session = sessionCreator.get();
             Query<T> queryAll = session.createQuery("select data from %s data".formatted(aClass.getSimpleName()), aClass);
             List<T> list = queryAll.list();
-            tx.commit();
             return list.stream();
-        } catch (RuntimeException e) {
-            tx.rollback();
-            throw e;
+        } finally {
+            endTransactional();
         }
     }
 
     @Override
     public Stream<T> find(T entity) {
-        Session session = sessionCreator.get();
-        Transaction tx = session.beginTransaction();
+        beginTransactional();
         try {
+            Session session = sessionCreator.get();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<T> query = criteriaBuilder.createQuery(aClass);
             Root<T> root = query.from(aClass);
@@ -75,65 +73,63 @@ public abstract class BaseRepository<T extends AbstractEntity> implements Reposi
             }
             query = query.where(predicates.toArray(Predicate[]::new));
             List<T> users = session.createQuery(query).list();
-            tx.commit();
             return users.stream();
-        } catch (RuntimeException e) {
-            tx.rollback();
-            throw e;
+        } finally {
+            endTransactional();
         }
     }
 
     @Override
     public T get(long id) {
-        Session session = sessionCreator.get();
-        Transaction tx = session.beginTransaction();
+        beginTransactional();
         try {
-            T data = session.get(aClass, id);
-            tx.commit();
-            return data;
-        } catch (RuntimeException e) {
-            tx.rollback();
-            throw e;
+            Session session = sessionCreator.get();
+            return session.get(aClass, id);
+        } finally {
+            endTransactional();
         }
     }
 
     @Override
     public void create(T data) {
-        Session session = sessionCreator.get();
-        Transaction tx = session.beginTransaction();
+        beginTransactional();
         try {
+            Session session = sessionCreator.get();
             session.save(data);
-            tx.commit();
-        } catch (RuntimeException e) {
-            tx.rollback();
-            throw e;
+        } finally {
+            endTransactional();
         }
     }
 
     @Override
     public void update(T data) {
-        Session session = sessionCreator.get();
-        Transaction tx = session.beginTransaction();
+        beginTransactional();
         try {
+            Session session = sessionCreator.get();
             session.update(data);
-            tx.commit();
-        } catch (RuntimeException e) {
-            tx.rollback();
-            throw e;
+        } finally {
+            endTransactional();
         }
     }
 
     @Override
     public void delete(T data) {
-        try (Session session = sessionCreator.get()) {
-            session.beginTransaction();
-            try {
-                session.delete(data);
-                session.getTransaction().commit();
-            } catch (RuntimeException e) {
-                session.getTransaction().rollback();
-                throw e;
-            }
+        beginTransactional();
+        try {
+            Session session = sessionCreator.get();
+            session.delete(data);
+        } finally {
+            endTransactional();
         }
     }
+
+    public Transaction beginTransactional() {
+        return sessionCreator.startTransactional();
+    }
+
+    public void endTransactional() {
+        sessionCreator.endTransactional();
+    }
+
+
 }

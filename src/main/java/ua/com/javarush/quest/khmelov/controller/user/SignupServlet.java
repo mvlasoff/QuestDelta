@@ -43,8 +43,10 @@ public class SignupServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        userService.create(FormData.of(req));
-        imageService.uploadImage(req);
+        Optional<UserDto> userDto = userService.create(FormData.of(req));
+        if (userDto.isPresent()) {
+            imageService.uploadImage(req, userDto.get().getImage());
+        }
         Jsp.redirect(req, resp, Go.USERS);
     }
 

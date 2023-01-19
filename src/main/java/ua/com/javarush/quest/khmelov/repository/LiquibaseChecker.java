@@ -21,10 +21,11 @@ import java.util.Map;
 public class LiquibaseChecker {
 
     @SneakyThrows
-    public static void check(Configuration configuration) {
+    public static void updateDataBase(Configuration configuration) {
         String url = configuration.getProperty("hibernate.connection.url");
         String user = configuration.getProperty("hibernate.connection.username");
         String password = configuration.getProperty("hibernate.connection.password");
+
         Connection connection = DriverManager.getConnection(url,user,password);
         Map<String, Object> config = new HashMap<>();
         try (connection) {

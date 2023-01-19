@@ -53,8 +53,10 @@ public class EditUserServlet extends HttpServlet {
         final String DEST = checkProfileEditor(req) ? Go.PROFILE : Go.USERS;
         if (checkEditorInSession(req)) {
             if (req.getParameter("update") != null) {
-                userService.update(formData);
-                imageService.uploadImage(req);
+                Optional<UserDto> userDto = userService.update(formData);
+                if (userDto.isPresent()) {
+                    imageService.uploadImage(req, userDto.get().getImage());
+                }
             } else if (req.getParameter("delete") != null) {
                 userService.delete(formData);
             }

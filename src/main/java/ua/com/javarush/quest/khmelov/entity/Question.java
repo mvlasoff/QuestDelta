@@ -28,7 +28,7 @@ public class Question implements AbstractEntity {
 
     private String text;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "question_id")
     @ToString.Exclude
     private final Collection<Answer> answers = new ArrayList<>();
@@ -39,6 +39,6 @@ public class Question implements AbstractEntity {
 
     @JsonIgnore
     public String getImage() {
-        return "image-" + id;
+        return "question-" + id;
     }
 }

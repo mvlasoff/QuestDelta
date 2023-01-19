@@ -56,7 +56,7 @@ public final class User implements AbstractEntity {
     //---------------------------- end  entity ------------------------------------------
     @JsonIgnore
     public String getImage() {
-        return "image-" + id;
+        return "user-" + id;
     }
 
 }

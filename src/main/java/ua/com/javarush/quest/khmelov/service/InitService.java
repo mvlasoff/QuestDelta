@@ -60,6 +60,10 @@ public class InitService {
 
 
     public void defaultTxtInit() {
+
+        if (questService.getAll().stream().count() > 1) {
+            return;
+        }
         //пользователи
         User admin = userRepository.get(1L);
         Long adminId = admin.getId();
@@ -152,6 +156,7 @@ public class InitService {
                         """,
                 adminId
         );
+
     }
 
 }

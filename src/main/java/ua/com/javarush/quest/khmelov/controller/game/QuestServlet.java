@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.config.Winter;
 import ua.com.javarush.quest.khmelov.dto.FormData;
 import ua.com.javarush.quest.khmelov.dto.ui.QuestDto;
+import ua.com.javarush.quest.khmelov.dto.ui.QuestionDto;
 import ua.com.javarush.quest.khmelov.dto.ui.UserDto;
 import ua.com.javarush.quest.khmelov.entity.Role;
 import ua.com.javarush.quest.khmelov.service.ImageService;
@@ -46,8 +47,10 @@ public class QuestServlet extends HttpServlet {
         if (editor.isPresent() && editor.get().getRole() == Role.ADMIN) {
             Long id = Parser.getId(req);
             Long idQuest = Parser.getId(req, "idQuest");
-            questionService.update(formData);
-            imageService.uploadImage(req);
+            Optional<QuestionDto> questionDto = questionService.update(formData);
+            if (questionDto.isPresent()) {
+                imageService.uploadImage(req, questionDto.get().getImage());
+            }
             String uri = "%s?id=%d#q%d".formatted(Go.QUEST, idQuest, id);
             Jsp.redirect(req, resp, uri);
         } else {
