@@ -8,13 +8,32 @@
             <!-- Form Name -->
             <legend>User Form</legend>
 
-            <!-- Avatar input-->
+            <!-- File Button -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="userImage">Login</label>
+
+                <label class="col-md-4 control-label" for="image">
+                    <div class="form-group">
+                        <img id="previewId" src="images/${user.image}" width="150" alt="${user.image}">
+                    </div>
+                    Нажмите чтобы изменить
+                </label>
                 <div class="col-md-4">
-                    <input id="userImage" name="image" type="file" class="form-control input-md">
+                    <input onchange="PreviewImage('image','previewId');" id="image" name="image"
+                           style="visibility:hidden;"
+                           class="input-file" type="file">
                 </div>
             </div>
+
+            <script type="text/javascript">
+                            function PreviewImage(inputFileId,imageId) {
+                                var oFReader = new FileReader();
+                                oFReader.readAsDataURL(document.getElementById(inputFileId).files[0]);
+                                oFReader.onload = function (oFREvent) {
+                                    document.getElementById(imageId).src = oFREvent.target.result;
+                                };
+                            };
+
+            </script>
 
             <!-- Text input-->
             <div class="form-group">

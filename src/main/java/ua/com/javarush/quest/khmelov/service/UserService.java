@@ -57,6 +57,7 @@ public class UserService {
     }
 
     public Optional<UserDto> create(FormData formData) {
+        userRepository.beginTransactional();
         try {
             User user = new User();
             Mapper.user.fill(user, formData);
@@ -68,6 +69,7 @@ public class UserService {
     }
 
     public Optional<UserDto> delete(FormData formData) {
+        userRepository.beginTransactional();
         try {
             User user = userRepository.get(formData.getId());
             userRepository.delete(user);

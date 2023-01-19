@@ -42,8 +42,8 @@ public final class User implements AbstractEntity {
     @ToString.Exclude
     private Collection<Game> games = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserInfo userInfo;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private UserInfo userInfo;
 
     @ManyToMany
     @JoinTable(name = "t_game",
