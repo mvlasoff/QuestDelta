@@ -24,8 +24,8 @@ class QuestRepositoryTest {
     @Test
     void whenInvokeGetAllThenGetAll() {
         QuestRepository mock = Mockito.mock(QuestRepository.class);
-        mock.getAll(1L);
-        Mockito.verify(mock).getAll(1L);
+        mock.get(1L);
+        Mockito.verify(mock).get(1L);
     }
 
     @Test

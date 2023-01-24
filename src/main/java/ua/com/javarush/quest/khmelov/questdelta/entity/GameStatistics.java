@@ -1,6 +1,4 @@
-package ua.com.javarush.quest.khmelov.questdelta.repository;
-
-import ua.com.javarush.quest.khmelov.questdelta.entity.Game;
+package ua.com.javarush.quest.khmelov.questdelta.entity;
 
 import java.util.HashMap;
 import java.util.Map;

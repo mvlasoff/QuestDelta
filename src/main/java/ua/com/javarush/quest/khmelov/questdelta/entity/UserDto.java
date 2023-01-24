@@ -1,7 +1,5 @@
 package ua.com.javarush.quest.khmelov.questdelta.entity;
 
-import ua.com.javarush.quest.khmelov.questdelta.repository.GameStatistics;
-
 @SuppressWarnings("unused")
 public class UserDto {
     private final String name;

@@ -2,28 +2,22 @@ package ua.com.javarush.quest.khmelov.questdelta.service;
 
 import ua.com.javarush.quest.khmelov.questdelta.entity.Role;
 import ua.com.javarush.quest.khmelov.questdelta.entity.User;
-import ua.com.javarush.quest.khmelov.questdelta.repository.UserRepository;
+import ua.com.javarush.quest.khmelov.questdelta.repository.MainUserRepository;
+import ua.com.javarush.quest.khmelov.questdelta.repository.UserRepositoryMemory;
 
-import java.util.Map;
+import java.util.Collection;
 import java.util.Optional;
 
 public class UserService {
-    private final UserRepository userRepository;
-    private static UserService userService;
-
-    private UserService() {
-        userRepository = UserRepository.get();
-    }
+    private final static MainUserRepository<User> userRepository = UserRepositoryMemory.get();
+    private static final UserService userService = new UserService();
 
     public static UserService getUserService() {
-        if (userService == null) {
-            userService = new UserService();
-        }
         return userService;
     }
 
     @SuppressWarnings("unused")
-    public Map<Long, User> getAll() {
+    public Collection<User> getAll() {
         return userRepository.getAll();
     }
 
@@ -40,6 +34,6 @@ public class UserService {
     }
 
     public void doPost(String login, String password, Role role) {
-        userRepository.doPost(login, password, role);
+        userRepository.create(login, password, role);
     }
 }

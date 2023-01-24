@@ -9,22 +9,19 @@ import java.util.Optional;
 
 public class QuestService {
     private final QuestRepository questRepository;
-    private static QuestService questService;
+    private static final QuestService questService = new QuestService();
 
     private QuestService() {
         questRepository = QuestRepository.get();
     }
 
     public static QuestService getQuestService() {
-        if (questService == null) {
-            questService = new QuestService();
-        }
         return questService;
     }
 
     @SuppressWarnings("unused")
-    public Collection<Question> getAll(long questId) {
-        return questRepository.getAll(questId);
+    public Collection<Question> get(long questId) {
+        return questRepository.get(questId);
     }
 
     public Optional<Question> get(long questId, long questionId) {

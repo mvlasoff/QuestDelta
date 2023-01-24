@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Game;
 import ua.com.javarush.quest.khmelov.questdelta.entity.User;
-import ua.com.javarush.quest.khmelov.questdelta.repository.GameStatistics;
+import ua.com.javarush.quest.khmelov.questdelta.entity.GameStatistics;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
 import java.io.IOException;

@@ -5,25 +5,26 @@ import ua.com.javarush.quest.khmelov.questdelta.entity.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class UserRepository {
-    private static final UserRepository userRepository = new UserRepository();
+public class UserRepositoryMemory extends MainUserRepository<User> {
+    private static final MainUserRepository<User> USER_REPOSITORY_MEMORY = new UserRepositoryMemory();
+
     private final Map<Long, User> users;
 
     private final AtomicLong id = new AtomicLong(0);
 
-    private UserRepository() {
+    private UserRepositoryMemory() {
         users = new HashMap<>();
         users.put(id.getAndIncrement(), new User("admin", "admin", Role.ADMIN, new GameStatistics()));
         users.put(id.getAndIncrement(), new User("user", "12345", Role.USER, new GameStatistics()));
         users.put(id.getAndIncrement(), new User("guest", "00000", Role.GUEST, new GameStatistics()));
     }
 
-    public static UserRepository get() {
-        return userRepository;
+    public static MainUserRepository<User> get() {
+        return USER_REPOSITORY_MEMORY;
     }
 
-    public Map<Long, User> getAll() {
-        return users;
+    public Collection<User> getAll() {
+        return users.values();
     }
 
     public Optional<User> get(long userId) {
@@ -43,7 +44,7 @@ public class UserRepository {
                 .findFirst();
     }
 
-    public void doPost(String login, String password, Role role) {
+    public void create(String login, String password, Role role) {
         users.put(id.getAndIncrement(), new User(login, password, role, new GameStatistics()));
     }
 }

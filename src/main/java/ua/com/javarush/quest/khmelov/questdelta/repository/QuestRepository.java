@@ -22,7 +22,7 @@ public class QuestRepository {
         return questRepository;
     }
 
-    public Collection<Question> getAll(long questId) {
+    public Collection<Question> get(long questId) {
         return quests.get(questId).getAll();
     }
 
