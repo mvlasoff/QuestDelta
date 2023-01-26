@@ -43,29 +43,25 @@ public class SignupServlet extends HttpServlet {
         if (password1 == null || password2 == null || password1.isBlank() || password2.isBlank()) {
             log.debug("passwords are null or blank.");
             Jsp.reqRespForward(req, resp, "signup");
-        }
-
-        if (password1 != null && !password1.equals(password2)) {
+        } else if (!password1.equals(password2)) {
             log.debug("passwords are not equal.");
             Jsp.reqRespForward(req, resp, "signup");
-        }
-
-        if (roleStr == null || roleStr.isBlank() || login == null || login.isBlank()) {
+        } else if (roleStr == null || roleStr.isBlank() || login == null || login.isBlank()) {
             log.debug("role or login is null or blank.");
             Jsp.reqRespForward(req, resp, "signup");
-        }
-
-        Optional<User> user = userService.verify(login);
-        if (user.isEmpty()) {
-            Role role = Role.valueOf(roleStr);
-            log.info("before posting new user to userService.");
-            userService.doPost(login, password1, role);
         } else {
-            log.debug("this user name already exists.");
-            Jsp.reqRespForward(req, resp, "signup");
-        }
+            Optional<User> user = userService.verify(login);
+            if (user.isEmpty()) {
+                Role role = Role.valueOf(roleStr);
+                log.info("before posting new user to userService.");
+                userService.doPost(login, password1, role);
+            } else {
+                log.debug("this user name already exists.");
+                Jsp.reqRespForward(req, resp, "signup");
+            }
 
-        log.info("before forward.");
-        Jsp.reqRespForward(req, resp, "login");
+            log.info("before forward.");
+            Jsp.reqRespForward(req, resp, "login");
+        }
     }
 }

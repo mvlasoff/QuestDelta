@@ -3,13 +3,19 @@ package ua.com.javarush.quest.khmelov.questdelta.service;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Role;
 import ua.com.javarush.quest.khmelov.questdelta.entity.User;
 import ua.com.javarush.quest.khmelov.questdelta.repository.MainUserRepository;
-import ua.com.javarush.quest.khmelov.questdelta.repository.UserRepositoryMemory;
+import ua.com.javarush.quest.khmelov.questdelta.repository.UserRepositoryDB;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public class UserService {
-    private final static MainUserRepository<User> userRepository = UserRepositoryMemory.get();
+
+    //In memory user storage.
+    //private final static MainUserRepository<User> userRepository = UserRepositoryMemory.get();
+
+    //Persistent user storage.
+    private final static MainUserRepository<User> userRepository = UserRepositoryDB.get();
+
     private static final UserService userService = new UserService();
 
     public static UserService getUserService() {
