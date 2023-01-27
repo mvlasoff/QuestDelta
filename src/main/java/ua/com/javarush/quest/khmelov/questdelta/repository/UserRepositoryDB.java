@@ -97,10 +97,10 @@ public class UserRepositoryDB extends MainUserRepository<User> {
         Session session = sessionFactory.getCurrentSession();
         try (session) {
             session.beginTransaction();
-            session.save(user);
             for (Game game : games) {
                 session.save(game);
             }
+            session.save(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

@@ -26,6 +26,8 @@ public class Game {
 
 
     public Game() {
+        this.gamesCount = 0;
+        this.gamesWon = 0;
     }
 
     public Long getId() {
@@ -52,10 +54,12 @@ public class Game {
         this.gamesWon = gamesWon;
     }
 
+    @SuppressWarnings("unused")
     public List<User> getUsers() {
         return users;
     }
 
+    @SuppressWarnings("unused")
     public void setUsers(List<User> users) {
         this.users = users;
     }
