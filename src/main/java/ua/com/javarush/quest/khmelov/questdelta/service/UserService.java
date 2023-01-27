@@ -42,4 +42,8 @@ public class UserService {
     public void doPost(String login, String password, Role role) {
         userRepository.create(login, password, role);
     }
+
+    public void update(User user) {
+        userRepository.update(user);
+    }
 }

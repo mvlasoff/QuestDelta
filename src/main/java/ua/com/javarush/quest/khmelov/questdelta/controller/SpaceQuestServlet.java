@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.com.javarush.quest.khmelov.questdelta.entity.*;
 import ua.com.javarush.quest.khmelov.questdelta.service.QuestService;
+import ua.com.javarush.quest.khmelov.questdelta.service.UserService;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.Optional;
 @WebServlet("/space-quest")
 public class SpaceQuestServlet extends HttpServlet {
     private final QuestService questService = QuestService.getQuestService();
+
+    private final UserService userService = UserService.getUserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,6 +32,7 @@ public class SpaceQuestServlet extends HttpServlet {
 
     private void getNextQuestion(HttpServletRequest req, HttpServletResponse resp, long id) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
+        Game game = user.getGames().get(0);
 
         Optional<Question> optionalQuestion = questService.get(1L, id);
         if (optionalQuestion.isPresent()) {
@@ -36,10 +40,13 @@ public class SpaceQuestServlet extends HttpServlet {
             Collection<Answer> answers = questService.getAnswers(1L, nextQuestion);
 
             if(answers.isEmpty()) {
-                user.getGameStatistics().setGamesCount(1L);
+                Integer gamesCount = game.getGamesCount();
+                game.setGamesCount(++gamesCount);
                 if(nextQuestion.isWon()) {
-                    user.getGameStatistics().setGamesWon(1L);
+                    Integer gamesWon = game.getGamesWon();
+                    game.setGamesWon(++gamesWon);
                 }
+                userService.update(user);
             }
 
             req.getSession().setAttribute("user", user);

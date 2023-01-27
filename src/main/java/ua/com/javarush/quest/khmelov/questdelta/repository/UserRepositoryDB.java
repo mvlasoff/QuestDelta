@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import ua.com.javarush.quest.khmelov.questdelta.entity.Game;
 import ua.com.javarush.quest.khmelov.questdelta.entity.GameStatistics;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Role;
 import ua.com.javarush.quest.khmelov.questdelta.entity.User;
@@ -20,6 +21,8 @@ public class UserRepositoryDB extends MainUserRepository<User> {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(User.class)
                 .addAnnotatedClass(Role.class)
+                .addAnnotatedClass(GameStatistics.class)
+                .addAnnotatedClass(Game.class)
                 .buildSessionFactory();
     }
 
@@ -89,10 +92,30 @@ public class UserRepositoryDB extends MainUserRepository<User> {
 
     @Override
     public void create(String login, String password, Role role) {
+        User user = new User(login, password, role);
+        List<Game> games = user.getGames();
         Session session = sessionFactory.getCurrentSession();
         try (session) {
             session.beginTransaction();
-            session.save(new User(login, password, role, new GameStatistics()));
+            session.save(user);
+            for (Game game : games) {
+                session.save(game);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        List<Game> games = user.getGames();
+        Session session = sessionFactory.getCurrentSession();
+        try (session) {
+            session.beginTransaction();
+            for (Game game : games) {
+                session.update(game);
+            }
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

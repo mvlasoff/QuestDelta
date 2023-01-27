@@ -2,6 +2,9 @@ package ua.com.javarush.quest.khmelov.questdelta.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "user", schema = "questdelta")
 public class User {
@@ -19,18 +22,23 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @Transient
-    private final GameStatistics gameStatistics;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "game_stat",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"))
+    private List<Game> games;
 
     public User() {
-        gameStatistics = new GameStatistics();
     }
 
-    public User(String login, String password, Role role, GameStatistics gameStatistics) {
+    public User(String login, String password, Role role) {
         this.login = login;
         this.password = password;
         this.role = role;
-        this.gameStatistics = gameStatistics;
+
+        this.games = new ArrayList<>();
+        this.games.add(new Game());
+        this.games.add(new Game());
     }
 
     public void setId(Long id) {
@@ -66,7 +74,11 @@ public class User {
         this.role = role;
     }
 
-    public GameStatistics getGameStatistics() {
-        return gameStatistics;
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 }

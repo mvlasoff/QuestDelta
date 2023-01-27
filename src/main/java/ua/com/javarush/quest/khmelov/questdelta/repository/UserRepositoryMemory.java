@@ -14,9 +14,9 @@ public class UserRepositoryMemory extends MainUserRepository<User> {
 
     private UserRepositoryMemory() {
         users = new HashMap<>();
-        users.put(id.getAndIncrement(), new User("admin", "admin", Role.ADMIN, new GameStatistics()));
-        users.put(id.getAndIncrement(), new User("user", "12345", Role.USER, new GameStatistics()));
-        users.put(id.getAndIncrement(), new User("guest", "00000", Role.GUEST, new GameStatistics()));
+        users.put(id.getAndIncrement(), new User("admin", "admin", Role.ADMIN));
+        users.put(id.getAndIncrement(), new User("user", "12345", Role.USER));
+        users.put(id.getAndIncrement(), new User("guest", "00000", Role.GUEST));
     }
 
     public static MainUserRepository<User> get() {
@@ -45,6 +45,11 @@ public class UserRepositoryMemory extends MainUserRepository<User> {
     }
 
     public void create(String login, String password, Role role) {
-        users.put(id.getAndIncrement(), new User(login, password, role, new GameStatistics()));
+        users.put(id.getAndIncrement(), new User(login, password, role));
+    }
+
+    @Override
+    public void update(User user) {
+
     }
 }

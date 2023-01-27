@@ -11,6 +11,7 @@ import ua.com.javarush.quest.khmelov.questdelta.entity.GameStatistics;
 import ua.com.javarush.quest.khmelov.questdelta.util.Jsp;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/stat")
@@ -18,10 +19,9 @@ public class StatisticsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
-        GameStatistics gameStatistics = user.getGameStatistics();
-        Map<Long, Game> games = gameStatistics.getGames();
-        Game spacegame = games.get(1L);
-        Game javagame = games.get(2L);
+        List<Game> games = user.getGames();
+        Game spacegame = games.get(0);
+        Game javagame = games.get(1);
         req.setAttribute("spacegame", spacegame);
         req.setAttribute("javagame", javagame);
         Jsp.reqRespForward(req, resp, "statistics");
