@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "questdelta", name = "game")
+@Table(schema = "questdelta", name = "game_stat")
 public class Game {
 
     @Id
@@ -19,8 +19,8 @@ public class Game {
     private Integer gamesWon;
 
     @ManyToMany
-    @JoinTable(name = "game_stat",
-            joinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"),
+    @JoinTable(name = "user_game_stat",
+            joinColumns = @JoinColumn(name = "stat_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<User> users;
 

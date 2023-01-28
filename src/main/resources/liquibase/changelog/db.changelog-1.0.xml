@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create_tables" author="mv">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="login" type="VARCHAR(45)" encoding="UTF-8">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(45)" encoding="UTF-8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(45)" encoding="UTF-8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="game_stat">
+            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="games_count" type="INTEGER" encoding="UTF-8" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="games_won" type="INTEGER" encoding="UTF-8" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="user_game_stat">
+            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGINT" encoding="UTF-8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stat_id" type="BIGINT" encoding="UTF-8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create_indexes" author="mv">
+        <createIndex tableName="user" indexName="PRIMARY">
+            <column name="id" descending="false" type="PRIMARY"/>
+        </createIndex>
+        <createIndex tableName="user" indexName="login_UNIQUE">
+            <column name="login" descending="false" type="UNIQUE"/>
+        </createIndex>
+        
+        <createIndex tableName="user_game_stat" indexName="PRIMARY">
+            <column name="id" descending="false" type="PRIMARY"/>
+        </createIndex>
+        <createIndex tableName="user_game_stat" indexName="us_idx">
+            <column name="user_id" descending="false" type="INDEX"/>
+        </createIndex>
+        <createIndex tableName="user_game_stat" indexName="uss_idx">
+            <column name="stat_id" descending="false" type="INDEX"/>
+        </createIndex>
+
+        <createIndex tableName="game_stat" indexName="PRIMARY">
+            <column name="id" descending="false" type="PRIMARY"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet id="create_foreign_key_constraint" author="mv">
+        <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="user_id" constraintName="usu" referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="stat_id" constraintName="uss" referencedTableName="game_stat"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

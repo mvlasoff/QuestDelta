@@ -1,7 +1,7 @@
 # Quest Delta
 
 This is Servlet, JSP, JSTL, EL training website. It has 2 quests out of the box.
-1. Deploy MySQL8 database file questdelta.sql from /resources folder.
+1. Deploy MySQL8 database file questdelta . sql from /resources folder.
 2. Use Tomcat 10.
 2. Start URL: http://localhost:8080/start
 3. Artifact: quest-delta:war exploded

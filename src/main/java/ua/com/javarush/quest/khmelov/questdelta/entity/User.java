@@ -23,9 +23,9 @@ public class User {
     private Role role;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "game_stat",
+    @JoinTable(name = "user_game_stat",
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"))
+        inverseJoinColumns = @JoinColumn(name = "stat_id", referencedColumnName = "id"))
     private List<Game> games;
 
     public User() {
@@ -78,6 +78,7 @@ public class User {
         return games;
     }
 
+    @SuppressWarnings("unused")
     public void setGames(List<Game> games) {
         this.games = games;
     }
