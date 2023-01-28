@@ -71,8 +71,8 @@
     
     <changeSet id="create_foreign_key_constraint" author="mv">
         <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="user_id" constraintName="usu" referencedTableName="user"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="stat_id" constraintName="uss" referencedTableName="game_stat"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
     </changeSet>
 </databaseChangeLog>
