@@ -7,7 +7,7 @@
 
     <changeSet id="create_tables" author="mv">
         <createTable tableName="user">
-            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8">
+            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8" startWith="1">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="login" type="VARCHAR(45)" encoding="UTF-8">
@@ -22,7 +22,7 @@
         </createTable>
         
         <createTable tableName="game_stat">
-            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8">
+            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8" startWith="1">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="games_count" type="INTEGER" encoding="UTF-8" defaultValue="0">
@@ -34,7 +34,7 @@
         </createTable>
         
         <createTable tableName="user_game_stat">
-            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8">
+            <column name="id" type="BIGINT" autoIncrement="true" encoding="UTF-8" startWith="1">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="user_id" type="BIGINT" encoding="UTF-8">
@@ -74,5 +74,88 @@
                                  referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
         <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="stat_id" constraintName="uss" referencedTableName="game_stat"
                                  referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
+    </changeSet>
+    
+    <changeSet id="fill_default_data" author="mv">
+        <insert tableName="game_stat">
+            <column name="id" value="1"/>
+            <column name="games_count" value="0"/>
+            <column name="games_won" value="0"/>
+        </insert>
+        <insert tableName="game_stat">
+            <column name="id" value="2"/>
+            <column name="games_count" value="0"/>
+            <column name="games_won" value="0"/>
+        </insert>
+        <insert tableName="game_stat">
+            <column name="id" value="3"/>
+            <column name="games_count" value="0"/>
+            <column name="games_won" value="0"/>
+        </insert>
+        <insert tableName="game_stat">
+            <column name="id" value="4"/>
+            <column name="games_count" value="0"/>
+            <column name="games_won" value="0"/>
+        </insert>
+        <insert tableName="game_stat">
+            <column name="id" value="5"/>
+            <column name="games_count" value="0"/>
+            <column name="games_won" value="0"/>
+        </insert>
+        <insert tableName="game_stat">
+            <column name="id" value="6"/>
+            <column name="games_count" value="0"/>
+            <column name="games_won" value="0"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="id" value="1"/>
+            <column name="login" value="admin"/>
+            <column name="password" value="admin"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="2"/>
+            <column name="login" value="user"/>
+            <column name="password" value="12345"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" value="3"/>
+            <column name="login" value="guest"/>
+            <column name="password" value="00000"/>
+            <column name="role" value="GUEST"/>
+        </insert>
+
+        <insert tableName="user_game_stat">
+            <column name="id" value="1"/>
+            <column name="user_id" value="1"/>
+            <column name="stat_id" value="1"/>
+        </insert>
+        <insert tableName="user_game_stat">
+            <column name="id" value="2"/>
+            <column name="user_id" value="1"/>
+            <column name="stat_id" value="2"/>
+        </insert>
+        <insert tableName="user_game_stat">
+            <column name="id" value="3"/>
+            <column name="user_id" value="2"/>
+            <column name="stat_id" value="3"/>
+        </insert>
+        <insert tableName="user_game_stat">
+            <column name="id" value="4"/>
+            <column name="user_id" value="2"/>
+            <column name="stat_id" value="4"/>
+        </insert>
+        <insert tableName="user_game_stat">
+            <column name="id" value="5"/>
+            <column name="user_id" value="3"/>
+            <column name="stat_id" value="5"/>
+        </insert>
+        <insert tableName="user_game_stat">
+            <column name="id" value="6"/>
+            <column name="user_id" value="3"/>
+            <column name="stat_id" value="6"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
