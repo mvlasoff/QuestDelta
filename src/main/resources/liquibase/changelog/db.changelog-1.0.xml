@@ -144,4 +144,5 @@
             <column name="stat_id" value="6"/>
         </insert>
     </changeSet>
+
 </databaseChangeLog>
