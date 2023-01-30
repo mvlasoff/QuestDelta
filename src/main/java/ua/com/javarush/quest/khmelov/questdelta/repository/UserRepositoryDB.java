@@ -8,6 +8,7 @@ import ua.com.javarush.quest.khmelov.questdelta.entity.Game;
 import ua.com.javarush.quest.khmelov.questdelta.entity.GameStatistics;
 import ua.com.javarush.quest.khmelov.questdelta.entity.Role;
 import ua.com.javarush.quest.khmelov.questdelta.entity.User;
+import ua.com.javarush.quest.khmelov.questdelta.util.LiquibaseFactory;
 
 import java.util.*;
 
@@ -18,14 +19,16 @@ public class UserRepositoryDB extends MainUserRepository<User> {
     private final SessionFactory sessionFactory;
 
     public UserRepositoryDB() {
-        sessionFactory = new Configuration()
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        LiquibaseFactory.updateDB(configuration);
+        sessionFactory = configuration
                 .addAnnotatedClass(User.class)
                 .addAnnotatedClass(Role.class)
                 .addAnnotatedClass(GameStatistics.class)
                 .addAnnotatedClass(Game.class)
                 .buildSessionFactory();
     }
-
 
     public static MainUserRepository<User> get() {
         return USER_REPOSITORY_DB;

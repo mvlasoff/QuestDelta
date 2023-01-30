@@ -1,11 +1,13 @@
-# Quest Delta
+# Mike Vlasoff, Quest Delta
 
-This is Servlet, JSP, JSTL, EL training website. It has 2 quests out of the box.
-1. Deploy MySQL8 database file questdelta . sql from /resources folder.
+This is pet project website. It has 2 quests out of the box.
+1. Create MySQL database schema questdelta. url: //localhost:3306/questdelta, username: root, password: root.
 2. Use Tomcat 10.
-2. Start URL: http://localhost:8080/start
-3. Artifact: quest-delta:war exploded
-4. Application context: /
+3. Start URL: http://localhost:8080/start
+4. Artifact: quest-delta:war exploded
+5. Application context: /
+
+App will automatically deploy tables for its work if they don't exist.
 
 When website is started you need to log in or register own user before start playing. 
 There are 3 pre-registered users (login/password/role): 

@@ -47,33 +47,19 @@
     </changeSet>
     
     <changeSet id="create_indexes" author="mv">
-        <createIndex tableName="user" indexName="PRIMARY">
-            <column name="id" descending="false" type="PRIMARY"/>
-        </createIndex>
-        <createIndex tableName="user" indexName="login_UNIQUE">
-            <column name="login" descending="false" type="UNIQUE"/>
-        </createIndex>
-        
-        <createIndex tableName="user_game_stat" indexName="PRIMARY">
-            <column name="id" descending="false" type="PRIMARY"/>
-        </createIndex>
         <createIndex tableName="user_game_stat" indexName="us_idx">
             <column name="user_id" descending="false" type="INDEX"/>
         </createIndex>
         <createIndex tableName="user_game_stat" indexName="uss_idx">
             <column name="stat_id" descending="false" type="INDEX"/>
         </createIndex>
-
-        <createIndex tableName="game_stat" indexName="PRIMARY">
-            <column name="id" descending="false" type="PRIMARY"/>
-        </createIndex>
     </changeSet>
     
     <changeSet id="create_foreign_key_constraint" author="mv">
-        <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="user_id" constraintName="usu" referencedTableName="user"
-                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
-        <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="stat_id" constraintName="uss" referencedTableName="game_stat"
-                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="user_id" constraintName="usu" deferrable="false" initiallyDeferred="false"
+                                 referencedTableName="user" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" validate="true"/>
+        <addForeignKeyConstraint baseTableName="user_game_stat" baseColumnNames="stat_id" constraintName="uss" deferrable="false" initiallyDeferred="false"
+                                 referencedTableName="game_stat" referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE" validate="true"/>
     </changeSet>
     
     <changeSet id="fill_default_data" author="mv">
