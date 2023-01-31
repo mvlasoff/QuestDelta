@@ -5,6 +5,7 @@ import ua.com.javarush.quest.khmelov.questdelta.entity.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+@SuppressWarnings("unused")
 public class UserRepositoryMemory extends MainUserRepository<User> {
     private static final MainUserRepository<User> USER_REPOSITORY_MEMORY = new UserRepositoryMemory();
 

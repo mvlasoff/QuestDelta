@@ -1,7 +1,6 @@
 package ua.com.javarush.quest.khmelov.questdelta.repository;
 
 import ua.com.javarush.quest.khmelov.questdelta.entity.Role;
-import ua.com.javarush.quest.khmelov.questdelta.entity.User;
 
 import java.util.Optional;
 

@@ -1,13 +1,10 @@
 package ua.com.javarush.quest.khmelov.questdelta.entity;
 
-import jakarta.persistence.*;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
+@SuppressWarnings("unused")
 public class GameStatistics {
 
     private Long id;
@@ -56,12 +53,12 @@ public class GameStatistics {
     public void setGamesCount(long gameId) {
         Game game = games.get((int) gameId);
         Integer gamesCount = game.getGamesCount();
-        setGamesCount(++gamesCount);
+        game.setGamesCount(++gamesCount);
     }
 
     public void setGamesWon(long gameId) {
         Game game = games.get((int) gameId);
         Integer gamesWon = game.getGamesWon();
-        setGamesWon(++gamesWon);
+        game.setGamesWon(++gamesWon);
     }
 }

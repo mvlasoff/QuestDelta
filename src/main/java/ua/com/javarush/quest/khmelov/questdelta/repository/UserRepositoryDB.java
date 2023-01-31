@@ -21,7 +21,15 @@ public class UserRepositoryDB extends MainUserRepository<User> {
     public UserRepositoryDB() {
         Configuration configuration = new Configuration();
         configuration.configure();
+
+        String driver = configuration.getProperty("hibernate.connection.driver_class");
+        try {
+            Class.forName(driver);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         LiquibaseFactory.updateDB(configuration);
+
         sessionFactory = configuration
                 .addAnnotatedClass(User.class)
                 .addAnnotatedClass(Role.class)
