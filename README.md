@@ -14,4 +14,4 @@ There are 3 pre-registered users (login/password/role):
 admin/admin/ADMIN, user/12345/USER, guest/00000/GUEST.
 Only users with USER or ADMIN role can play and check statistics.
 
-2023 MV, JRU Delta.
+Tools used: Java 17, Intellij IDEA U, MySQL, Hibernate, Liquibase, JUnit 5, Log4j2.
